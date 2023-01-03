@@ -10,4 +10,4 @@ Using BeautifulSoup, an XML and HTML parser, our software will search the desire
 
 ***How To Run The Software:***
 run the code in terminal using the following query: 
-> python main.py -s site -q query
+> python safe_place.py -s site -q query
