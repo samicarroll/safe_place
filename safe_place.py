@@ -8,11 +8,10 @@ import sys
 import requests
 from bs4 import BeautifulSoup
 from requests.exceptions import HTTPError
-from urllib.parse import urlparse
 
 # version number
 # and functions for dispatch table
-VERSION = 1.0.0
+VERSION = 3.05
 
 # these globals would become class params once this made into a class
 site = ""
@@ -63,6 +62,7 @@ def search_craigslist(searchterms):
         return link.text
 
 
+# current issue (1/2/23): search query is returning an invalid URL
 def search_megapersonals(searchterms):
     """
     searches craigslist for a keyword
@@ -78,6 +78,7 @@ def search_megapersonals(searchterms):
     for link in soup.find_all("p"):
         print(link.text)
         return link.text
+
 
 # main sites to search with query strings
 # will have to make this a full dispatch table to custom functions later
@@ -140,3 +141,4 @@ if __name__ == '__main__':
             f.write(get_response(url))
     else:
         print("first link was un-followable or no links found.")
+
