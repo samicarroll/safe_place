@@ -12,7 +12,7 @@ from urllib.parse import urlparse
 
 # version number
 # and functions for dispatch table
-VERSION = 3.05
+VERSION = 1.0.0
 
 # these globals would become class params once this made into a class
 site = ""
