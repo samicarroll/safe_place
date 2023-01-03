@@ -15,7 +15,7 @@ run the code in terminal using the following query:
 ## Installing Packages:
 packages needed can be installed in the terminal
 
-***BeautifulSoup4:*** 
+***beautifulsoup4:*** 
 > pip install beautifulsoup4
 
 ***bs4:***
