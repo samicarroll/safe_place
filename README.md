@@ -18,9 +18,9 @@ packages needed can be installed in the terminal
 ***BeautifulSoup4:*** 
 > pip install beautifulsoup4
 
-***bs4***
+***bs4:***
 > pip install bs4
 
-***requests***
+***requests:***
 > pip install requests
 
