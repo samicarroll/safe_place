@@ -65,7 +65,7 @@ def search_craigslist(searchterms):
 # current issue (1/2/23): search query is returning an invalid URL
 def search_megapersonals(searchterms):
     """
-    searches craigslist for a keyword
+    searches megapersonals for a keyword
     :param searchterms: The term to search for
     :return: the fully built query string
     """
