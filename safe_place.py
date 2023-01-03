@@ -22,7 +22,7 @@ depth = 0
 
 # current issue (1/3/23):
 # 
-# reference: https://aws.amazon.com/premiumsupport/knowledge-center/api-gateway-troubleshoot-403-forbidden/#:~:text=An%20HTTP%20403%20response%20code,because%20of%20client%2Dside%20issues.&text=The%20caller%20isn't%20authorized,an%20API%20Gateway%20Lambda%20authorizer.
+#
 def search_skip_the_games(searchterms):
     """
     searches skipthegames for a keyword
