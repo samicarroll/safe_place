@@ -8,6 +8,7 @@ import sys
 import requests
 from bs4 import BeautifulSoup
 from requests.exceptions import HTTPError
+import pandas as pd
 
 # version number
 # and functions for dispatch table
@@ -65,7 +66,7 @@ def search_craigslist(searchterms):
 # current issue (1/2/23): search query is returning an invalid URL
 def search_megapersonals(searchterms):
     """
-    searches megapersonals for a keyword
+    searches craigslist for a keyword
     :param searchterms: The term to search for
     :return: the fully built query string
     """
@@ -114,13 +115,18 @@ def init() -> str:
         quit(1)
 
 
+headers = {
+    'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
+}
+
+
 def get_response(uri):
     # search get and return a response from the url provided
 
     # Gets website url and provides response
     # If error - exits with exception
     try:
-        response = requests.get(uri)
+        response = requests.get(uri, headers=headers)
         response.raise_for_status()
     except HTTPError as httperr:
         print(f'HTTP error: {httperr}')
@@ -141,4 +147,3 @@ if __name__ == '__main__':
             f.write(get_response(url))
     else:
         print("first link was un-followable or no links found.")
-
