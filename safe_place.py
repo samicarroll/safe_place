@@ -63,11 +63,28 @@ def search_craigslist(searchterms):
         return link.text
 
 
+def search_megapersonals(searchterms):
+    """
+    searches craigslist for a keyword
+    :param searchterms: The term to search for
+    :return: the fully built query string
+    """
+    searchterms = "+".join(searchterms.split())
+    # query: https://megapersonals.eu/public/post_list/234/1/1/meetup
+
+    url = f'https://megapersonals.eu/public/post_list/234/1/1/{searchterms}'
+
+    soup = BeautifulSoup(get_response(url), 'html.parser')
+    for link in soup.find_all("p"):
+        print(link.text)
+        return link.text
+
 # main sites to search with query strings
 # will have to make this a full dispatch table to custom functions later
 sites = {
     "skipthegames": search_skip_the_games,
-    "craigslist": search_craigslist
+    "craigslist": search_craigslist,
+    "megapersonals": search_megapersonals
 }
 
 
