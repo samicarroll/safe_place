@@ -1,26 +1,18 @@
 # Safe Place 
 ## Description:
-Using BeautifulSoup, an XML and HTML parser, our software will search the desired sites for various keywords and document the findings in an excel file. 
+Using XML and HTML parsers (BeautifulSoup and Selenium), our software will scrape information from various websites searching for keywords commonly used in human trafficking. 
 
 ## Current Release: 1.0.0:
 - contains base code the will search "SkipTheGames", "Craigslist", and "Megapersonals"; three desired sites for human trafficking. 
 
 - uses the sites basic search query to find keywords. 
 
-
-## How To Run The Software:
-run the code in terminal using the following query: 
-> python safe_place.py -s site -q query
-
 ## Installing Packages:
 packages needed can be installed in the terminal
 
-***beautifulsoup4:*** 
-> pip install beautifulsoup4
+> pip install -r requirements.txt
 
-***Selenium:***
-> pip install selenium
 
-***requests:***
-> pip install requests
-
+## Future Releases
+- User Interface will be implemented
+- Using Selenium, the software will screenshot listings and provide excel documents with data
