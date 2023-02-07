@@ -47,7 +47,9 @@ driver.implicitly_wait(10)
 # keywords.send_keys('blonde')
 
 # SEARCH LOCATION AND KEYWORDS
-wait.until(EC.element_to_be_clickable((By.ID, 'search_button'))).click()
+location.send_keys(Keys.ENTER)  # search location
+
+# wait.until(EC.element_to_be_clickable((By.ID, 'search_button'))).click()
 
 gallery = driver.find_elements(By.CLASS_NAME, 'clsfds-display-mode gallery')
 for ads in gallery:

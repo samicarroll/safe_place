@@ -1,20 +1,23 @@
 import datetime
 import time
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import pandas as pd
+
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.options import Options
 
 # SET UP LIST AND WEBDRIVER - CONNECT SELENIUM TO WEB URL
 LIST = []
 url = 'https://megapersonals.eu/public/post_list/234/1/1/meetup'
 driver = webdriver.Chrome()
 driver.get(url)
-timestamp = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
+timestamps = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
 
+# WAIT FOR ELEMENTS
+wait = WebDriverWait(driver, 10)
 
 # CLICKING AGREEMENTS AND PREFERENCES:
 # CLICK AGE AGREEMENT BUTTON
@@ -43,41 +46,46 @@ women_seeking_male = driver.find_element(By.XPATH, '//*[@id="megapCategoriesOran
 driver.execute_script("arguments[0].click();", women_seeking_male)
 driver.implicitly_wait(5)
 
-
 # LOOP THROUGH LISTINGS AND PULL DESIRED INFORMATION
-listings = driver.find_elements(By.CLASS_NAME, 'listadd')
+container = driver.find_elements(By.ID, 'list')
+for lists in container:
+    listings = driver.find_elements(By.CLASS_NAME, 'listadd')
 
-for listing in listings:
-    post_time = listing.find_element(By.CLASS_NAME, 'gallerylistdate1').text
+    links = []
+    for link in listings:
+        links.append(link.find_element(By.TAG_NAME, 'a').get_attribute('href'))
+        print(link.text)
 
-    # TODO: DEBUG REPEATING TITLE ENTRIES
-    # FIXME: DUPLICATE TITLE ENTRIES
-    # XPATH MAY NOT BE EFFICIENT - XPATH UNIQUE TO POST
-    title = listing.find_element(By.XPATH, '//*[@id="list"]/div[2]/div[3]/a')
+    counter = 0
+    for listing in listings:
+        print(links[0])
+        driver.get(links[counter])
+        counter += 1
 
-    age = listing.find_element(By.CLASS_NAME, 'titleAge').text
+        time.sleep(5)
+        # post_time = listing.find_element(By.CLASS_NAME, 'post_preview_date_time').text
+        # time.sleep(5)
+        # title = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_title').text
+        # time.sleep(5)
+        # age = listing.find_element(By.CSS_SELECTOR, 'body > div > div.isee-age > div.post_preview_age').text
+        # time.sleep(5)
+        # description = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > span').text
+        # time.sleep(5)
+        # phone_number = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > div.fromLeft.post_preview_phone > span > a').text
+        # time.sleep(5)
+        S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
+        driver.set_window_size(S('Width'), S('Height'))
+        driver.get_screenshot_as_file(f"megapersonals({timestamps}).png")
 
-    description = listing.find_element(By.CLASS_NAME, 'listbody').text
-
-    # TODO: DEBUG URL NOT EXPORTING
-    # FIXME: URL NOT EXPORTING
-    # XPATH MAY NOT BE EFFICIENT FOR PULLING - XPATH UNIQUE TO POST
-    listing_url = listing.find_element(By.XPATH, '//*[@id="list"]/div[2]/div[3]/a').text
-    print(listing_url)
-
-    driver.get_screenshot_as_file(f"megapersonals({timestamp}).png")
-    # phone_number = listing.find_element(By.XPATH, './html/body/div/div[6]/div[1]/span/a').text
-    # page numbers - /html/body/div/div[7]/div/div/div[6]/a ; /html/body/div/div[7]/div/div/div[6]/a ; class = pageNumbersNew
-
-    # APPEND THE DICTIONARY CONTENTS TO LIST
-    LIST.append([post_time, title, age, description])
-    time.sleep(1)
+        # APPEND CONTENTS TO LIST
+        # LIST.append([post_time, title, age, description])
+        time.sleep(1)
 
 # EXPORT TO EXCEL FILE
 columns = ('time', 'title', 'age', 'description')
 df = pd.DataFrame(LIST, columns=columns)
 
-df.to_excel(f'megapersonals({timestamp}).xlsx', index=False)
-print(f'megapersonals({timestamp}).xlsx exported.')
+df.to_excel(f'megapersonals({timestamps}).xlsx', index=False)
+print(f'megapersonals({timestamps}).xlsx exported.')
 # CLOSE WEBDRIVER
 driver.close()
