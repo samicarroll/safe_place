@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup  # pip install beautifulsoup4
 import pandas as pd  # pip install pandas
 import openpyxl  # pip install openpyxl - writes to excel
 
+# CODE NO LONGER WORKS - CRAIGSLIST HTML WAS UPDATED. 
 # scrapes ads from craigslist fort myers - currently searches
 # home/rooming section of craigslist
 
