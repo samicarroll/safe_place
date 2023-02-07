@@ -18,8 +18,8 @@ packages needed can be installed in the terminal
 ***beautifulsoup4:*** 
 > pip install beautifulsoup4
 
-***bs4:***
-> pip install bs4
+***Selenium:***
+> pip install selenium
 
 ***requests:***
 > pip install requests
