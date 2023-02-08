@@ -73,9 +73,29 @@ for lists in container:
         # time.sleep(5)
         # phone_number = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > div.fromLeft.post_preview_phone > span > a').text
         # time.sleep(5)
-        S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
-        driver.set_window_size(S('Width'), S('Height'))
+
+
+        # Get the total height of the body of the page
+        total_height = driver.execute_script("return document.body.scrollHeight")
+
+        # Get the height of the viewable part of the page
+        viewport_height = driver.execute_script("return window.innerHeight")
+
+        # Calculate the number of times we need to scroll down
+        scrolls = total_height / viewport_height
+
         driver.get_screenshot_as_file(f"megapersonals({timestamps}).png")
+        # Scroll down and take screenshots of each view
+        for i in range(int(scrolls)):
+            # Scroll down
+            filename = "screenshot_0.png"
+            driver.save_screenshot(filename)
+            driver.execute_script("window.scrollBy(0, arguments[0])", viewport_height)
+            time.sleep(1)
+
+            # Take screenshot
+            filename = "screenshot_" + str(i) + ".png"
+            driver.save_screenshot(filename)
 
         # APPEND CONTENTS TO LIST
         # LIST.append([post_time, title, age, description])
