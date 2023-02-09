@@ -46,6 +46,15 @@ women_seeking_male = driver.find_element(By.XPATH, '//*[@id="megapCategoriesOran
 driver.execute_script("arguments[0].click();", women_seeking_male)
 driver.implicitly_wait(5)
 
+# Key word List
+keyword = [
+    "no cops",
+    "Woman",
+    "Young",
+    "Escort",
+    "Phone Number"   
+]
+
 # LOOP THROUGH LISTINGS AND PULL DESIRED INFORMATION
 container = driver.find_elements(By.ID, 'list')
 for lists in container:
