@@ -84,8 +84,7 @@ for lists in container:
 
         # Calculate the number of times we need to scroll down
         scrolls = total_height / viewport_height
-
-        driver.get_screenshot_as_file(f"megapersonals({timestamps}).png")
+        
         # Scroll down and take screenshots of each view
         for i in range(int(scrolls)):
             # Scroll down
@@ -100,37 +99,6 @@ for lists in container:
 
         # APPEND CONTENTS TO LIST
         # LIST.append([post_time, title, age, description])
-=======
-gallery = driver.find_elements(By.ID, 'list')
-for posts in gallery:
-
-    listings = driver.find_elements(By.CLASS_NAME, 'listadd')
-    for listing in listings:
-        post_time = listing.find_element(By.CLASS_NAME, 'gallerylistdate1').text
-
-        # TODO: DEBUG REPEATING TITLE ENTRIES
-        # FIXME: DUPLICATE TITLE ENTRIES
-        # XPATH MAY NOT BE EFFICIENT - XPATH UNIQUE TO POST
-        title = listing.find_element(By.XPATH, '//*[@id="list"]/div[2]/div[3]/a')
-
-        age = listing.find_element(By.CLASS_NAME, 'titleAge').text
-
-        description = listing.find_element(By.CLASS_NAME, 'listbody').text
-
-        # TODO: DEBUG URL NOT EXPORTING
-        # FIXME: URL NOT EXPORTING
-        # XPATH MAY NOT BE EFFICIENT FOR PULLING - XPATH UNIQUE TO POST
-        listing_url = listing.find_element(By.XPATH, '//*[@id="list"]/div[2]/div[3]/a').text
-        print(listing_url)
-
-        driver.get_screenshot_as_file(f"megapersonals({timestamp}).png")
-        # phone_number = listing.find_element(By.XPATH, './html/body/div/div[6]/div[1]/span/a').text
-        # page numbers - /html/body/div/div[7]/div/div/div[6]/a ; /html/body/div/div[7]/div/div/div[6]/a ; class = pageNumbersNew
-
-        # APPEND THE DICTIONARY CONTENTS TO LIST
-        LIST.append([post_time, title, age, description])
->>>>>>> Stashed changes
-        time.sleep(1)
 
 # EXPORT TO EXCEL FILE
 columns = ('time', 'title', 'age', 'description')
