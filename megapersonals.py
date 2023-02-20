@@ -13,14 +13,14 @@ from selenium.webdriver.chrome.options import Options
 LIST = []
 url = 'https://megapersonals.eu/'
 
-# SET UP HEADLESS PAGE 
+# SET UP HEADLESS PAGE
 options = webdriver.ChromeOptions()
 options.add_argument("--headless=new")
 driver = webdriver.Chrome(options=options)
 driver.get(url)
 timestamps = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
 
-# DICT FOR KEYWORDS
+# list FOR KEYWORDS
 keywords = [
     "no cops",
     "woman",
@@ -33,6 +33,7 @@ keywords = [
     "law enforcement",
     "discreet location"
 ]
+
 
 # WAIT FOR ELEMENTS
 wait = WebDriverWait(driver, 10)
@@ -78,7 +79,13 @@ for posts in container:
             counter = 0
             driver.get(links[counter])
             counter += 1
-            
+
+            #check if keyword is in the page source
+            for keyword in keywords:
+                if keyword in driver.page_source:
+                    screenshot_name = f"megapersonals_{counter}_keyword_{keyword.replace(' ', '_')}.png"
+                    driver.save_screenshot(screenshot_name)
+
             # SCREENSHOT LISTING
             S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
             driver.set_window_size(S('Width'), S('Height'))
