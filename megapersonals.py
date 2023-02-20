@@ -81,7 +81,7 @@ for posts in container:
             driver.get(links[counter])
             counter += 1
 
-            #check if keyword is in the page source and takes screenshot with the keyword found
+            # check if keyword is in the page source and takes screenshot with the keyword found
             for keyword in keywords:
                 if keyword in driver.page_source:
                     screenshot_name = f"megapersonals_{counter}_keyword_{keyword.replace(' ', '_')}.png"
