@@ -79,7 +79,7 @@ for posts in container:
             driver.get(links[counter])
             counter += 1
             
-
+            # SCREENSHOT LISTING
             S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
             driver.set_window_size(S('Width'), S('Height'))
             driver.get_screenshot_as_file(f"megapersonals_{counter}.png")
