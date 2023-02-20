@@ -76,6 +76,7 @@ for posts in container:
         links.append(post.find_element(By.TAG_NAME, 'a').get_attribute('href'))
 
         for listing in listings:
+            # FIXME: COUNTER STAYING AT 1 
             counter = 0
             driver.get(links[counter])
             counter += 1
