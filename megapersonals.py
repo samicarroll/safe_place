@@ -11,14 +11,31 @@ from selenium.webdriver.chrome.options import Options
 
 # SET UP LIST AND WEBDRIVER - CONNECT SELENIUM TO WEB URL
 LIST = []
-url = 'https://megapersonals.eu/public/post_list/234/1/1/meetup'
-driver = webdriver.Chrome()
+url = 'https://megapersonals.eu/'
+
+# SET UP HEADLESS PAGE 
+options = webdriver.ChromeOptions()
+options.add_argument("--headless=new")
+driver = webdriver.Chrome(options=options)
 driver.get(url)
 timestamps = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
 
+# DICT FOR KEYWORDS
+keywords = [
+    "no cops",
+    "woman",
+    "escort",
+    "young",
+    "phone number",
+    "no police",
+    "police",
+    "cops",
+    "law enforcement",
+    "discreet location"
+]
+
 # WAIT FOR ELEMENTS
 wait = WebDriverWait(driver, 10)
-
 # CLICKING AGREEMENTS AND PREFERENCES:
 # CLICK AGE AGREEMENT BUTTON
 click = driver.find_element("id", 'ageagree')
@@ -46,69 +63,38 @@ women_seeking_male = driver.find_element(By.XPATH, '//*[@id="megapCategoriesOran
 driver.execute_script("arguments[0].click();", women_seeking_male)
 driver.implicitly_wait(5)
 
-# Key word List
-keyword = [
-    "no cops",
-    "Woman",
-    "Young",
-    "Escort",
-    "Phone Number"   
-]
-
 # LOOP THROUGH LISTINGS AND PULL DESIRED INFORMATION
 container = driver.find_elements(By.ID, 'list')
-for lists in container:
+for posts in container:
+    # HOLDS LINKS
+    links = []
     listings = driver.find_elements(By.CLASS_NAME, 'listadd')
 
-    links = []
-    for link in listings:
-        links.append(link.find_element(By.TAG_NAME, 'a').get_attribute('href'))
-        print(link.text)
+    # ENTERS EACH LISTING TO PULL INFORMATION
+    for post in listings:
+        links.append(post.find_element(By.TAG_NAME, 'a').get_attribute('href'))
 
-    counter = 0
-    for listing in listings:
-        print(links[0])
-        driver.get(links[counter])
-        counter += 1
+        for listing in listings:
+            counter = 0
+            driver.get(links[counter])
+            counter += 1
+            
 
-        time.sleep(5)
-        # post_time = listing.find_element(By.CLASS_NAME, 'post_preview_date_time').text
-        # time.sleep(5)
-        # title = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_title').text
-        # time.sleep(5)
-        # age = listing.find_element(By.CSS_SELECTOR, 'body > div > div.isee-age > div.post_preview_age').text
-        # time.sleep(5)
-        # description = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > span').text
-        # time.sleep(5)
-        # phone_number = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > div.fromLeft.post_preview_phone > span > a').text
-        # time.sleep(5)
-
-
-        # Get the total height of the body of the page
-        total_height = driver.execute_script("return document.body.scrollHeight")
-
-        # Get the height of the viewable part of the page
-        viewport_height = driver.execute_script("return window.innerHeight")
-
-        # Calculate the number of times we need to scroll down
-        scrolls = total_height / viewport_height
-
-        driver.get_screenshot_as_file(f"megapersonals({timestamps}).png")
-        # Scroll down and take screenshots of each view
-        for i in range(int(scrolls)):
-            # Scroll down
-            filename = "screenshot_0.png"
-            driver.save_screenshot(filename)
-            driver.execute_script("window.scrollBy(0, arguments[0])", viewport_height)
-            time.sleep(1)
-
-            # Take screenshot
-            filename = "screenshot_" + str(i) + ".png"
-            driver.save_screenshot(filename)
-
-        # APPEND CONTENTS TO LIST
-        # LIST.append([post_time, title, age, description])
-        time.sleep(1)
+            S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
+            driver.set_window_size(S('Width'), S('Height'))
+            driver.get_screenshot_as_file(f"megapersonals_{counter}.png")
+            # post_time = listing.find_element(By.CLASS_NAME, 'post_preview_date_time').text
+            # time.sleep(5)
+            # title = wait.until(EC.visibility_of_element_located(By.CLASS_NAME('post_preview_title'))).text
+            # time.sleep(5)
+            # age = listing.find_element(By.CSS_SELECTOR, 'body > div > div.isee-age > div.post_preview_age').text
+            # time.sleep(5)
+            # description = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > span').text
+            # time.sleep(5)
+            # phone_number = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > div.fromLeft.post_preview_phone > span > a').text
+            # time.sleep(5)
+            # APPEND CONTENTS TO LIST
+            # LIST.append([post_time, title, age, description])
 
 # EXPORT TO EXCEL FILE
 columns = ('time', 'title', 'age', 'description')
