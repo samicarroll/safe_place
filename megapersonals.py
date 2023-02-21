@@ -15,13 +15,14 @@ LIST = []
 url = 'https://megapersonals.eu/'
 
 # SET UP HEADLESS PAGE
-options = webdriver.ChromeOptions()
-options.add_argument("--headless=new")
-driver = webdriver.Chrome(options=options)
+# options = webdriver.ChromeOptions()
+# options.add_argument("--headless=new")
+# driver = webdriver.Chrome(options=options)
+driver = webdriver.Chrome()  # TODO: USED IN TESTING - DELETE BEFORE DEPLOYMENT
 driver.get(url)
 timestamps = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
 
-# list FOR KEYWORDS
+# LIST FOR KEYWORDS
 keywords = [
     "no cops",
     "woman",
@@ -38,14 +39,13 @@ keywords = [
     "e$cort",
 ]
 
-
 # WAIT FOR ELEMENTS
 wait = WebDriverWait(driver, 10)
 # CLICKING AGREEMENTS AND PREFERENCES:
 # CLICK AGE AGREEMENT BUTTON
 click = driver.find_element("id", 'ageagree')
 driver.execute_script("arguments[0].click();", click)
-print("page title is:", driver.title)
+print("page title is:", driver.title)  # TODO: TEST PRINT - REMOVE BEFORE DEPLOYMENT
 driver.implicitly_wait(5)
 
 # CLICK UNITED STATES
@@ -62,56 +62,57 @@ driver.implicitly_wait(5)
 fort_myers = driver.find_element(By.XPATH, '//*[@id="choseCityContainer"]/div[3]/article/div[10]/article/p[3]/a')
 driver.execute_script("arguments[0].click();", fort_myers)
 driver.implicitly_wait(5)
-
 # CLICK WOMEN SEARCHING MALE
 women_seeking_male = driver.find_element(By.XPATH, '//*[@id="megapCategoriesOrangeButton"]/a')
 driver.execute_script("arguments[0].click();", women_seeking_male)
-driver.implicitly_wait(5)
+time.sleep(5)
 
 # LOOP THROUGH LISTINGS AND PULL DESIRED INFORMATION
-container = driver.find_elements(By.ID, 'list')
-for posts in container:
-    # HOLDS LINKS
-    links = []
-    listings = driver.find_elements(By.CLASS_NAME, 'listadd')
+# container = driver.find_elements(By.ID, 'list')
+# for posts in container:
 
-    # ENTERS EACH LISTING TO PULL INFORMATION
-    for post in listings:
-        ad = driver.find_elements(By.CLASS_NAME, 'listcontent')
-        for listing in listings:
-            # BYPASS STALE ELEMENT
-            try:
-                links.append(post.find_element(By.TAG_NAME, 'a').get_attribute('href'))
-            except StaleElementReferenceException:
-                pass
-            counter = 0
-            # FIXME: ONLY GRABBING THE FIRST LINK
-            driver.get(links[counter])
-            for ads in ad:
-                counter += 1
-                # check if keyword is in the page source and takes screenshot with the keyword found
-                for keyword in keywords:
-                    if keyword in driver.page_source:
-                        print(links)
-                        screenshot_name = f"megapersonals_{counter}_keyword_{keyword.replace(' ', '_')}.png"
-                        driver.save_screenshot(screenshot_name)
+# HOLDS LINKS
+listings = driver.find_elements(By.CLASS_NAME, 'listadd')
+# ENTERS EACH LISTING TO PULL INFORMATION
+# for post in listings:
+links = []
+for listing in listings:
+    # BYPASS STALE ELEMENT
+    try:
+        urls = listing.find_element(By.TAG_NAME, 'a').get_attribute('href')
+    except StaleElementReferenceException:
+        pass
+    # counter = 0
+    # FIXME: ONLY GRABBING THE FIRST LINK
+    links.append(urls)
 
-                # SET SCREENSHOT SIZE
-                S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
-                driver.set_window_size(S('Width'), S('Height'))
+counter = 0
+for urls in links:
+    driver.get(links[counter])
+    counter += 1
+    # check if keyword is in the page source and takes screenshot with the keyword found
+    for keyword in keywords:
+        if keyword in driver.page_source:
+            print(links)  # TODO: TEST PRINT REMOVE BEFORE DEPLOYMENT
+            screenshot_name = f"megapersonals_{counter}_keyword_{keyword.replace(' ', '_')}.png"
+            driver.save_screenshot(screenshot_name)
 
-            # post_time = listing.find_element(By.CLASS_NAME, 'post_preview_date_time').text
-            # time.sleep(5)
-            # title = wait.until(EC.visibility_of_element_located(By.CLASS_NAME('post_preview_title'))).text
-            # time.sleep(5)
-            # age = listing.find_element(By.CSS_SELECTOR, 'body > div > div.isee-age > div.post_preview_age').text
-            # time.sleep(5)
-            # description = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > span').text
-            # time.sleep(5)
-            # phone_number = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > div.fromLeft.post_preview_phone > span > a').text
-            # time.sleep(5)
-            # APPEND CONTENTS TO LIST
-            # LIST.append([post_time, title, age, description])
+        # SET SCREENSHOT SIZE
+    S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
+    driver.set_window_size(S('Width'), S('Height'))
+
+    # post_time = listing.find_element(By.CLASS_NAME, 'post_preview_date_time').text
+    # time.sleep(5)
+    # title = wait.until(EC.visibility_of_element_located(By.CLASS_NAME('post_preview_title'))).text
+    # time.sleep(5)
+    # age = listing.find_element(By.CSS_SELECTOR, 'body > div > div.isee-age > div.post_preview_age').text
+    # time.sleep(5)
+    # description = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > span').text
+    # time.sleep(5)
+    # phone_number = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > div.fromLeft.post_preview_phone > span > a').text
+    # time.sleep(5)
+    # APPEND CONTENTS TO LIST
+    # LIST.append([post_time, title, age, description])
 
 # EXPORT TO EXCEL FILE
 columns = ('time', 'title', 'age', 'description')
