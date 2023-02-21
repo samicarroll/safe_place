@@ -1,6 +1,7 @@
 import datetime
 import time
 from selenium import webdriver
+from selenium.common import StaleElementReferenceException
 from selenium.webdriver.common.by import By
 import pandas as pd
 
@@ -11,14 +12,35 @@ from selenium.webdriver.chrome.options import Options
 
 # SET UP LIST AND WEBDRIVER - CONNECT SELENIUM TO WEB URL
 LIST = []
-url = 'https://megapersonals.eu/public/post_list/234/1/1/meetup'
-driver = webdriver.Chrome()
+url = 'https://megapersonals.eu/'
+
+# SET UP HEADLESS PAGE
+options = webdriver.ChromeOptions()
+options.add_argument("--headless=new")
+driver = webdriver.Chrome(options=options)
 driver.get(url)
 timestamps = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
 
+# list FOR KEYWORDS
+keywords = [
+    "no cops",
+    "woman",
+    "escort",
+    "young",
+    "phone number",
+    "no police",
+    "police",
+    "cops",
+    "law enforcement",
+    "discreet location",
+    "snap chat",
+    "snapchat",
+    "e$cort",
+]
+
+
 # WAIT FOR ELEMENTS
 wait = WebDriverWait(driver, 10)
-
 # CLICKING AGREEMENTS AND PREFERENCES:
 # CLICK AGE AGREEMENT BUTTON
 click = driver.find_element("id", 'ageagree')
@@ -47,58 +69,49 @@ driver.execute_script("arguments[0].click();", women_seeking_male)
 driver.implicitly_wait(5)
 
 # LOOP THROUGH LISTINGS AND PULL DESIRED INFORMATION
-<<<<<<< Updated upstream
 container = driver.find_elements(By.ID, 'list')
-for lists in container:
+for posts in container:
+    # HOLDS LINKS
+    links = []
     listings = driver.find_elements(By.CLASS_NAME, 'listadd')
 
-    links = []
-    for link in listings:
-        links.append(link.find_element(By.TAG_NAME, 'a').get_attribute('href'))
-        print(link.text)
+    # ENTERS EACH LISTING TO PULL INFORMATION
+    for post in listings:
+        ad = driver.find_elements(By.CLASS_NAME, 'listcontent')
+        for listing in listings:
+            # BYPASS STALE ELEMENT
+            try:
+                links.append(post.find_element(By.TAG_NAME, 'a').get_attribute('href'))
+            except StaleElementReferenceException:
+                pass
+            counter = 0
+            # FIXME: ONLY GRABBING THE FIRST LINK
+            driver.get(links[counter])
+            for ads in ad:
+                counter += 1
+                # check if keyword is in the page source and takes screenshot with the keyword found
+                for keyword in keywords:
+                    if keyword in driver.page_source:
+                        print(links)
+                        screenshot_name = f"megapersonals_{counter}_keyword_{keyword.replace(' ', '_')}.png"
+                        driver.save_screenshot(screenshot_name)
 
-    counter = 0
-    for listing in listings:
-        print(links[0])
-        driver.get(links[counter])
-        counter += 1
+                # SET SCREENSHOT SIZE
+                S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
+                driver.set_window_size(S('Width'), S('Height'))
 
-        time.sleep(5)
-        # post_time = listing.find_element(By.CLASS_NAME, 'post_preview_date_time').text
-        # time.sleep(5)
-        # title = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_title').text
-        # time.sleep(5)
-        # age = listing.find_element(By.CSS_SELECTOR, 'body > div > div.isee-age > div.post_preview_age').text
-        # time.sleep(5)
-        # description = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > span').text
-        # time.sleep(5)
-        # phone_number = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > div.fromLeft.post_preview_phone > span > a').text
-        # time.sleep(5)
-
-
-        # Get the total height of the body of the page
-        total_height = driver.execute_script("return document.body.scrollHeight")
-
-        # Get the height of the viewable part of the page
-        viewport_height = driver.execute_script("return window.innerHeight")
-
-        # Calculate the number of times we need to scroll down
-        scrolls = total_height / viewport_height
-        
-        # Scroll down and take screenshots of each view
-        for i in range(int(scrolls)):
-            # Scroll down
-            filename = "screenshot_0.png"
-            driver.save_screenshot(filename)
-            driver.execute_script("window.scrollBy(0, arguments[0])", viewport_height)
-            time.sleep(1)
-
-            # Take screenshot
-            filename = "screenshot_" + str(i) + ".png"
-            driver.save_screenshot(filename)
-
-        # APPEND CONTENTS TO LIST
-        # LIST.append([post_time, title, age, description])
+            # post_time = listing.find_element(By.CLASS_NAME, 'post_preview_date_time').text
+            # time.sleep(5)
+            # title = wait.until(EC.visibility_of_element_located(By.CLASS_NAME('post_preview_title'))).text
+            # time.sleep(5)
+            # age = listing.find_element(By.CSS_SELECTOR, 'body > div > div.isee-age > div.post_preview_age').text
+            # time.sleep(5)
+            # description = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > span').text
+            # time.sleep(5)
+            # phone_number = listing.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > div.fromLeft.post_preview_phone > span > a').text
+            # time.sleep(5)
+            # APPEND CONTENTS TO LIST
+            # LIST.append([post_time, title, age, description])
 
 # EXPORT TO EXCEL FILE
 columns = ('time', 'title', 'age', 'description')
