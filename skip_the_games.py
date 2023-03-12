@@ -11,6 +11,7 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+#creates time and date for the screenshot
 timestamps = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
 url = 'https://skipthegames.com/'
 driver = undetected_chromedriver.Chrome()
@@ -33,11 +34,14 @@ identification.select_by_value('men')
 
 # LOOKING FOR: ESCORT,
 category = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'input_search_category'))))
-category.select_by_value('female-escorts')
+category.select_by_value('ts-escorts')
 
 # ENTERING FORT MYERS IN CITY TODO: page refresh before able to insert the location
-location = wait.until(EC.element_to_be_clickable((By.NAME, 'input_search_location')))
-driver.execute_script("arguments[0].value = 'Fort Myers';", location)
+# IT auto-completes and then it can be clicked
+#location = wait.until(EC.element_to_be_clickable((By.ID, 'input_search_location')))
+#driver.execute_script("arguments[0].value = 'Fort Myers, FL'", location)
+location = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'input_text.txt1.ui-autocomplete-input')))
+driver.execute_script("arguments[0].value = 'Fort Myers, FL';", location)
 
 # ENTER KEYWORDS
 keywords = wait.until(EC.element_to_be_clickable((By.NAME, 'input_search_optional_keywords')))
@@ -47,7 +51,7 @@ driver.execute_script("arguments[0].value = 'blonde';", keywords)
 wait.until(EC.element_to_be_clickable((By.ID, 'search_button'))).click()
 #location.send_keys(Keys.ENTER)  # search location
 
-# wait.until(EC.element_to_be_clickable((By.ID, 'search_button'))).click()
+wait.until(EC.element_to_be_clickable((By.ID, 'search_button'))).click()
 
 gallery = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.clsfds-display-mode.gallery')))
 for ads in gallery:
@@ -64,7 +68,8 @@ for ads in gallery:
 
         age = post.find_element(By.CLASS_NAME, 'ad_display_h3_age').get_attribute('innerHTML')
         print(age)
-
+        #screenshot
         driver.get_screenshot_as_file(f"skipthegames({timestamps}).png")
 
 driver.close()
+
