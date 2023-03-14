@@ -1,16 +1,12 @@
 import datetime
 import time
+import pandas as pd
+
 from selenium import webdriver
 from selenium.common import StaleElementReferenceException
 from selenium.webdriver.common.by import By
-import pandas as pd
 
-from selenium.webdriver.support.select import Select
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.chrome.options import Options
-
-# SET UP LIST AND WEBDRIVER - CONNECT SELENIUM TO WEB URL
+# SET UP LIST AND MEGAPERSONALS URL
 LIST = []
 url = 'https://megapersonals.eu/'
 
@@ -19,9 +15,11 @@ options = webdriver.ChromeOptions()
 options.add_argument("--headless=new")
 driver = webdriver.Chrome(options=options)
 
-driver = webdriver.Chrome()  # TODO: USED IN TESTING - DELETE BEFORE DEPLOYMENT
+# CONNECT SELENIUM TO WEB URL
 driver.get(url)
-timestamps = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
+
+# DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS
+timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
 
 # LIST FOR KEYWORDS
 keywords = [
@@ -40,29 +38,26 @@ keywords = [
     "e$cort",
 ]
 
-# WAIT FOR ELEMENTS
-wait = WebDriverWait(driver, 10)
 # CLICKING AGREEMENTS AND PREFERENCES:
 # CLICK AGE AGREEMENT BUTTON
 click = driver.find_element("id", 'ageagree')
 driver.execute_script("arguments[0].click();", click)
-print("page title is:", driver.title)  # TODO: TEST PRINT - REMOVE BEFORE DEPLOYMENT
-driver.implicitly_wait(5)
+time.sleep(5)
 
 # CLICK UNITED STATES
 us = driver.find_element("id", "ac-United States")
 driver.execute_script("arguments[0].click();", us)
-driver.implicitly_wait(5)
+time.sleep(5)
 
 # CLICK FLORIDA
 fl = driver.find_element("id", "ac-Florida")
 driver.execute_script("arguments[0].click();", fl)
-driver.implicitly_wait(5)
+time.sleep(5)
 
 # CLICK FORT MYERS
 fort_myers = driver.find_element(By.XPATH, '//*[@id="choseCityContainer"]/div[3]/article/div[10]/article/p[3]/a')
 driver.execute_script("arguments[0].click();", fort_myers)
-driver.implicitly_wait(5)
+time.sleep(5)
 
 # CLICK WOMEN SEARCHING MALE
 women_seeking_male = driver.find_element(By.XPATH, '//*[@id="megapCategoriesOrangeButton"]/a')
@@ -71,43 +66,59 @@ time.sleep(5)
 
 # LOOP THROUGH LISTINGS AND PULL DESIRED INFORMATION
 listings = driver.find_elements(By.CLASS_NAME, 'listadd')
+
 # HOLDS LINKS
 links = []
+container = driver.find_elements(By.ID, "list")
 # PULLS URLS FROM EACH LISTING
-for listing in listings:
-    # BYPASS STALE ELEMENT
-    try:
-        urls = listing.find_element(By.TAG_NAME, 'a').get_attribute('href')
-    except StaleElementReferenceException:
-        pass
-    # TODO: ADD FUNCTION TO CLICK NEXT PAGE BUTTON
-    links.append(urls)
+# FIXME: FOR LOOP DOES NOT ACCESS NESTED FOR LOOP ON PAGE 2
+# GRABS 33 URLS FROM PAGE ONE, GOES TO PAGE 2 AND BEGINS GRABBING
+# INFORMATION FROM URLS IN LIST RATHER THAN THE URLS ON PAGE 2.
+for ads in container:
+    for listing in listings:
+        # BYPASS STALE ELEMENT
+        try:
+            urls = listing.find_element(By.TAG_NAME, 'a').get_attribute('href')
+        except StaleElementReferenceException:
+            pass
+        # SAVES URLS TO LIST "LINKS" - DECLARED ON LINE 76
+        links.append(urls)
+        time.sleep(2)
+    # CLICK THE NEXT PAGE - GOES THROUGH FOR LOOP TO GRAB LINKS ON ALL PAGES
+    next_page = driver.find_element("id", "paginationNext")
+    driver.execute_script("arguments[0].click();", next_page)
+
+# COUNTS THROUGH URLS IN LIST
 counter = 0
 
 for urls in links:
+    # SETS COUNTER TO LINKS
     driver.get(links[counter])
+    # INCREMENTS COUNTER AFTER APPENDS INFO FROM AD
     counter += 1
 
-
-    # check if keyword is in the page source and takes screenshot with the keyword found
+    # GRAB AD DESCRIPTION
+    description = driver.find_element(By.CLASS_NAME, 'postbody').text
+    time.sleep(2)
+    # CHECKS IF KEYWORD IS IN DESCRIPTION - IF KEYWORD IS PRESENT, APPENDS DATA
     for keyword in keywords:
-        if keyword in driver.page_source:
-            # INCLUDES POST TIME
-            title = driver.find_element(By.CLASS_NAME, 'post_preview_title').text
-            time.sleep(5)
-            print(title)
+        if keyword in description:
+            page_url = driver.current_url
+            time.sleep(2)
 
-            age = driver.find_element(By.CLASS_NAME, 'post_preview_age').text
-            time.sleep(5)
-            print(age)
+            title = driver.find_element(By.CLASS_NAME, 'post_preview_title').text
+            time.sleep(2)
 
             description = driver.find_element(By.CLASS_NAME, 'postbody').text
-            time.sleep(5)
-            print(description)
+            time.sleep(2)
 
-            phone_number = driver.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > div.fromLeft.post_preview_phone > span > a').get_attribute("innerHTML")
-            time.sleep(5)
-            print(phone_number)
+            age = driver.find_element(By.CLASS_NAME, 'post_preview_age').text
+            time.sleep(2)
+
+            phone_number = driver.find_element(By.CSS_SELECTOR,
+                                               'body > div > div.post_preview_body > div.fromLeft.post_preview_phone > span > a').get_attribute(
+                "innerHTML")
+            time.sleep(2)
 
             # APPEND CONTENTS TO LIST
             LIST.append([title, age, description, phone_number])
@@ -115,18 +126,18 @@ for urls in links:
             # SCREENSHOT LISTING
             screenshot_name = f"megapersonals_{counter}_keyword_{keyword.replace(' ', '_')}.png"
             driver.save_screenshot(screenshot_name)
-            screenshot = True
 
         # SET SCREENSHOT SIZE
         S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
         driver.set_window_size(S('Width'), S('Height'))
 
-
-# EXPORT TO EXCEL FILE
+# SET UP COLUMNS FOR EXCEL FILE
 columns = ('title', 'age', 'description', 'phone number')
 df = pd.DataFrame(LIST, columns=columns)
 
+# EXPORT TO EXCEL FILE
 df.to_excel(f'megapersonals({timestamps}).xlsx', index=False)
 print(f'megapersonals({timestamps}).xlsx exported.')
+
 # CLOSE WEBDRIVER
 driver.close()
