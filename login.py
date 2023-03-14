@@ -26,22 +26,30 @@ def login():
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
+    results = []  # Initialize with empty list
     if request.method == "POST":
-        selected_websites = request.form.get("websites")
-        results = None
-        if selected_websites == "megapersonals":
-            results = megapersonals.scrap()
-        elif selected_websites == "skip_the_games":
-            results = skip_the_games.scrap()
-        elif selected_websites == "craigslist":
-            results = craigslist.scrap()
-        elif selected_websites == "all":
-            results = megapersonals.scrap() + skip_the_games.scrap() + craigslist.scrap()
+        selected_websites = request.form.getlist("websites")
+        if "megapersonals" in selected_websites:
+            from templates import megapersonals
+            results.extend(megapersonals.scrap())
+        if "skip_the_games" in selected_websites:
+            from templates import skip_the_games
+            results.extend(skip_the_games.scrap())
+        if "craigslist" in selected_websites:
+            from templates import craigslist
+            results.extend(craigslist.scrap())
+        if "all" in selected_websites:
+            from templates import megapersonals
+            from templates import skip_the_games
+            from templates import craigslist
+            results.extend(megapersonals.scrap())
+            results.extend(skip_the_games.scrap())
+            results.extend(craigslist.scrap())
 
     return render_template("search.html", results=results)
 
 
-@app.route('/megapersonals')
+@app.route('/mega-personals')
 def megapersonals():
     if 'username' in session:
         return render_template('megapersonals.html')
@@ -75,4 +83,4 @@ def scraper():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5000)
