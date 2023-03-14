@@ -49,4 +49,22 @@ button[type="cancel"] {
   cursor: pointer;
 }
 
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 
+h1 {
+  font-size: 2em;
+}
+
+table {
+  font-size: 1.2em;
+}
+
+th, td {
+  padding: 0.5em;
+  text-align: center;
+}
