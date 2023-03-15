@@ -11,10 +11,10 @@ LIST = []
 url = 'https://megapersonals.eu/'
 
 # SET UP HEADLESS PAGE
-options = webdriver.ChromeOptions()
-options.add_argument("--headless=new")
-driver = webdriver.Chrome(options=options)
-
+# options = webdriver.ChromeOptions()
+# options.add_argument("--headless=new")
+# driver = webdriver.Chrome(options=options)
+driver = webdriver.Chrome()
 # CONNECT SELENIUM TO WEB URL
 driver.get(url)
 
@@ -29,13 +29,12 @@ keywords = [
     "young",
     "phone number",
     "no police",
-    "police",
-    "cops",
     "law enforcement",
     "discreet location",
     "snap chat",
     "snapchat",
     "e$cort",
+    "baby"
 ]
 
 # CLICKING AGREEMENTS AND PREFERENCES:
@@ -69,12 +68,10 @@ listings = driver.find_elements(By.CLASS_NAME, 'listadd')
 
 # HOLDS LINKS
 links = []
-container = driver.find_elements(By.ID, "list")
+# GRABS NEW PAGES
+pages = driver.find_elements(By.CLASS_NAME, "pageNumbersNew")
 # PULLS URLS FROM EACH LISTING
-# FIXME: FOR LOOP DOES NOT ACCESS NESTED FOR LOOP ON PAGE 2
-# GRABS 33 URLS FROM PAGE ONE, GOES TO PAGE 2 AND BEGINS GRABBING
-# INFORMATION FROM URLS IN LIST RATHER THAN THE URLS ON PAGE 2.
-for ads in container:
+for page in pages:
     for listing in listings:
         # BYPASS STALE ELEMENT
         try:
@@ -83,7 +80,7 @@ for ads in container:
             pass
         # SAVES URLS TO LIST "LINKS" - DECLARED ON LINE 76
         links.append(urls)
-        time.sleep(2)
+        time.sleep(5)
     # CLICK THE NEXT PAGE - GOES THROUGH FOR LOOP TO GRAB LINKS ON ALL PAGES
     next_page = driver.find_element("id", "paginationNext")
     driver.execute_script("arguments[0].click();", next_page)
