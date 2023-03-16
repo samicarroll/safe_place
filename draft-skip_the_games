@@ -65,28 +65,21 @@ driver.implicitly_wait(10)
 # keywords = driver.find_element(By.NAME, 'input_search_optional_keywords')
 # keywords.send_keys('blonde')
 
-# SEARCH LOCATION AND KEYWORDS
-# keywords.send_keys(Keys.ENTER)  # search location
-
-# wait.until(EC.element_to_be_clickable((By.ID, 'search_button'))).click()
-# FAST RESULTS 
+# FAST RESULTS
 fast_results = driver.find_element(By.ID, 'radio_clsfd_display_mode_single')
-driver.execute_script("arguments[0].click();", cookie)
+driver.execute_script("arguments[0].click();", fast_results)
 driver.implicitly_wait(10)
 
-category = Select(driver.find_element(By.ID, 'radio_clsfd_display_mode_single'))
-category.select_by_value('female-escorts')
-driver.implicitly_wait(10)
 links = []
 listings = driver.find_elements(By.TAG_NAME, 'tr')
 for listing in listings:
     # BYPASS STALE ELEMENT
     try:
-        urls = listing.find_element(By.TAG_NAME, 'a').get_attribute('href')
+        pageLink = listing.find_element(By.TAG_NAME, 'a').get_attribute('href')
     except StaleElementReferenceException:
         pass
     # SAVES URLS TO LIST "LINKS" - DECLARED ON LINE 76
-    links.append(urls)
+    links.append(pageLink)
     time.sleep(5)
 counter = 0
 
