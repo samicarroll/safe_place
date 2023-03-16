@@ -1,15 +1,9 @@
 import datetime
 import time
-
-import self as self
-# import pandas as pd
 import undetected_chromedriver
 
-from selenium.common import StaleElementReferenceException
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 import ssl
@@ -70,31 +64,22 @@ category = Select(driver.find_element(By.NAME, 'input_search_category'))
 category.select_by_value('female-escorts')
 driver.implicitly_wait(10)
 
-# ENTER KEYWORDS
-# keywords = driver.find_element(By.NAME, 'input_search_optional_keywords')
-# keywords.send_keys('blonde')
 
-# # FAST RESULTS
-# fast_results = driver.find_element(By.ID, 'radio_clsfd_display_mode_single')
-# driver.execute_script("arguments[0].click();", fast_results)
-# driver.implicitly_wait(10)
-
-links = []
 driver.refresh()
 posts = driver.find_elements(By.CSS_SELECTOR, 'html.no-js body div table.two-col-wrap tbody tr '
                              'td#gallery_view.listings-with-sidebar.list-search-results.gallery div.full-width '
                              'div.small-16.columns div.clsfds-display-mode.gallery div.day-gallery [href]')
-links = [post.get_attribute('href') for post in posts]
-print([link for link in set(links)])
+dupLinks = [post.get_attribute('href') for post in posts]
+# REMOVES DUPLICATE LINKS WITH SET
+links = [*set(dupLinks)]
 counter = 0
-for urls in set(links):
+for urls in links:
     driver.get(links[counter])
     counter += 1
-    
-# TODO: DRIVER SCREENSHOTS DUPLICATES
-    # SCREENSHOT LISTING
-    screenshot_name = f"skipthegames_{[counter]}.png"
-    driver.save_screenshot(screenshot_name)
+
+    title = driver.find_element(By.CLASS_NAME, 'post-title').text
+    print(title)
+
 
 # SET SCREENSHOT SIZE
 S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
