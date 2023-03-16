@@ -1,5 +1,7 @@
 import datetime
 import time
+
+import pandas as pd
 import undetected_chromedriver
 
 from selenium import webdriver
@@ -10,6 +12,7 @@ import ssl
 
 ssl._create_default_https_context = ssl._create_unverified_context
 timestamps = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
+LIST = []
 url = 'https://skipthegames.com/posts/fort-myers'
 
 headers = {
@@ -70,20 +73,38 @@ posts = driver.find_elements(By.CSS_SELECTOR, 'html.no-js body div table.two-col
                              'td#gallery_view.listings-with-sidebar.list-search-results.gallery div.full-width '
                              'div.small-16.columns div.clsfds-display-mode.gallery div.day-gallery [href]')
 dupLinks = [post.get_attribute('href') for post in posts]
-# REMOVES DUPLICATE LINKS WITH SET
 links = [*set(dupLinks)]
 counter = 0
 for urls in links:
     driver.get(links[counter])
     counter += 1
 
+    ad_url = driver.current_url
+    print(ad_url)
+
     title = driver.find_element(By.CLASS_NAME, 'post-title').text
     print(title)
+
+    # APPEND CONTENTS TO LIST
+    LIST.append([ad_url, title])
+
+    # SCREENSHOT LISTING
+    screenshot_name = f"skipthegames{[counter]}.png"
+    driver.save_screenshot(screenshot_name)
 
 
 # SET SCREENSHOT SIZE
 S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
 driver.set_window_size(S('Width'), S('Height'))
 
+# SET UP COLUMNS FOR EXCEL FILE
+columns = ('URL', 'Title')
+df = pd.DataFrame(LIST, columns=columns)
+
+# EXPORT TO EXCEL FILE
+df.to_excel(f'skipthegames({timestamps}).xlsx', index=False)
+print(f'skipthegames({timestamps}).xlsx exported.')
+
 # CLOSE WEBDRIVER
 driver.close()
+
