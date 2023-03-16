@@ -1,75 +1,124 @@
 import datetime
 import time
 
+import self as self
+# import pandas as pd
 import undetected_chromedriver
-from selenium import webdriver
-from selenium.webdriver.common import keys
-from selenium.webdriver.common.by import By
-import pandas as pd
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.select import Select
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
 
-#creates time and date for the screenshot
+from selenium.common import StaleElementReferenceException
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.ui import WebDriverWait
+import ssl
+
+ssl._create_default_https_context = ssl._create_unverified_context
 timestamps = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
-url = 'https://skipthegames.com/'
+url = 'https://skipthegames.com/posts/fort-myers'
+
+headers = {
+    'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
+    'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0',
+    'User-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Mobile Safari/537.36 Edg/108.0.1462.54'
+}
+# SET UP HEADLESS PAGE
+# options = webdriver.ChromeOptions()
+# options.add_argument("--headless=new")
+# driver = undetected_chromedriver.Chrome(options=options)
 driver = undetected_chromedriver.Chrome()
+driver.implicitly_wait(60)
 driver.get(url)
+time.sleep(5)
 LIST = []
 
 # WAIT FOR ELEMENTS TO BE CLICKABLE
-wait = WebDriverWait(driver, 30)
+wait = WebDriverWait(driver, 10)
 
+# LIST FOR KEYWORDS
+keywords = [
+    "no cops",
+    "woman",
+    "escort",
+    "young",
+    "phone number",
+    "no police",
+    "law enforcement",
+    "discreet location",
+    "snap chat",
+    "snapchat",
+    "e$cort",
+    "baby"
+]
+
+driver.refresh()
 # ACCEPT COOKIES
-cookie = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'cc-cookie-accept')))
-cookie.click()
+cookie = driver.find_element(By.CLASS_NAME, 'cc-cookie-accept')
+driver.execute_script("arguments[0].click();", cookie)
+driver.implicitly_wait(10)
 
 # SELECT PREFERENCES
-# WAIT FOR PAGE TO FULLY LOAD
-wait.until(EC.element_to_be_clickable((By.NAME, 'input_search_client')))
 # SELF-IDENTIFICATION (MALE, WOMAN, ETC.)
 identification = Select(driver.find_element(By.NAME, 'input_search_client'))
 identification.select_by_value('men')
+driver.implicitly_wait(10)
 
 # LOOKING FOR: ESCORT,
-category = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'input_search_category'))))
-category.select_by_value('ts-escorts')
-
-# ENTERING FORT MYERS IN CITY TODO: page refresh before able to insert the location
-# IT auto-completes and then it can be clicked
-#location = wait.until(EC.element_to_be_clickable((By.ID, 'input_search_location')))
-#driver.execute_script("arguments[0].value = 'Fort Myers, FL'", location)
-location = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'input_text.txt1.ui-autocomplete-input')))
-driver.execute_script("arguments[0].value = 'Fort Myers, FL';", location)
+category = Select(driver.find_element(By.NAME, 'input_search_category'))
+category.select_by_value('female-escorts')
+driver.implicitly_wait(10)
 
 # ENTER KEYWORDS
-keywords = wait.until(EC.element_to_be_clickable((By.NAME, 'input_search_optional_keywords')))
-driver.execute_script("arguments[0].value = 'blonde';", keywords)
+# keywords = driver.find_element(By.NAME, 'input_search_optional_keywords')
+# keywords.send_keys('blonde')
 
-# SEARCH
-wait.until(EC.element_to_be_clickable((By.ID, 'search_button'))).click()
-#location.send_keys(Keys.ENTER)  # search location
+# # FAST RESULTS
+# fast_results = driver.find_element(By.ID, 'radio_clsfd_display_mode_single')
+# driver.execute_script("arguments[0].click();", fast_results)
+# driver.implicitly_wait(10)
 
-wait.until(EC.element_to_be_clickable((By.ID, 'search_button'))).click()
+links = []
+driver.refresh()
+table = driver.find_element(By.ID, 'quick_view')
+rows = table.find_elements(By.TAG_NAME, 'tr')
+for row in rows:
+    wait.until(EC.presence_of_element_located((By.TAG_NAME, 'td')))
+    columns = row.find_elements(By.TAG_NAME, 'td')
+    for column in columns:
+        try:
+            tag = column.find_element(By.TAG_NAME, 'a').get_attribute('href')
+            print(tag)
+        except StaleElementReferenceException:
+            pass
+# for listing in listings:
+#     pageLink = wait.until(EC.presence_of_element_located((By.TAG_NAME, 'a'))).get_attribute('href')
+#     # BYPASS STALE ELEMENT
+#     # try:
+#     #     pageLink = listing.find_element(By.TAG_NAME, 'a').get_attribute('href')
+#     # except StaleElementReferenceException:
+#     #     pass
+#     # # SAVES URLS TO LIST "LINKS" - DECLARED ON LINE 76
+#     # //*[@id="quick_view"]/table/tbody
+#     links.append(pageLink)
+#     time.sleep(5)
+# counter = 0
 
-gallery = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.clsfds-display-mode.gallery')))
-for ads in gallery:
-    posts = ads.find_elements(By.CSS_SELECTOR, '.day-gallery')
-    for post in posts:
-        date = post.find_element(By.CLASS_NAME, 'post-timestamp').get_attribute('innerHTML')
-        print(date)
+# for urls in links:
+#     # SETS COUNTER TO LINKS
+#     driver.get(links[counter])
+#     # INCREMENTS COUNTER AFTER APPENDS INFO FROM AD
+#     counter += 1
+#
+#     for keyword in keywords:
+#         if keyword in driver.page_source:
+#             driver.get_screenshot_as_file(f"skipthegames({timestamps}).png")
 
-        title = post.find_element(By.CLASS_NAME, 'post-title').get_attribute('innerHTML')
-        print(title)
-
-        description = post.find_element(By.ID, 'post-body').get_attribute('innerHTML')
-        print(description)
-
-        age = post.find_element(By.CLASS_NAME, 'ad_display_h3_age').get_attribute('innerHTML')
-        print(age)
-        #screenshot
-        driver.get_screenshot_as_file(f"skipthegames({timestamps}).png")
-
+# EXPORT TO EXCEL
+# columns = ('date', 'title', 'description', 'age')
+# df = pd.DataFrame(LIST, columns=columns)
+#
+# df.to_excel(f'skipthegames({timestamps}).xlsx', index=False)
+# print(f'skipthegames({timestamps}).xlsx exported.')
+# CLOSE WEBDRIVER
 driver.close()
-
