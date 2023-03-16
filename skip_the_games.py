@@ -29,6 +29,7 @@ headers = {
 # driver = undetected_chromedriver.Chrome(options=options)
 driver = undetected_chromedriver.Chrome()
 driver.implicitly_wait(60)
+
 driver.get(url)
 time.sleep(5)
 LIST = []
@@ -80,45 +81,24 @@ driver.implicitly_wait(10)
 
 links = []
 driver.refresh()
-table = driver.find_element(By.ID, 'quick_view')
-rows = table.find_elements(By.TAG_NAME, 'tr')
-for row in rows:
-    wait.until(EC.presence_of_element_located((By.TAG_NAME, 'td')))
-    columns = row.find_elements(By.TAG_NAME, 'td')
-    for column in columns:
-        try:
-            tag = column.find_element(By.TAG_NAME, 'a').get_attribute('href')
-            print(tag)
-        except StaleElementReferenceException:
-            pass
-# for listing in listings:
-#     pageLink = wait.until(EC.presence_of_element_located((By.TAG_NAME, 'a'))).get_attribute('href')
-#     # BYPASS STALE ELEMENT
-#     # try:
-#     #     pageLink = listing.find_element(By.TAG_NAME, 'a').get_attribute('href')
-#     # except StaleElementReferenceException:
-#     #     pass
-#     # # SAVES URLS TO LIST "LINKS" - DECLARED ON LINE 76
-#     # //*[@id="quick_view"]/table/tbody
-#     links.append(pageLink)
-#     time.sleep(5)
-# counter = 0
+posts = driver.find_elements(By.CSS_SELECTOR, 'html.no-js body div table.two-col-wrap tbody tr '
+                             'td#gallery_view.listings-with-sidebar.list-search-results.gallery div.full-width '
+                             'div.small-16.columns div.clsfds-display-mode.gallery div.day-gallery [href]')
+links = [post.get_attribute('href') for post in posts]
+print([link for link in set(links)])
+counter = 0
+for urls in set(links):
+    driver.get(links[counter])
+    counter += 1
+    
+# TODO: DRIVER SCREENSHOTS DUPLICATES
+    # SCREENSHOT LISTING
+    screenshot_name = f"skipthegames_{[counter]}.png"
+    driver.save_screenshot(screenshot_name)
 
-# for urls in links:
-#     # SETS COUNTER TO LINKS
-#     driver.get(links[counter])
-#     # INCREMENTS COUNTER AFTER APPENDS INFO FROM AD
-#     counter += 1
-#
-#     for keyword in keywords:
-#         if keyword in driver.page_source:
-#             driver.get_screenshot_as_file(f"skipthegames({timestamps}).png")
+# SET SCREENSHOT SIZE
+S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
+driver.set_window_size(S('Width'), S('Height'))
 
-# EXPORT TO EXCEL
-# columns = ('date', 'title', 'description', 'age')
-# df = pd.DataFrame(LIST, columns=columns)
-#
-# df.to_excel(f'skipthegames({timestamps}).xlsx', index=False)
-# print(f'skipthegames({timestamps}).xlsx exported.')
 # CLOSE WEBDRIVER
 driver.close()
