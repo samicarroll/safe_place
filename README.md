@@ -11,9 +11,9 @@ Using XML and HTML parsers (BeautifulSoup and Selenium), our software will scrap
 
 ## Installing Packages:
 packages needed can be installed in the terminal
-
+```
 > pip install -r requirements.txt
-
+```
 
 ## Future Releases
 - Fully functional user interface will be implemented
