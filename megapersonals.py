@@ -21,22 +21,11 @@ driver.get(url)
 # DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS
 timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
 
-# LIST FOR KEYWORDS
-keywords = [
-    "no cops",
-    "woman",
-    "escort",
-    "young",
-    "phone number",
-    "no police",
-    "law enforcement",
-    "discreet location",
-    "snap chat",
-    "snapchat",
-    "e$cort",
-    "baby"
-]
-
+# READS KEYWORDS FROM TEXT FILE AND STORES IN LIST 'KEYWORDS'
+file = open('keywords.txt', 'r')
+lines = file.read()
+keywords = lines.split('\n')
+  
 # CLICKING AGREEMENTS AND PREFERENCES:
 # CLICK AGE AGREEMENT BUTTON
 click = driver.find_element("id", 'ageagree')
