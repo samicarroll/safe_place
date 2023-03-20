@@ -18,6 +18,7 @@ headers = {
     'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0',
     'User-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Mobile Safari/537.36 Edg/108.0.1462.54'
 }
+
 # SET UP HEADLESS PAGE
 # options = webdriver.ChromeOptions()
 # options.add_argument("--headless=new")
@@ -27,6 +28,8 @@ driver.implicitly_wait(60)
 
 driver.get(url)
 time.sleep(5)
+
+
 LIST = []
 
 # WAIT FOR ELEMENTS TO BE CLICKABLE
@@ -49,11 +52,6 @@ keywords = [
 ]
 
 driver.refresh()
-# ACCEPT COOKIES
-cookie = driver.find_element(By.CLASS_NAME, 'cc-cookie-accept')
-driver.execute_script("arguments[0].click();", cookie)
-driver.implicitly_wait(10)
-
 # SELECT PREFERENCES
 # SELF-IDENTIFICATION (MALE, WOMAN, ETC.)
 identification = Select(driver.find_element(By.NAME, 'input_search_client'))
@@ -74,26 +72,27 @@ dupLinks = [post.get_attribute('href') for post in posts]
 links = [*set(dupLinks)]
 counter = 0
 for urls in links:
-    driver.get(links[counter])
-    counter += 1
+    # SPONSORED ADS CAUSING SELENIUM TO GO TO NEW PAGE
+    # TODO: FILTER URLS CONTAINING ADS
+    if urls.contains('https://skipthegames.com/posts/fort-myers/'):
+        driver.get(links[counter])
+        counter += 1
+        ad_url = driver.current_url
+        print(ad_url)
 
-    ad_url = driver.current_url
-    print(ad_url)
+        title = driver.find_element(By.CLASS_NAME, 'post-title').text
+        print(title)
 
-    title = driver.find_element(By.CLASS_NAME, 'post-title').text
-    print(title)
+        # APPEND CONTENTS TO LIST
+        LIST.append([ad_url, title])
 
-    # APPEND CONTENTS TO LIST
-    LIST.append([ad_url, title])
+        # SCREENSHOT LISTING
+        screenshot_name = f"skipthegames{[counter]}.png"
+        driver.save_screenshot(screenshot_name)
 
-    # SCREENSHOT LISTING
-    screenshot_name = f"skipthegames{[counter]}.png"
-    driver.save_screenshot(screenshot_name)
-
-
-# SET SCREENSHOT SIZE
-S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
-driver.set_window_size(S('Width'), S('Height'))
+    # # SET SCREENSHOT SIZE
+    # S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
+    # driver.set_window_size(S('Width'), S('Height'))
 
 # SET UP COLUMNS FOR EXCEL FILE
 columns = ('URL', 'Title')
