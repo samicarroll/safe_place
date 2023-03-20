@@ -3,7 +3,6 @@ import time
 import pandas as pd
 import undetected_chromedriver
 import ssl
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
@@ -14,9 +13,11 @@ LIST = []
 url = 'https://skipthegames.com/posts/fort-myers'
 
 headers = {
-    'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
+    'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) '
+    'Chrome/107.0.0.0 Safari/537.36',
     'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0',
-    'User-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Mobile Safari/537.36 Edg/108.0.1462.54'
+    'User-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) '
+    'Chrome/108.0.0.0 Mobile Safari/537.36 Edg/108.0.1462.54'
 }
 
 # SET UP HEADLESS PAGE
@@ -24,33 +25,15 @@ headers = {
 # options.add_argument("--headless=new")
 # driver = undetected_chromedriver.Chrome(options=options)
 driver = undetected_chromedriver.Chrome()
-driver.implicitly_wait(60)
-
 driver.get(url)
 time.sleep(5)
 
-
-LIST = []
-
 # WAIT FOR ELEMENTS TO BE CLICKABLE
 wait = WebDriverWait(driver, 10)
-
 # LIST FOR KEYWORDS
-keywords = [
-    "no cops",
-    "woman",
-    "escort",
-    "young",
-    "phone number",
-    "no police",
-    "law enforcement",
-    "discreet location",
-    "snap chat",
-    "snapchat",
-    "e$cort",
-    "baby"
-]
-
+file = open('keywords.txt', 'r')
+lines = file.read()
+keywords = lines.split('\n')
 driver.refresh()
 # SELECT PREFERENCES
 # SELF-IDENTIFICATION (MALE, WOMAN, ETC.)
@@ -70,34 +53,33 @@ posts = driver.find_elements(By.CSS_SELECTOR, 'html.no-js body div table.two-col
                              'div.small-16.columns div.clsfds-display-mode.gallery div.day-gallery [href]')
 dupLinks = [post.get_attribute('href') for post in posts]
 links = [*set(dupLinks)]
+print(links)
 counter = 0
 for urls in links:
     # REMOVE SPONSORED ADS FROM LISTING URLS
     links[:] = (link for link in links if urls.startswith('https://skipthegames.com/posts/'))
-    # AFTER 9 LOOPS, THROWS ERROR
-    # TODO: FIX ERROR: LIST INDEX OUT OF RANGE 
-    # ERROR THROWS ON LINE 82 "COUNTER +=1"
+    # FIXME
+    # THROWING INDEX ERROR:
+    # driver.get(links[counter])
+    # IndexError: list index out of range
     driver.get(links[counter])
     time.sleep(5)
     counter += 1
+    description = driver.find_element(By.CSS_SELECTOR, '#post-body > div').text
+    for keyword in keywords:
+        if keyword in description:
+            ad_url = driver.current_url
+            print(ad_url)
 
-    ad_url = driver.current_url
-    print(ad_url)
+            title = driver.find_element(By.CLASS_NAME, 'post-title').text
+            print(title)
 
-    title = driver.find_element(By.CLASS_NAME, 'post-title').text
-    print(title)
+            # APPEND CONTENTS TO LIST
+            LIST.append([ad_url, title])
 
-    # APPEND CONTENTS TO LIST
-    LIST.append([ad_url, title])
-
-    # SCREENSHOT LISTING
-    screenshot_name = f"skipthegames{[counter]}.png"
-    driver.save_screenshot(screenshot_name)
-
-    # # SET SCREENSHOT SIZE
-    # S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
-    # driver.set_window_size(S('Width'), S('Height'))
-
+            # SCREENSHOT LISTING
+            screenshot_name = f"skipthegames{[counter]}.png"
+            driver.save_screenshot(screenshot_name)
 # SET UP COLUMNS FOR EXCEL FILE
 columns = ('URL', 'Title')
 df = pd.DataFrame(LIST, columns=columns)
