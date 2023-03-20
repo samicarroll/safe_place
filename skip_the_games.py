@@ -72,23 +72,27 @@ dupLinks = [post.get_attribute('href') for post in posts]
 links = [*set(dupLinks)]
 counter = 0
 for urls in links:
-    # SPONSORED ADS CAUSING SELENIUM TO GO TO NEW PAGE
-    # TODO: FILTER URLS CONTAINING ADS
-    if urls.contains('https://skipthegames.com/posts/fort-myers/'):
-        driver.get(links[counter])
-        counter += 1
-        ad_url = driver.current_url
-        print(ad_url)
+    # REMOVE SPONSORED ADS FROM LISTING URLS
+    links[:] = (link for link in links if urls.startswith('https://skipthegames.com/posts/'))
+    # AFTER 9 LOOPS, THROWS ERROR
+    # TODO: FIX ERROR: LIST INDEX OUT OF RANGE 
+    # ERROR THROWS ON LINE 82 "COUNTER +=1"
+    driver.get(links[counter])
+    time.sleep(5)
+    counter += 1
 
-        title = driver.find_element(By.CLASS_NAME, 'post-title').text
-        print(title)
+    ad_url = driver.current_url
+    print(ad_url)
 
-        # APPEND CONTENTS TO LIST
-        LIST.append([ad_url, title])
+    title = driver.find_element(By.CLASS_NAME, 'post-title').text
+    print(title)
 
-        # SCREENSHOT LISTING
-        screenshot_name = f"skipthegames{[counter]}.png"
-        driver.save_screenshot(screenshot_name)
+    # APPEND CONTENTS TO LIST
+    LIST.append([ad_url, title])
+
+    # SCREENSHOT LISTING
+    screenshot_name = f"skipthegames{[counter]}.png"
+    driver.save_screenshot(screenshot_name)
 
     # # SET SCREENSHOT SIZE
     # S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
