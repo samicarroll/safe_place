@@ -6,7 +6,7 @@ Using XML and HTML parsers (BeautifulSoup and Selenium), our software will scrap
 - contains base code the will search "SkipTheGames" and "Megapersonals"; desired sites for human trafficking. 
 - uses selenium chromedriver to search and save all listings on every page for Fort Myers area.
 - implemented a keyword list to find common keywords used in human trafficking. 
-  - listings that match the keywords are screenshotted and exported to a png titled '' and it will document the title, description, age, and keyword then export to an excel. 
+  - listings that match the keywords are screenshotted and exported to a png titled 'megapersonals_[listing number]_keyword' and it will document the title, description, age, and keyword then export to an excel. 
 - implemented basic UI for customers; includes login screen, allows user to choose a website to scrape. 
 
 ## Installing Packages:
