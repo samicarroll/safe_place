@@ -1,5 +1,6 @@
 import secrets
 
+
 from flask import Flask, render_template, request, redirect, session
 
 app = Flask(__name__)
@@ -24,32 +25,40 @@ def login():
         return redirect('/login')
 
 
+def get_keywords():
+    with open('keywords.txt', 'r') as f:
+        keywords = f.read().splitlines()
+    return keywords
+
+
 @app.route("/search", methods=["GET", "POST"])
 def search():
-    results = []  # Initialize with empty list
+    websites = {
+        "mega-personals": "MegaPersonals",
+        "skip_the_games": "Skip The Games",
+        "craigslist": "Craigslist"
+    }
+    keywords = get_keywords()
+    results = []
     if request.method == "POST":
         selected_websites = request.form.getlist("websites")
-        if "megapersonals" in selected_websites:
-            from templates import megapersonals
-            results.extend(megapersonals.scrap())
-        if "skip_the_games" in selected_websites:
-            from templates import skip_the_games
-            results.extend(skip_the_games.scrap())
-        if "craigslist" in selected_websites:
-            from templates import craigslist
-            results.extend(craigslist.scrap())
-        if "all" in selected_websites:
-            from templates import megapersonals
-            from templates import skip_the_games
-            from templates import craigslist
-            results.extend(megapersonals.scrap())
-            results.extend(skip_the_games.scrap())
-            results.extend(craigslist.scrap())
+        selected_keywords = request.form.getlist("keywords")
+        if selected_websites and selected_keywords:  # Only proceed if both are selected
+            for website in selected_websites:
+                if website == "mega-personals":
+                    from templates import megapersonals
+                    results.extend(megapersonals.scrap(selected_keywords))
+                elif website == "skip_the_games":
+                    from templates import skip_the_games
+                    results.extend(skip_the_games.scrap(selected_keywords))
+                elif website == "craigslist":
+                    from templates import craigslist
+                    results.extend(craigslist.scrap(selected_keywords))
 
-    return render_template("search.html", results=results)
+    return render_template("search.html", websites=websites, keywords=keywords, results=results)
 
 
-@app.route('/mega-personals')
+@app.route('/megapersonals')
 def megapersonals():
     if 'username' in session:
         return render_template('megapersonals.html')
@@ -84,3 +93,4 @@ def scraper():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
+
