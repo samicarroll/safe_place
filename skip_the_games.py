@@ -45,9 +45,8 @@ driver.implicitly_wait(10)
 category = Select(driver.find_element(By.NAME, 'input_search_category'))
 category.select_by_value('female-escorts')
 driver.implicitly_wait(10)
-
-
 driver.refresh()
+
 posts = driver.find_elements(By.CSS_SELECTOR, 'html.no-js body div table.two-col-wrap tbody tr '
                              'td#gallery_view.listings-with-sidebar.list-search-results.gallery div.full-width '
                              'div.small-16.columns div.clsfds-display-mode.gallery div.day-gallery [href]')
@@ -57,14 +56,10 @@ print(links)
 counter = 0
 for urls in links:
     # REMOVE SPONSORED ADS FROM LISTING URLS
-    links[:] = (link for link in links if urls.startswith('https://skipthegames.com/posts/'))
-    # FIXME
-    # THROWING INDEX ERROR:
-    # driver.get(links[counter])
-    # IndexError: list index out of range
+    links[:] = (urls for urls in links if not urls.startswith('https://skipthegames.com/reply/meetup/'))
     driver.get(links[counter])
-    time.sleep(5)
     counter += 1
+    time.sleep(5)
     description = driver.find_element(By.CSS_SELECTOR, '#post-body > div').text
     for keyword in keywords:
         if keyword in description:
@@ -78,7 +73,7 @@ for urls in links:
             LIST.append([ad_url, title])
 
             # SCREENSHOT LISTING
-            screenshot_name = f"skipthegames{[counter]}.png"
+            screenshot_name = f"skipthegames{counter}_keyword_{keyword.replace(' ', '_')}.png"
             driver.save_screenshot(screenshot_name)
 # SET UP COLUMNS FOR EXCEL FILE
 columns = ('URL', 'Title')
