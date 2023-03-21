@@ -1,18 +1,24 @@
 # Safe Place 
 ## Description:
-Using XML and HTML parsers (BeautifulSoup and Selenium), our software will scrape information from various websites searching for keywords commonly used in human trafficking. 
+Using Selenium, an XML and HTML parser, our software will scrape information from various websites searching for keywords commonly used in human trafficking. 
 
-## Current Release: 1.0.0:
-- contains base code the will search "SkipTheGames", "Craigslist", and "Megapersonals"; three desired sites for human trafficking. 
-
-- uses the sites basic search query to find keywords. 
+## Technology Requirements
+- Google Chrome Browser
+- Required packages 
 
 ## Installing Packages:
 packages needed can be installed in the terminal
-
+```
 > pip install -r requirements.txt
+```
 
+## Current Release: 1.0.2:
+- contains base code the will search "SkipTheGames" and "Megapersonals"; desired sites for human trafficking. 
+- uses selenium chromedriver to search and save all listings on every page for Fort Myers area.
+- implemented a keyword list to find common keywords used in human trafficking. 
+  - listings that match the keywords are screenshotted and exported to a png titled 'megapersonals_[listing number]_keyword' and it will document the title, description, age, and keyword then export to an excel. 
+- implemented basic UI for customers; includes login screen, allows user to choose a website to scrape. 
 
 ## Future Releases
-- User Interface will be implemented
-- Using Selenium, the software will screenshot listings and provide excel documents with data
+- Fully functional user interface will be implemented
+- Deployment
