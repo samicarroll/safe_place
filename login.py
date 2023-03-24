@@ -26,7 +26,7 @@ def login():
 
 
 def get_keywords():
-    with open('keywords.txt', 'r') as f:
+    with open('static/keywords.txt', 'r') as f:
         keywords = f.read().splitlines()
     return keywords
 
@@ -36,7 +36,6 @@ def search():
     websites = {
         "mega-personals": "MegaPersonals",
         "skip_the_games": "Skip The Games",
-        "craigslist": "Craigslist"
     }
     keywords = get_keywords()
     results = []
@@ -46,14 +45,11 @@ def search():
         if selected_websites and selected_keywords:  # Only proceed if both are selected
             for website in selected_websites:
                 if website == "mega-personals":
-                    from templates import megapersonals
-                    results.extend(megapersonals.scrap(selected_keywords))
+                    import megapersonals
+                    results.extend(megapersonals.run(selected_keywords))
                 elif website == "skip_the_games":
-                    from templates import skip_the_games
-                    results.extend(skip_the_games.scrap(selected_keywords))
-                elif website == "craigslist":
-                    from templates import craigslist
-                    results.extend(craigslist.scrap(selected_keywords))
+                    import skip_the_games
+                    results.extend(skip_the_games.run(selected_keywords))
 
     return render_template("search.html", websites=websites, keywords=keywords, results=results)
 
@@ -61,7 +57,7 @@ def search():
 @app.route('/megapersonals')
 def megapersonals():
     if 'username' in session:
-        return render_template('megapersonals.html')
+        return megapersonals.py
     else:
         return redirect('/login')
 
@@ -69,15 +65,7 @@ def megapersonals():
 @app.route('/skip_the_games')
 def skip_the_games():
     if 'username' in session:
-        return render_template('skip_the_games.html')
-    else:
-        return redirect('/login')
-
-
-@app.route('/craigslist')
-def craigslist():
-    if 'username' in session:
-        return render_template('craiglist.py')
+        return skip_the_games.py
     else:
         return redirect('/login')
 
@@ -85,12 +73,19 @@ def craigslist():
 @app.route('/scraper')
 def scraper():
     if 'username' in session:
-        # do scraping here using BeautifulSoup, pandas and openpyxl
-        return 'Search Page'
+        selected_website = request.form.get('website')
+
+        if selected_website == 'skip_the_games':
+            skip_the_games()
+        elif selected_website == 'megapersonals':
+            megapersonals()
+        else:
+            return 'Invalid website selection'
+
+        return 'Scraping completed successfully'
     else:
-        return print("Error, please enter correct credentials")
+        return 'Error: please enter correct credentials'
 
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
-
