@@ -57,10 +57,11 @@ listings = driver.find_elements(By.CLASS_NAME, 'listadd')
 
 # HOLDS LINKS
 links = []
-# GRABS NEW PAGES
-pages = driver.find_elements(By.CLASS_NAME, "pageNumbersNew")
+
 # PULLS URLS FROM EACH LISTING
-for page in pages:
+pageCounter = 0
+# GRABS URLS FROM FIRST 3 PAGES
+while pageCounter <= 2:
     for listing in listings:
         # BYPASS STALE ELEMENT
         try:
@@ -73,6 +74,7 @@ for page in pages:
     # CLICK THE NEXT PAGE - GOES THROUGH FOR LOOP TO GRAB LINKS ON ALL PAGES
     next_page = driver.find_element("id", "paginationNext")
     driver.execute_script("arguments[0].click();", next_page)
+    pageCounter += 1
 
 # COUNTS THROUGH URLS IN LIST
 counter = 0
