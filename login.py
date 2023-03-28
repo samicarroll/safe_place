@@ -1,5 +1,7 @@
 import secrets
-
+import datetime
+import megapersonals
+import skip_the_games
 
 from flask import Flask, render_template, request, redirect, session
 
@@ -26,7 +28,7 @@ def login():
 
 
 def get_keywords():
-    with open('keywords.txt', 'r') as f:
+    with open('static/keywords.txt', 'r') as f:
         keywords = f.read().splitlines()
     return keywords
 
@@ -36,48 +38,42 @@ def search():
     websites = {
         "mega-personals": "MegaPersonals",
         "skip_the_games": "Skip The Games",
-        "craigslist": "Craigslist"
     }
     keywords = get_keywords()
     results = []
+    excel_files = []
+
     if request.method == "POST":
+        print("POST request received")  # Debugging print statement
         selected_websites = request.form.getlist("websites")
         selected_keywords = request.form.getlist("keywords")
+        print(f"Selected websites: {selected_websites}")  # Debugging print statement
+        print(f"Selected keywords: {selected_keywords}")  # Debugging print statement
         if selected_websites and selected_keywords:  # Only proceed if both are selected
             for website in selected_websites:
                 if website == "mega-personals":
-                    from templates import megapersonals
-                    results.extend(megapersonals.scrap(selected_keywords))
+                    import megapersonals
+                    results.extend(megapersonals.run(selected_keywords))
+                    excel_files.append(f'megapersonals_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "skip_the_games":
-                    from templates import skip_the_games
-                    results.extend(skip_the_games.scrap(selected_keywords))
-                elif website == "craigslist":
-                    from templates import craigslist
-                    results.extend(craigslist.scrap(selected_keywords))
+                    import skip_the_games
+                    results.extend(skip_the_games.run(selected_keywords))
+                    excel_files.append(f'skip_the_games_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
 
-    return render_template("search.html", websites=websites, keywords=keywords, results=results)
+    return render_template("search.html", websites=websites, keywords=keywords, results=results, excel_files=excel_files)
 
-
-@app.route('/megapersonals')
-def megapersonals():
+@app.route('/megapersonals_route')
+def megapersonals_route():
     if 'username' in session:
-        return render_template('megapersonals.html')
+        return megapersonals.run()
     else:
         return redirect('/login')
 
 
-@app.route('/skip_the_games')
-def skip_the_games():
+@app.route('/skip_the_games_route')
+def skip_the_games_route():
     if 'username' in session:
-        return render_template('skip_the_games.html')
-    else:
-        return redirect('/login')
-
-
-@app.route('/craigslist')
-def craigslist():
-    if 'username' in session:
-        return render_template('craiglist.py')
+        return skip_the_games.run()
     else:
         return redirect('/login')
 
@@ -85,12 +81,48 @@ def craigslist():
 @app.route('/scraper')
 def scraper():
     if 'username' in session:
-        # do scraping here using BeautifulSoup, pandas and openpyxl
-        return 'Search Page'
+        selected_website = request.form.get('website')
+
+        if selected_website == 'skip_the_games':
+            skip_the_games()
+        elif selected_website == 'megapersonals':
+            megapersonals()
+        else:
+            return 'Invalid website selection'
+
+        return 'Scraping completed successfully'
     else:
-        return print("Error, please enter correct credentials")
+        return 'Error: please enter correct credentials'
+
+
+def run_scrapers(websites, keywords):
+    results = []
+
+    if "mega-personals" in websites:
+        # Call the function from your megapersonals script
+        # Make sure to import your megapersonals module at the beginning of your main Flask app file
+        mega_results = megapersonals.run(keywords)
+        results.extend(mega_results)
+
+    if "skip_the_games" in websites:
+        # Call the function from your skip_the_games script
+        # Make sure to import your skip_the_games module at the beginning of your main Flask app file
+        stg_results = skip_the_games.run(keywords)
+        results.extend(stg_results)
+
+    return results
+
+
+@app.route('/search-results', methods=['POST'])
+def search_results():
+    selected_websites = request.form.getlist('websites[]')
+    selected_keywords = request.form.getlist('keywords[]')
+
+    # Run the scraping functions based on the selected websites and keywords
+    results = run_scrapers(selected_websites, selected_keywords)
+
+    return render_template('search-results.html', results=results)
 
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
-
