@@ -37,7 +37,7 @@ time.sleep(5)
 wait = WebDriverWait(driver, 10)
 
 # LIST FOR KEYWORDS
-file = open('static/keywords.txt', 'r')
+file = open('keywords.txt', 'r')
 lines = file.read()
 keywords = lines.split('\n')
 driver.refresh()
