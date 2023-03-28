@@ -1,7 +1,7 @@
 import datetime
 import time
 import pandas as pd
-
+import pathlib
 from selenium import webdriver
 from selenium.common import StaleElementReferenceException
 from selenium.webdriver.common.by import By
@@ -60,8 +60,8 @@ links = []
 
 # PULLS URLS FROM EACH LISTING
 pageCounter = 0
-# GRABS URLS FROM FIRST 3 PAGES
-while pageCounter <= 2:
+# GRABS URLS FROM FIRST 5 PAGES
+while pageCounter <= 4:
     for listing in listings:
         # BYPASS STALE ELEMENT
         try:
@@ -109,7 +109,7 @@ for urls in links:
             time.sleep(2)
 
             # APPEND CONTENTS TO LIST
-            LIST.append([title, age, description, phone_number])
+            LIST.append([counter, title, age, description, phone_number, keyword])
 
             # SCREENSHOT LISTING
             screenshot_name = f"megapersonals_{counter}_keyword_{keyword.replace(' ', '_')}.png"
@@ -120,11 +120,11 @@ for urls in links:
         driver.set_window_size(S('Width'), S('Height'))
 
 # SET UP COLUMNS FOR EXCEL FILE
-columns = ('title', 'age', 'description', 'phone number')
-df = pd.DataFrame(LIST, columns=columns)
+columns = ('counter', 'url', 'title', 'age', 'description', 'phone number', 'matching keyword')
+df = pd.DataFrame(LIST, columns=columns))
 
 # EXPORT TO EXCEL FILE
-df.to_excel(f'megapersonals({timestamps}).xlsx', index=False)
+df.to_excel(pathlib.Path.home() / f"Desktop/megapersonals/excel_files/megapersonals({timestamps}).xlsx", index=False)
 print(f'megapersonals({timestamps}).xlsx exported.')
 
 # CLOSE WEBDRIVER
