@@ -3,10 +3,11 @@ import time
 import pandas as pd
 import undetected_chromedriver
 import ssl
-import openpyxl
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
+
 
 def run(keywords):
     ssl._create_default_https_context = ssl._create_unverified_context
@@ -44,8 +45,8 @@ def run(keywords):
     driver.refresh()
 
     posts = driver.find_elements(By.CSS_SELECTOR, 'html.no-js body div table.two-col-wrap tbody tr '
-                                     'td#gallery_view.listings-with-sidebar.list-search-results.gallery div.full-width '
-                                     'div.small-16.columns div.clsfds-display-mode.gallery div.day-gallery [href]')
+                                                  'td#gallery_view.listings-with-sidebar.list-search-results.gallery div.full-width '
+                                                  'div.small-16.columns div.clsfds-display-mode.gallery div.day-gallery [href]')
     dupLinks = [post.get_attribute('href') for post in posts]
     links = [*set(dupLinks)]
     print(links)
@@ -64,7 +65,7 @@ def run(keywords):
                 title = driver.find_element(By.CLASS_NAME, 'post-title').text
                 print(title)
 
-                LIST.append([ad_url, title])
+                LIST.append({'website': 'skip_the_games', 'title': title, 'link': ad_url})
 
                 screenshot_name = f"skipthegames{counter}_keyword_{keyword.replace(' ', '_')}.png"
                 driver.save_screenshot(screenshot_name)
@@ -78,4 +79,5 @@ def run(keywords):
     df.to_excel(f'skipthegames({timestamps}).xlsx', index=False)
     print(f'skipthegames({timestamps}).xlsx exported.')
 
-    driver.close()
+    driver.quit()
+    return LIST

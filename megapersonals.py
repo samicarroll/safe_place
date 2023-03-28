@@ -12,9 +12,14 @@ def run(selected_keywords):
     driver = webdriver.Chrome()
     driver.get(url)
     timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
-    file = open('static/keywords.txt', 'r')
-    lines = file.read()
-    keywords = lines.split('\n')
+
+    # Remove the following lines:
+    # file = selected_keywords
+    # lines = file.read()
+
+    # Replace with:
+    keywords = selected_keywords
+
     click = driver.find_element("id", 'ageagree')
     driver.execute_script("arguments[0].click();", click)
     time.sleep(5)
