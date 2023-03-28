@@ -1,6 +1,7 @@
 import datetime
 import time
 import pandas as pd
+import pathlib
 from selenium import webdriver
 from selenium.common import StaleElementReferenceException
 from selenium.webdriver.common.by import By
@@ -12,12 +13,6 @@ def run(selected_keywords):
     driver = webdriver.Chrome()
     driver.get(url)
     timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
-
-    # Remove the following lines:
-    # file = selected_keywords
-    # lines = file.read()
-
-    # Replace with:
     keywords = selected_keywords
 
     click = driver.find_element("id", 'ageagree')
@@ -69,18 +64,21 @@ def run(selected_keywords):
                                                    'body > div > div.post_preview_body > div.fromLeft.post_preview_phone > span > a').get_attribute(
                     "innerHTML")
                 time.sleep(2)
-                LIST.append([title, age, description, phone_number])
+
+                LIST.append([counter, title, age, description, phone_number, keywords])
                 screenshot_name = f"megapersonals_{counter}_keyword_{keyword.replace(' ', '_')}.png"
                 driver.save_screenshot(screenshot_name)
+            S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
+            driver.set_window_size(S('Width'), S('Height'))
 
-        S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
-        driver.set_window_size(S('Width'), S('Height'))
-    columns = ('title', 'age', 'description', 'phone number')
+    # SET UP COLUMNS FOR EXCEL FILE
+    columns = ('counter', 'url', 'title', 'age', 'description', 'phone number', 'matching keyword')
     df = pd.DataFrame(LIST, columns=columns)
 
     # EXPORT TO EXCEL FILE
-    df.to_excel(f'megapersonals({timestamps}).xlsx', index=False)
+    df.to_excel(pathlib.Path.home() / f"Desktop/megapersonals/excel_files/megapersonals({timestamps}).xlsx", index=False)
     print(f'megapersonals({timestamps}).xlsx exported.')
 
     # CLOSE WEBDRIVER
     driver.close()
+

@@ -1,15 +1,19 @@
 import datetime
 import time
 import pandas as pd
-import undetected_chromedriver
+import undetected_chromedriver as uc
 import ssl
+import re
+import pathlib
+
+from selenium import webdriver
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 
 
-def run(keywords):
+def run(selected_keywords):
     ssl._create_default_https_context = ssl._create_unverified_context
     timestamps = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
     LIST = []
@@ -24,7 +28,9 @@ def run(keywords):
         'Chrome/108.0.0.0 Mobile Safari/537.36 Edg/108.0.1462.54'
     }
 
-    driver = undetected_chromedriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless=new")
+    driver = uc.Chrome(options=options)
     driver.get(url)
     time.sleep(5)
 
@@ -51,33 +57,46 @@ def run(keywords):
     links = [*set(dupLinks)]
     print(links)
     counter = 0
+
     for urls in links:
         links[:] = (urls for urls in links if not urls.startswith('https://skipthegames.com/reply/meetup/'))
         driver.get(links[counter])
-
         time.sleep(5)
+
         description = driver.find_element(By.CSS_SELECTOR, '#post-body > div').text
+        time.sleep(5)
         for keyword in keywords:
             if keyword in description:
                 ad_url = driver.current_url
-                print(ad_url)
 
                 title = driver.find_element(By.CLASS_NAME, 'post-title').text
-                print(title)
 
-                LIST.append({'website': 'skip_the_games', 'title': title, 'link': ad_url})
+                pattern = r'(\(\d{3}\)\s*[-\.\s]\s*\d{3}\s*[-\.\s]??\s*\d{4}|\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{' \
+                          r'3}\)\s*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4})'
+                des = driver.find_element(By.CSS_SELECTOR, '#post-body > div').text
+                phone_number = re.findall(pattern, des)
 
-                screenshot_name = f"skipthegames{counter}_keyword_{keyword.replace(' ', '_')}.png"
-                driver.save_screenshot(screenshot_name)
+                # REMOVES DUPLICATES
+                phone_number = [*set(phone_number)]
+
+                # APPEND CONTENTS TO LIST
+                LIST.append([counter, ad_url, title, phone_number, keyword])
+
+                # SCREENSHOT LISTING
+                screenshot_name = f"({counter})skipthegames_keyword_{keyword.replace(' ', '_')}_({timestamps}).png"
+                driver.save_screenshot(pathlib.Path.home() / f"Desktop/skipthegames/screenshots/{screenshot_name}")
                 break
-
+            # SET SCREENSHOT SIZE
+            S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
+            driver.set_window_size(S('Width'), S('Height'))
         counter += 1
-
-    columns = ('URL', 'Title')
+    # SET UP COLUMNS FOR EXCEL FILE
+    columns = ('Screenshot Number', 'URL', 'Title', 'Phone Number', 'Matching Keyword')
     df = pd.DataFrame(LIST, columns=columns)
 
-    df.to_excel(f'skipthegames({timestamps}).xlsx', index=False)
+    # EXPORT TO EXCEL FILE
+    df.to_excel(pathlib.Path.home() / f"Desktop/skipthegames/excel_files/skipthegames({timestamps}).xlsx", index=False)
     print(f'skipthegames({timestamps}).xlsx exported.')
 
-    driver.quit()
-    return LIST
+    driver.close()
+

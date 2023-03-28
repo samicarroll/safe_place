@@ -12,12 +12,13 @@ packages needed can be installed in the terminal
 > pip install -r requirements.txt
 ```
 
-## Current Release: 1.0.2:
+## Current Release: 1.0.3:
 - contains base code the will search "SkipTheGames" and "Megapersonals"; desired sites for human trafficking. 
 - uses selenium chromedriver to search and save all listings on every page for Fort Myers area.
-- implemented a keyword list to find common keywords used in human trafficking. 
-  - listings that match the keywords are screenshotted and exported to a png titled 'megapersonals_[listing number]_keyword' and it will document the title, description, age, and keyword then export to an excel. 
+- uses a keyword text file 'keyword.txt' to grab a list of desired keywords.
+  - listings that match the keywords are screenshotted and exported to a png titled 'megapersonals_[listing number]_keyword' and it will document the listing number, url, title, description, age, and keyword then export to an excel. 
 - implemented basic UI for customers; includes login screen, allows user to choose a website to scrape. 
+- excel file and screenshots are saved in files located on the user desktop. 
 
 ## Future Releases
 - Fully functional user interface will be implemented
