@@ -63,23 +63,6 @@ def search():
     return render_template("search.html", websites=websites, keywords=keywords, results=results, excel_files=excel_files)
 
 
-@app.route('/scraper')
-def scraper():
-    if 'username' in session:
-        selected_website = request.form.get('website')
-
-        if selected_website == 'skip_the_games':
-            skip_the_games()
-        elif selected_website == 'megapersonals':
-            megapersonals()
-        else:
-            return 'Invalid website selection'
-
-        return 'Scraping completed successfully'
-    else:
-        return 'Error: please enter correct credentials'
-
-
 def run_scrapers(websites, keywords):
     results = []
 
