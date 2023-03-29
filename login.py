@@ -4,6 +4,7 @@ import megapersonals
 import skip_the_games
 
 from flask import Flask, render_template, request, redirect, session
+from flask import flash
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
@@ -60,7 +61,10 @@ def search():
                     results.extend(skip_the_games.run(selected_keywords))
                     excel_files.append(f'skip_the_games_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
 
-    return render_template("search.html", websites=websites, keywords=keywords, results=results, excel_files=excel_files)
+    if request.method == "POST" and results:
+        flash("Web scraping complete")
+    return render_template("search.html", websites=websites, keywords=keywords, results=results,
+                           excel_files=excel_files)
 
 
 def run_scrapers(websites, keywords):

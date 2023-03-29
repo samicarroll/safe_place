@@ -61,30 +61,41 @@
     </style>
 </head>
 <body>
-<form action="{{ url_for('search_results') }}" method="POST">
-    <div className="column">
-        <label>Select website(s) to search:</label>
-        <br>
-        <input type="checkbox" name="websites[]" value="mega-personals"> MegaPersonals<br>
-        <input type="checkbox" name="websites[]" value="skip_the_games"> Skip The Games<br>
-        <div className="all-checkbox">
-            <input type="checkbox" id="websites-all" value="all"> All
+    <!-- Display flashed messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-info">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('search_results') }}" method="POST">
+        <div className="column">
+            <label>Select website(s) to search:</label>
+            <br>
+            <input type="checkbox" name="websites[]" value="mega-personals"> MegaPersonals<br>
+            <input type="checkbox" name="websites[]" value="skip_the_games"> Skip The Games<br>
+            <div className="all-checkbox">
+                <input type="checkbox" id="websites-all" value="all"> All
+            </div>
         </div>
-    </div>
-    <div className="column">
-        <label>Select keyword(s) to search:</label>
-        <br>
-        {% for keyword in keywords %}
-        <div>
-            <input type="checkbox" name="keywords[]" value="{{ keyword }}"> {{ keyword }}
+        <div className="column">
+            <label>Select keyword(s) to search:</label>
+            <br>
+            {% for keyword in keywords %}
+            <div>
+                <input type="checkbox" name="keywords[]" value="{{ keyword }}"> {{ keyword }}
+            </div>
+            {% endfor %}
+            <div className="all-checkbox">
+                <input type="checkbox" id="keywords-all" value="all"> all
+            </div>
         </div>
-        {% endfor %}
-        <div className="all-checkbox">
-            <input type="checkbox" id="keywords-all" value="all"> all
-        </div>
-    </div>
-    <input type="submit" value="Search">
-</form>
+        <input type="submit" value="Search">
+    </form>
 </body>
 <script>
     document.getElementById("websites-all").addEventListener("click", function () {
