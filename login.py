@@ -62,21 +62,6 @@ def search():
 
     return render_template("search.html", websites=websites, keywords=keywords, results=results, excel_files=excel_files)
 
-@app.route('/megapersonals_route')
-def megapersonals_route():
-    if 'username' in session:
-        return megapersonals.run()
-    else:
-        return redirect('/login')
-
-
-@app.route('/skip_the_games_route')
-def skip_the_games_route():
-    if 'username' in session:
-        return skip_the_games.run()
-    else:
-        return redirect('/login')
-
 
 @app.route('/scraper')
 def scraper():
