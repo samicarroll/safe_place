@@ -29,7 +29,7 @@ def run(selected_keywords):
     }
 
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless=new")
+    # options.add_argument("--headless=new")
     driver = uc.Chrome(options=options)
     driver.get(url)
     time.sleep(5)
