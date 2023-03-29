@@ -32,6 +32,7 @@ def run(selected_keywords):
     time.sleep(5)
     listings = driver.find_elements(By.CLASS_NAME, 'listadd')
     links = []
+    print(f"Found {len(links)} ads")
     pageCounter = 0
     while pageCounter <= 2:
         for listing in listings:
@@ -46,6 +47,8 @@ def run(selected_keywords):
         pageCounter += 1
     counter = 0
     for urls in links:
+        print(f"Processing ad {counter + 1}/{len(links)}")
+        driver.get(links[counter])
         driver.get(links[counter])
         counter += 1
         description = driver.find_element(By.CLASS_NAME, 'postbody').text
