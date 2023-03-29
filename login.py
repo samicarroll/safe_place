@@ -121,7 +121,7 @@ def search_results():
     # Run the scraping functions based on the selected websites and keywords
     results = run_scrapers(selected_websites, selected_keywords)
 
-    return render_template('search-results.html', results=results)
+    return render_template('search.html', results=results)
 
 
 if __name__ == '__main__':
