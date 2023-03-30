@@ -12,23 +12,17 @@ def run(selected_keywords):
     LIST = []
     url = 'https://megapersonals.eu/'
     driver = webdriver.Chrome()
-    driver.get(url)
 
     # SET UP HEADLESS PAGE
-    options = webdriver.ChromeOptions()
-    options.add_argument("--headless=new")
-    driver = webdriver.Chrome(options=options)
-    # driver = webdriver.Chrome()
+    # options = webdriver.ChromeOptions()
+    # options.add_argument("--headless=new")
+    # driver = webdriver.Chrome(options=options)
+
     # CONNECT SELENIUM TO WEB URL
     driver.get(url)
 
     # DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS
     timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
-
-    # READS KEYWORDS FROM TEXT FILE AND STORES IN LIST 'KEYWORDS'
-    file = open('static/keywords.txt', 'r')
-    lines = file.read()
-    keywords = lines.split('\n')
 
     # CLICKING AGREEMENTS AND PREFERENCES:
     # CLICK AGE AGREEMENT BUTTON
@@ -74,27 +68,24 @@ def run(selected_keywords):
                 pass
             # SAVES URLS TO LIST "LINKS" - DECLARED ON LINE 76
             links.append(urls)
-            time.sleep(5)
+            time.sleep(1)
         # CLICK THE NEXT PAGE - GOES THROUGH FOR LOOP TO GRAB LINKS ON ALL PAGES
         next_page = driver.find_element("id", "paginationNext")
         driver.execute_script("arguments[0].click();", next_page)
+        time.sleep(2)
         pageCounter += 1
 
     # COUNTS THROUGH URLS IN LIST
     counter = 0
 
     for urls in links:
-        # SETS COUNTER TO LINKS
+        # SETS COUNTER TO LINKS TO ITERATE THROUGH LIST
         driver.get(links[counter])
-        # INCREMENTS COUNTER AFTER APPENDS INFO FROM AD
-        counter += 1
-
-        # GRAB AD DESCRIPTION
-        description = driver.find_element(By.CLASS_NAME, 'postbody').text
-        time.sleep(2)
         # CHECKS IF KEYWORD IS IN DESCRIPTION - IF KEYWORD IS PRESENT, APPENDS DATA
-        for keyword in keywords:
-            if keyword in description:
+        for keyword in selected_keywords:
+            # GRAB AD DESCRIPTION
+            description = driver.find_element(By.CLASS_NAME, 'postbody').text
+            if keyword in description.lower():
                 page_url = driver.current_url
                 time.sleep(2)
 
@@ -121,18 +112,18 @@ def run(selected_keywords):
                 driver.set_window_size(S('Width'), S('Height'))
 
                 # SCREENSHOT LISTING
-                screenshot_name = f"({counter})megapersonals_keyword_{keyword.replace(' ', '_')}.png"
-                driver.save_screenshot(screenshot_name)
+                screenshot_name = f"({counter})_{timestamps}_megapersonals.png"
+                driver.save_screenshot(pathlib.Path.home() / f"Desktop/megapersonals/screenshots/{screenshot_name}")
                 break
+        # INCREMENTS COUNTER AFTER APPENDS INFO FROM AD
+        counter += 1
 
     # SET UP COLUMNS FOR EXCEL FILE
     columns = ('counter', 'url', 'title', 'age', 'description', 'phone number', 'matching keyword')
     df = pd.DataFrame(LIST, columns=columns)
 
     # EXPORT TO EXCEL FILE
-    df.to_excel("megapersonals({timestamps}).xlsx",
-                index=False)
+    df.to_excel(pathlib.Path.home() / f"Desktop/megapersonals/excel_files/megapersonals({timestamps}).xlsx", index=False)
     print(f'megapersonals({timestamps}).xlsx exported.')
-    return LIST
     # CLOSE WEBDRIVER
     driver.close()

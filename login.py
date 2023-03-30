@@ -79,7 +79,7 @@ def run_scrapers(websites, keywords):
     if "skip_the_games" in websites:
         # Call the function from your skip_the_games script
         # Make sure to import your skip_the_games module at the beginning of your main Flask app file
-        stg_results = skip_the_games.run(keywords)
+        stg_results = skip_the_games.call(keywords)
         results.extend(stg_results)
 
     return results
