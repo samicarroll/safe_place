@@ -28,23 +28,30 @@ def run(selected_keywords):
         'Chrome/108.0.0.0 Mobile Safari/537.36 Edg/108.0.1462.54'
     }
 
+    # SET UP HEADLESS PAGE
     options = webdriver.ChromeOptions()
     # options.add_argument("--headless=new")
     driver = uc.Chrome(options=options)
+    # driver = uc.Chrome()
     driver.get(url)
     time.sleep(5)
 
+    # WAIT FOR ELEMENTS TO BE CLICKABLE
     wait = WebDriverWait(driver, 10)
 
+    # LIST FOR KEYWORDS
     file = open('static/keywords.txt', 'r')
     lines = file.read()
     keywords = lines.split('\n')
     driver.refresh()
 
+    # SELECT PREFERENCES
+    # SELF-IDENTIFICATION (MALE, WOMAN, ETC.)
     identification = Select(driver.find_element(By.NAME, 'input_search_client'))
     identification.select_by_value('men')
     driver.implicitly_wait(10)
 
+    # LOOKING FOR: ESCORT,
     category = Select(driver.find_element(By.NAME, 'input_search_category'))
     category.select_by_value('female-escorts')
     driver.implicitly_wait(10)
@@ -52,10 +59,10 @@ def run(selected_keywords):
 
     posts = driver.find_elements(By.CSS_SELECTOR, 'html.no-js body div table.two-col-wrap tbody tr '
                                                   'td#gallery_view.listings-with-sidebar.list-search-results.gallery div.full-width '
-                                                  'div.small-16.columns div.clsfds-display-mode.gallery div.day-gallery [href]')
+                                                  'div.small-16.columns div.clsfds-display-mode.gallery div.day-gallery ['
+                                                  'href]')
     dupLinks = [post.get_attribute('href') for post in posts]
     links = [*set(dupLinks)]
-    print(links)
     counter = 0
 
     for urls in links:
@@ -86,9 +93,11 @@ def run(selected_keywords):
                 screenshot_name = f"({counter})skipthegames_keyword_{keyword.replace(' ', '_')}_({timestamps}).png"
                 driver.save_screenshot(pathlib.Path.home() / f"Desktop/skipthegames/screenshots/{screenshot_name}")
                 break
+
             # SET SCREENSHOT SIZE
             S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
             driver.set_window_size(S('Width'), S('Height'))
+
         counter += 1
     # SET UP COLUMNS FOR EXCEL FILE
     columns = ('Screenshot Number', 'URL', 'Title', 'Phone Number', 'Matching Keyword')
@@ -98,5 +107,5 @@ def run(selected_keywords):
     df.to_excel(pathlib.Path.home() / f"Desktop/skipthegames/excel_files/skipthegames({timestamps}).xlsx", index=False)
     print(f'skipthegames({timestamps}).xlsx exported.')
 
+    # CLOSE WEBDRIVER
     driver.close()
-
