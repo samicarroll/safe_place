@@ -122,7 +122,7 @@ def run(selected_keywords):
 
                 # SCREENSHOT LISTING
                 screenshot_name = f"({counter})megapersonals_keyword_{keyword.replace(' ', '_')}.png"
-                driver.save_screenshot(pathlib.Path.home() / f"Desktop/megapersonals/screenshots/screenshot_name")
+                driver.save_screenshot(screenshot_name)
                 break
 
     # SET UP COLUMNS FOR EXCEL FILE
@@ -130,7 +130,7 @@ def run(selected_keywords):
     df = pd.DataFrame(LIST, columns=columns)
 
     # EXPORT TO EXCEL FILE
-    df.to_excel(pathlib.Path.home() / f"Desktop/megapersonals/excel_files/megapersonals({timestamps}).xlsx",
+    df.to_excel("megapersonals({timestamps}).xlsx",
                 index=False)
     print(f'megapersonals({timestamps}).xlsx exported.')
     return LIST
