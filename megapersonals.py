@@ -13,7 +13,7 @@ def run(selected_keywords):
     url = 'https://megapersonals.eu/'
     driver = webdriver.Chrome()
     driver.get(url)
-    
+
     # SET UP HEADLESS PAGE
     options = webdriver.ChromeOptions()
     options.add_argument("--headless=new")
@@ -133,6 +133,6 @@ def run(selected_keywords):
     df.to_excel(pathlib.Path.home() / f"Desktop/megapersonals/excel_files/megapersonals({timestamps}).xlsx",
                 index=False)
     print(f'megapersonals({timestamps}).xlsx exported.')
-
+    return LIST
     # CLOSE WEBDRIVER
     driver.close()

@@ -106,6 +106,6 @@ def run(selected_keywords):
     # EXPORT TO EXCEL FILE
     df.to_excel(pathlib.Path.home() / f"Desktop/skipthegames/excel_files/skipthegames({timestamps}).xlsx", index=False)
     print(f'skipthegames({timestamps}).xlsx exported.')
-
+    return LIST
     # CLOSE WEBDRIVER
     driver.close()
