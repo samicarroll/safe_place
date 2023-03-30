@@ -12,14 +12,13 @@ def run(selected_keywords):
     LIST = []
     url = 'https://megapersonals.eu/'
     driver = webdriver.Chrome()
+    # CONNECT SELENIUM TO WEB URL
+    driver.get(url)
 
     # SET UP HEADLESS PAGE
     # options = webdriver.ChromeOptions()
     # options.add_argument("--headless=new")
     # driver = webdriver.Chrome(options=options)
-
-    # CONNECT SELENIUM TO WEB URL
-    driver.get(url)
 
     # DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS
     timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
@@ -99,7 +98,8 @@ def run(selected_keywords):
                 time.sleep(2)
 
                 phone_number = driver.find_element(By.CSS_SELECTOR,
-                                                   'body > div > div.post_preview_body > div.fromLeft.post_preview_phone '
+                                                   'body > div > div.post_preview_body > '
+                                                   'div.fromLeft.post_preview_phone'
                                                    '> span > a').get_attribute(
                     "innerHTML")
                 time.sleep(1)
