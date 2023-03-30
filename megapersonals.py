@@ -16,7 +16,7 @@ def run(selected_keywords):
     
     # SET UP HEADLESS PAGE
     options = webdriver.ChromeOptions()
-    # options.add_argument("--headless=new")
+    options.add_argument("--headless=new")
     driver = webdriver.Chrome(options=options)
     # driver = webdriver.Chrome()
     # CONNECT SELENIUM TO WEB URL
