@@ -58,6 +58,16 @@
             margin-left: 20px;
             margin-right: 20px;
         }
+
+        .column-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        
+        .column-half {
+            width: 45%;
+        }
     </style>
 </head>
 <body>
@@ -82,16 +92,24 @@
                 <input type="checkbox" id="websites-all" value="all"> All
             </div>
         </div>
-        <div className="column">
+        <div class="column">
             <label>Select keyword(s) to search:</label>
             <br>
-            {% for keyword in keywords %}
-            <div>
-                <input type="checkbox" name="keywords[]" value="{{ keyword }}"> {{ keyword }}
-            </div>
-            {% endfor %}
-            <div className="all-checkbox">
-                <input type="checkbox" id="keywords-all" value="all"> all
+            <div class="column-container">
+                <div class="column-half">
+                    {% for keyword in keywords[:10] %}
+                        <div>
+                            <input type="checkbox" name="keywords[]" value="{{ keyword }}"> {{ keyword }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="column-half">
+                    {% for keyword in keywords[10:] %}
+                        <div>
+                            <input type="checkbox" name="keywords[]" value="{{ keyword }}"> {{ keyword }}
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
         <input type="submit" value="Search">
