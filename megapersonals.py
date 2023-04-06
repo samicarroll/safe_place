@@ -77,9 +77,9 @@ def run(selected_keywords):
     # COUNTS THROUGH URLS IN LIST
     counter = 0
 
-    for urls in links:
+    for link in links:
         # SETS COUNTER TO LINKS TO ITERATE THROUGH LIST
-        driver.get(links[counter])
+        driver.get(link)
         # CHECKS IF KEYWORD IS IN DESCRIPTION - IF KEYWORD IS PRESENT, APPENDS DATA
         for keyword in selected_keywords:
             # GRAB AD DESCRIPTION
@@ -105,18 +105,16 @@ def run(selected_keywords):
                 time.sleep(1)
 
                 # APPEND CONTENTS TO LIST
-                LIST.append([counter, page_url, title, age, description, phone_number, keyword])
+                LIST.append([links.index(link), page_url, title, age, description, phone_number, keyword])
 
                 # SET SCREENSHOT SIZE
                 S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
                 driver.set_window_size(S('Width'), S('Height'))
 
                 # SCREENSHOT LISTING
-                screenshot_name = f"({counter})_{timestamps}_megapersonals.png"
+                screenshot_name = f"({links.index(link)})_{timestamps}_megapersonals.png"
                 driver.save_screenshot(pathlib.Path.home() / f"Desktop/megapersonals/screenshots/{screenshot_name}")
                 break
-        # INCREMENTS COUNTER AFTER APPENDS INFO FROM AD
-        counter += 1
 
     # SET UP COLUMNS FOR EXCEL FILE
     columns = ('counter', 'url', 'title', 'age', 'description', 'phone number', 'matching keyword')
