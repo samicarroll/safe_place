@@ -78,8 +78,9 @@ def run(selected_keywords):
     # COUNTS THROUGH URLS IN LIST
     counter = 0
 
-    for link in links:
-        print(f"Processing link {links.index(link) + 1}: {link}")  # Debugging print statement
+    for i in range(len(links)):
+        link = links[i]
+        print(f"Processing link {i + 1}: {link} ")  # Debugging print statement
         # SETS COUNTER TO LINKS TO ITERATE THROUGH LIST
         driver.get(link)
         # CHECKS IF KEYWORD IS IN DESCRIPTION - IF KEYWORD IS PRESENT, APPENDS DATA
