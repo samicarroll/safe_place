@@ -68,6 +68,7 @@ def run(selected_keywords):
             # SAVES URLS TO LIST "LINKS" - DECLARED ON LINE 76
             links.append(urls)
             time.sleep(1)
+        print(f"Page: {pageCounter + 1}, Links collected: {len(links)}")  # Debugging print statement
         # CLICK THE NEXT PAGE - GOES THROUGH FOR LOOP TO GRAB LINKS ON ALL PAGES
         next_page = driver.find_element("id", "paginationNext")
         driver.execute_script("arguments[0].click();", next_page)
@@ -78,6 +79,7 @@ def run(selected_keywords):
     counter = 0
 
     for link in links:
+        print(f"Processing link {links.index(link) + 1}: {link}")  # Debugging print statement
         # SETS COUNTER TO LINKS TO ITERATE THROUGH LIST
         driver.get(link)
         # CHECKS IF KEYWORD IS IN DESCRIPTION - IF KEYWORD IS PRESENT, APPENDS DATA
