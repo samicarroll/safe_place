@@ -49,13 +49,11 @@ def run(selected_keywords):
     driver.execute_script("arguments[0].click();", women_seeking_male)
     time.sleep(5)
 
-    # HOLDS LINKS
-    links = []
-
     # PULLS URLS FROM EACH LISTING
     pageCounter = 0
     while pageCounter <= 4:
         listings = driver.find_elements(By.CLASS_NAME, 'listadd')
+
         for listing in listings:
             try:
                 link = listing.find_element(By.TAG_NAME, 'a').get_attribute('href')
@@ -65,6 +63,8 @@ def run(selected_keywords):
             print(
                 f"Processing link {pageCounter * len(listings) + listings.index(listing) + 1}: {link}")  # Debugging print statement
             driver.get(link)
+
+            keyword_found = False
 
             for keyword in selected_keywords:
                 description = driver.find_element(By.CLASS_NAME, 'postbody').text
@@ -100,10 +100,18 @@ def run(selected_keywords):
                     # SCREENSHOT LISTING
                     screenshot_name = f"({pageCounter * len(listings) + listings.index(listing) + 1})_{timestamps}_megapersonals.png"
                     driver.save_screenshot(pathlib.Path.home() / f"Desktop/megapersonals/screenshots/{screenshot_name}")
+
+                    keyword_found = True
                     break
 
-            driver.back()  # Go back to the listings page after processing the link
+            if not keyword_found:
+                driver.back()
+            else:
+                driver.get(url)
 
+            time.sleep(1)
+
+        # CLICK THE NEXT PAGE - GOES THROUGH FOR LOOP TO GRAB LINKS ON ALL PAGES
         next_page = driver.find_element("id", "paginationNext")
         driver.execute_script("arguments[0].click();", next_page)
         time.sleep(2)
