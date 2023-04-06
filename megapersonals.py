@@ -78,8 +78,7 @@ def run(selected_keywords):
     # COUNTS THROUGH URLS IN LIST
     counter = 0
 
-    for i in range(len(links)):
-        link = links[i]
+    for i, link in enumerate(links):
         print(f"Processing link {i + 1}: {link} ")  # Debugging print statement
         # SETS COUNTER TO LINKS TO ITERATE THROUGH LIST
         driver.get(link)
