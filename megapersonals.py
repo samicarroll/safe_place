@@ -51,63 +51,68 @@ def run(selected_keywords):
 
     # PULLS URLS FROM EACH LISTING
     pageCounter = 0
+    links = []
+
     while pageCounter <= 4:
         listings = driver.find_elements(By.CLASS_NAME, 'listadd')
-        current_listing_index = 0
 
-        while current_listing_index < len(listings):
+        for listing in listings:
             try:
-                link = listings[current_listing_index].find_element(By.TAG_NAME, 'a').get_attribute('href')
+                link = listing.find_element(By.TAG_NAME, 'a').get_attribute('href')
+                links.append(link)
             except StaleElementReferenceException:
-                listings = driver.find_elements(By.CLASS_NAME, 'listadd')
                 continue
 
-            print(f"Processing link {pageCounter * len(listings) + current_listing_index + 1}: {link}")  # Debugging
-            driver.get(link)
-
-            for keyword in selected_keywords:
-                description = driver.find_element(By.CLASS_NAME, 'postbody').text
-                if keyword in description.lower():
-                    page_url = driver.current_url
-                    time.sleep(2)
-
-                    title = driver.find_element(By.CLASS_NAME, 'post_preview_title').text
-                    time.sleep(2)
-
-                    description = driver.find_element(By.CLASS_NAME, 'postbody').text
-                    time.sleep(2)
-
-                    age = driver.find_element(By.CLASS_NAME, 'post_preview_age').text
-                    time.sleep(2)
-
-                    phone_number = driver.find_element(By.CSS_SELECTOR,
-                                                       'body > div > div.post_preview_body > '
-                                                       'div.fromLeft.post_preview_phone'
-                                                       '> span > a').get_attribute("innerHTML")
-                    time.sleep(1)
-
-                    # APPEND CONTENTS TO LIST
-                    LIST.append([pageCounter * len(listings) + current_listing_index + 1, page_url, title, age,
-                                 description, phone_number, keyword])
-
-                    # SET SCREENSHOT SIZE
-                    S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
-                    driver.set_window_size(S('Width'), S('Height'))
-
-                    # SCREENSHOT LISTING
-                    screenshot_name = f"({pageCounter * len(listings) + current_listing_index + 1})_{timestamps}_megapersonals.png"
-                    driver.save_screenshot(pathlib.Path.home() / f"Desktop/megapersonals/screenshots/{screenshot_name}")
-                    break
-
-            driver.back()
-            time.sleep(1)
-            current_listing_index += 1
-
         # CLICK THE NEXT PAGE - GOES THROUGH FOR LOOP TO GRAB LINKS ON ALL PAGES
-        next_page = driver.find_element("id", "paginationNext")
-        driver.execute_script("arguments[0].click();", next_page)
-        time.sleep(2)
+        if pageCounter < 4:
+            next_page = driver.find_element("id", "paginationNext")
+            driver.execute_script("arguments[0].click();", next_page)
+            time.sleep(2)
+
         pageCounter += 1
+
+    link_counter = 0
+
+    for link in links:
+        print(f"Processing link {link_counter + 1}: {link}")  # Debugging print statement
+        driver.get(link)
+
+        for keyword in selected_keywords:
+            description = driver.find_element(By.CLASS_NAME, 'postbody').text
+            if keyword in description.lower():
+                page_url = driver.current_url
+                time.sleep(2)
+
+                title = driver.find_element(By.CLASS_NAME, 'post_preview_title').text
+                time.sleep(2)
+
+                description = driver.find_element(By.CLASS_NAME, 'postbody').text
+                time.sleep(2)
+
+                age = driver.find_element(By.CLASS_NAME, 'post_preview_age').text
+                time.sleep(2)
+
+                phone_number = driver.find_element(By.CSS_SELECTOR,
+                                                   'body > div > div.post_preview_body > '
+                                                   'div.fromLeft.post_preview_phone'
+                                                   '> span > a').get_attribute(
+                    "innerHTML")
+                time.sleep(1)
+
+                # APPEND CONTENTS TO LIST
+                LIST.append([link_counter + 1, page_url, title, age, description, phone_number, keyword])
+
+                # SET SCREENSHOT SIZE
+                S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
+                driver.set_window_size(S('Width'), S('Height'))
+
+                # SCREENSHOT LISTING
+                screenshot_name = f"({link_counter + 1})_{timestamps}_megapersonals.png"
+                driver.save_screenshot(pathlib.Path.home() / f"Desktop/megapersonals/screenshots/{screenshot_name}")
+
+                break
+
+        link_counter += 1
 
     # SET UP COLUMNS FOR EXCEL FILE
     columns = ('counter', 'url', 'title', 'age', 'description', 'phone number', 'matching keyword')
