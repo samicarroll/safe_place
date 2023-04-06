@@ -53,14 +53,16 @@ def run(selected_keywords):
     pageCounter = 0
     while pageCounter <= 4:
         listings = driver.find_elements(By.CLASS_NAME, 'listadd')
+        current_listing_index = 0
 
-        for listing in listings:
+        while current_listing_index < len(listings):
             try:
-                link = listing.find_element(By.TAG_NAME, 'a').get_attribute('href')
+                link = listings[current_listing_index].find_element(By.TAG_NAME, 'a').get_attribute('href')
             except StaleElementReferenceException:
+                listings = driver.find_elements(By.CLASS_NAME, 'listadd')
                 continue
 
-            print(f"Processing link {pageCounter * len(listings) + listings.index(listing) + 1}: {link}")  # Debugging print statement
+            print(f"Processing link {pageCounter * len(listings) + current_listing_index + 1}: {link}")  # Debugging
             driver.get(link)
 
             for keyword in selected_keywords:
@@ -81,12 +83,11 @@ def run(selected_keywords):
                     phone_number = driver.find_element(By.CSS_SELECTOR,
                                                        'body > div > div.post_preview_body > '
                                                        'div.fromLeft.post_preview_phone'
-                                                       '> span > a').get_attribute(
-                        "innerHTML")
+                                                       '> span > a').get_attribute("innerHTML")
                     time.sleep(1)
 
                     # APPEND CONTENTS TO LIST
-                    LIST.append([pageCounter * len(listings) + listings.index(listing) + 1, page_url, title, age,
+                    LIST.append([pageCounter * len(listings) + current_listing_index + 1, page_url, title, age,
                                  description, phone_number, keyword])
 
                     # SET SCREENSHOT SIZE
@@ -94,12 +95,13 @@ def run(selected_keywords):
                     driver.set_window_size(S('Width'), S('Height'))
 
                     # SCREENSHOT LISTING
-                    screenshot_name = f"({pageCounter * len(listings) + listings.index(listing) + 1})_{timestamps}_megapersonals.png"
+                    screenshot_name = f"({pageCounter * len(listings) + current_listing_index + 1})_{timestamps}_megapersonals.png"
                     driver.save_screenshot(pathlib.Path.home() / f"Desktop/megapersonals/screenshots/{screenshot_name}")
                     break
 
             driver.back()
             time.sleep(1)
+            current_listing_index += 1
 
         # CLICK THE NEXT PAGE - GOES THROUGH FOR LOOP TO GRAB LINKS ON ALL PAGES
         next_page = driver.find_element("id", "paginationNext")
