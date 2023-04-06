@@ -60,11 +60,8 @@ def run(selected_keywords):
             except StaleElementReferenceException:
                 continue
 
-            print(
-                f"Processing link {pageCounter * len(listings) + listings.index(listing) + 1}: {link}")  # Debugging print statement
+            print(f"Processing link {pageCounter * len(listings) + listings.index(listing) + 1}: {link}")  # Debugging print statement
             driver.get(link)
-
-            keyword_found = False
 
             for keyword in selected_keywords:
                 description = driver.find_element(By.CLASS_NAME, 'postbody').text
@@ -89,9 +86,8 @@ def run(selected_keywords):
                     time.sleep(1)
 
                     # APPEND CONTENTS TO LIST
-                    LIST.append(
-                        [pageCounter * len(listings) + listings.index(listing) + 1, page_url, title, age, description,
-                         phone_number, keyword])
+                    LIST.append([pageCounter * len(listings) + listings.index(listing) + 1, page_url, title, age,
+                                 description, phone_number, keyword])
 
                     # SET SCREENSHOT SIZE
                     S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
@@ -100,15 +96,9 @@ def run(selected_keywords):
                     # SCREENSHOT LISTING
                     screenshot_name = f"({pageCounter * len(listings) + listings.index(listing) + 1})_{timestamps}_megapersonals.png"
                     driver.save_screenshot(pathlib.Path.home() / f"Desktop/megapersonals/screenshots/{screenshot_name}")
-
-                    keyword_found = True
                     break
 
-            if not keyword_found:
-                driver.back()
-            else:
-                driver.get(url)
-
+            driver.back()
             time.sleep(1)
 
         # CLICK THE NEXT PAGE - GOES THROUGH FOR LOOP TO GRAB LINKS ON ALL PAGES
