@@ -16,9 +16,9 @@ def run(selected_keywords):
     driver.get(url)
 
     # SET UP HEADLESS PAGE
-    # options = webdriver.ChromeOptions()
-    # options.add_argument("--headless=new")
-    # driver = webdriver.Chrome(options=options)
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless=new")
+    driver = webdriver.Chrome(options=options)
 
     # DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS
     timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
