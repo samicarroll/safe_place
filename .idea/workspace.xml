@@ -110,7 +110,7 @@
       <workItem from="1680889760649" duration="209000" />
       <workItem from="1680890290893" duration="56000" />
       <workItem from="1680890430864" duration="32000" />
-      <workItem from="1680891390732" duration="701000" />
+      <workItem from="1680891390732" duration="1380000" />
     </task>
     <servers />
   </component>
@@ -129,7 +129,7 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/safe_place$login.coverage" NAME="login Coverage Results" MODIFIED="1676052209507" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/safe_place$login.coverage" NAME="login Coverage Results" MODIFIED="1680892271991" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/safe_place_main$login.coverage" NAME="login Coverage Results" MODIFIED="1679973702416" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/safe_place_main$megapersonals.coverage" NAME="megapersonals Coverage Results" MODIFIED="1679967633494" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
