@@ -2,12 +2,19 @@ import secrets
 import datetime
 import megapersonals
 import skip_the_games
-
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+from selenium import webdriver
 from flask import Flask, render_template, request, redirect, session
 from flask import flash
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
+
+
+def setup():
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service)
 
 
 @app.route('/')
@@ -98,4 +105,5 @@ def search_results():
 
 if __name__ == '__main__':
     from waitress import serve
+
     app.run()
