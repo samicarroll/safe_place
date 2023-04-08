@@ -46,3 +46,4 @@ future==0.18.3
 websockets==11.0
 waitress==2.1.2
 webdriver_manager==3.8.5
+chromedriver-binary==112.0.5615.49.0
