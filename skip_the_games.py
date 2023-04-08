@@ -29,7 +29,7 @@ def run(selected_keywords):
     options.add_argument("--headless=new")
     options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     chromedriver_binary = "/Users/samicarroll/Documents/codingProjects/pythonProjects/safe_place/chromedriver"
-    driver = uc.Chrome(chromedriver_binary, chrome_options=options)
+    driver = uc.Chrome(executable_path=chromedriver_binary, chrome_options=options)
     # driver = uc.Chrome()
     driver.get(url)
     time.sleep(5)

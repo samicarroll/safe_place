@@ -20,7 +20,7 @@ def run(selected_keywords):
     options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     chromedriver_binary = "/Users/samicarroll/Documents/codingProjects/pythonProjects/safe_place/chromedriver"
     options.add_argument("--headless=new")
-    driver = webdriver.Chrome(chromedriver_binary, chrome_options=options)
+    driver = webdriver.Chrome(executable_path=chromedriver_binary, chrome_options=options)
 
     # DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS
     timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
