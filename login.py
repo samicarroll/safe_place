@@ -10,12 +10,9 @@ from flask import flash
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
-
-
-def setup():
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service)
-
+options = webdriver.ChromeOptions()
+options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+chromedriver_binary = "/Applications/Google Chrome.app/Contents/MacOS/chromedriver"
 
 @app.route('/')
 def index():

@@ -27,7 +27,9 @@ def run(selected_keywords):
     # SET UP HEADLESS PAGE
     options = webdriver.ChromeOptions()
     options.add_argument("--headless=new")
-    driver = uc.Chrome(options=options)
+    options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    chromedriver_binary = "/Applications/Google Chrome.app/Contents/MacOS/chromedriver"
+    driver = uc.Chrome(chromedriver_binary, chrome_options=options)
     # driver = uc.Chrome()
     driver.get(url)
     time.sleep(5)
