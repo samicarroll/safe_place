@@ -27,7 +27,7 @@ def run(selected_keywords):
 
     # CLICKING AGREEMENTS AND PREFERENCES:
     # CLICK AGE AGREEMENT BUTTON
-    click = driver.find_element("id", 'ageagree')
+    click = driver.find_element(By.ID, "ageagree")
     driver.execute_script("arguments[0].click();", click)
     time.sleep(5)
 

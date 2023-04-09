@@ -1,0 +1,70 @@
+body {
+  background-image: url("images.jpg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+input[type="text"], input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  box-sizing: border-box;
+}
+
+button[type="submit"] {
+  width: 70%;
+  padding: 10px;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button[type="cancel"] {
+  width: 100%;
+  padding: 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+table {
+  font-size: 1.2em;
+}
+
+th, td {
+  padding: 0.5em;
+  text-align: center;
+}

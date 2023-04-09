@@ -8,11 +8,23 @@ from selenium import webdriver
 from flask import Flask, render_template, request, redirect, session
 from flask import flash
 
+
+def resource_path(relative):
+    return os.path.join(
+        os.environ.get(
+            "_MEIPASS2",
+            os.path.abspath(".")
+        ),
+        relative
+    )
+
+
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 options = webdriver.ChromeOptions()
 options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 chromedriver_binary = "/Applications/Google Chrome.app/Contents/MacOS/chromedriver"
+
 
 @app.route('/')
 def index():
@@ -33,7 +45,7 @@ def login():
 
 
 def get_keywords():
-    with open('static/keywords.txt', 'r') as f:
+    with open(resource_path('static/keywords.txt')) as f:
         keywords = f.read().splitlines()
     return keywords
 

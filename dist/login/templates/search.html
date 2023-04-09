@@ -1,0 +1,152 @@
+<html>
+<head>
+    <title>Search Page</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        form {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: space-between;
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 5px #888;
+            width: 85%;
+            height: auto;
+        }
+
+        label {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+
+        .column label {
+            margin-bottom: 5px;
+            padding-left: 5px;
+        }
+
+        .column input[type=checkbox] {
+            margin-top: 5px;
+        }
+
+        select {
+            width: 200px;
+            height: 150px;
+            font-size: 18px;
+            border-radius: 5px;
+            overflow-y: scroll;
+        }
+
+        input[type=submit] {
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .all-checkbox {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 30px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        .column-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .column-half {
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Display flashed messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-info">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('search_results') }}" method="POST">
+        <div className="column">
+            <label>Select website(s) to search:</label>
+            <br>
+            <input type="checkbox" name="websites[]" value="mega-personals"> MegaPersonals<br>
+            <input type="checkbox" name="websites[]" value="skip_the_games"> Skip The Games<br>
+            <div className="all-checkbox">
+                <input type="checkbox" id="websites-all" value="all"> All
+            </div>
+        </div>
+        <div class="column">
+            <label>Select keyword(s) to search:</label>
+            <br>
+            <div class="column-container">
+                <div class="column-half">
+                    {% for keyword in keywords[:10] %}
+                        <div>
+                            <input type="checkbox" name="keywords[]" value="{{ keyword }}"> {{ keyword }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="column-half">
+                    {% for keyword in keywords[10:] %}
+                        <div>
+                            <input type="checkbox" name="keywords[]" value="{{ keyword }}"> {{ keyword }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="all-checkbox">
+                <input type="checkbox" id="keywords-all" value="all"> all
+            </div>
+        </div>
+         <div style="margin-top: 20px;">
+            <input type="submit" value="Search">
+        </div>
+    </form>
+</body>
+<script>
+    document.getElementById("websites-all").addEventListener("click", function () {
+        const checkboxes = document.querySelectorAll('input[name="websites[]"]');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = document.getElementById("websites-all").checked;
+        });
+    });
+
+    document.getElementById("keywords-all").addEventListener("click", function () {
+        const checkboxes = document.querySelectorAll('input[name="keywords[]"]');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = document.getElementById("keywords-all").checked;
+        });
+    });
+</script>
+</html>
