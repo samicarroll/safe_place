@@ -2,12 +2,28 @@ import secrets
 import datetime
 import megapersonals
 import skip_the_games
-
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+from selenium import webdriver
 from flask import Flask, render_template, request, redirect, session
 from flask import flash
 
+
+def resource_path(relative):
+    return os.path.join(
+        os.environ.get(
+            "_MEIPASS2",
+            os.path.abspath(".")
+        ),
+        relative
+    )
+
+
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
+options = webdriver.ChromeOptions()
+options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+chromedriver_binary = "/Applications/Google Chrome.app/Contents/MacOS/chromedriver"
 
 
 @app.route('/')
@@ -29,7 +45,7 @@ def login():
 
 
 def get_keywords():
-    with open('static/keywords.txt', 'r') as f:
+    with open(resource_path('static/keywords.txt')) as f:
         keywords = f.read().splitlines()
     return keywords
 
@@ -69,18 +85,14 @@ def search():
 
 def run_scrapers(websites, keywords):
     results = []
-
     if "mega-personals" in websites:
         # Call the function from your megapersonals script
         # Make sure to import your megapersonals module at the beginning of your main Flask app file
-        mega_results = megapersonals.run(keywords)
-        results.extend(mega_results)
-
+        megapersonals.run(keywords)
     if "skip_the_games" in websites:
         # Call the function from your skip_the_games script
         # Make sure to import your skip_the_games module at the beginning of your main Flask app file
-        stg_results = skip_the_games.run(keywords)
-        results.extend(stg_results)
+        skip_the_games.run(keywords)
 
     return results
 
@@ -97,4 +109,6 @@ def search_results():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    from waitress import serve
+
+    app.run()
