@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dadd73c1-0dce-48cc-b7ad-adbb4a57f076" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/megapersonals.py" beforeDir="false" afterPath="$PROJECT_DIR$/megapersonals.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/login/static copy/images.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/login/static copy/keywords.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/login/static copy/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login.py" beforeDir="false" afterPath="$PROJECT_DIR$/login.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,6 +137,10 @@
       <workItem from="1681074547636" duration="295000" />
       <workItem from="1681074851151" duration="280000" />
       <workItem from="1681075136703" duration="4259000" />
+      <workItem from="1681086486738" duration="77000" />
+      <workItem from="1681086571485" duration="243000" />
+      <workItem from="1681086821165" duration="81000" />
+      <workItem from="1681086909651" duration="1113000" />
     </task>
     <servers />
   </component>
@@ -158,7 +166,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/safe_place$login.coverage" NAME="login Coverage Results" MODIFIED="1680892271991" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/safe_place_main$megapersonals.coverage" NAME="megapersonals Coverage Results" MODIFIED="1679967633494" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/safe_place_main$login.coverage" NAME="login Coverage Results" MODIFIED="1679973702416" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/safe_place_main$megapersonals.coverage" NAME="megapersonals Coverage Results" MODIFIED="1679967633494" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

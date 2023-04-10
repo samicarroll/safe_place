@@ -2,6 +2,7 @@ import secrets
 import datetime
 import megapersonals
 import skip_the_games
+import os
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
@@ -110,5 +111,4 @@ def search_results():
 
 if __name__ == '__main__':
     from waitress import serve
-
-    app.run()
+    serve(app, host="0.0.0.0", port=8080)
