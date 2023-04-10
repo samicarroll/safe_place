@@ -5,6 +5,7 @@ import undetected_chromedriver as uc
 import ssl
 import re
 import pathlib
+import selenium
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
@@ -25,7 +26,7 @@ def run(selected_keywords):
     }
 
     # SET UP HEADLESS PAGE
-    options = webdriver.ChromeOptions()
+    options = selenium.webdriver.ChromeOptions()
     options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
     options.add_argument("--headless=new")

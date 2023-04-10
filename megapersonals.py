@@ -2,6 +2,8 @@ import datetime
 import time
 import pandas as pd
 import pathlib
+
+import selenium
 from selenium import webdriver
 from selenium.common import StaleElementReferenceException
 from selenium.webdriver.common.by import By
@@ -11,11 +13,9 @@ def run(selected_keywords):
     # SET UP LIST AND MEGAPERSONALS URL
     LIST = []
     url = 'https://megapersonals.eu/'
-    driver = webdriver.Chrome()
-    # CONNECT SELENIUM TO WEB URL
 
     # SET UP HEADLESS PAGE
-    options = webdriver.ChromeOptions()
+    options = selenium.webdriver.ChromeOptions()
     options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
     options.add_argument("--headless=new")

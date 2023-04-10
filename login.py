@@ -1,5 +1,7 @@
 import secrets
 import datetime
+
+import selenium
 import megapersonals
 import skip_the_games
 import os
@@ -22,9 +24,10 @@ def resource_path(relative):
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
-options = webdriver.ChromeOptions()
+options = selenium.webdriver.ChromeOptions()
 options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 chromedriver_binary = "/Applications/Google Chrome.app/Contents/MacOS/chromedriver"
+driver = webdriver.Chrome(executable_path=chromedriver_binary, chrome_options=options)
 
 
 @app.route('/')
@@ -111,4 +114,5 @@ def search_results():
 
 if __name__ == '__main__':
     from waitress import serve
+
     serve(app, host="0.0.0.0", port=8080)
