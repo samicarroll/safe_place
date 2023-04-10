@@ -85,18 +85,14 @@ def search():
 
 def run_scrapers(websites, keywords):
     results = []
-
     if "mega-personals" in websites:
         # Call the function from your megapersonals script
         # Make sure to import your megapersonals module at the beginning of your main Flask app file
-        mega_results = megapersonals.run(keywords)
-        results.extend(mega_results)
-
+        megapersonals.run(keywords)
     if "skip_the_games" in websites:
         # Call the function from your skip_the_games script
         # Make sure to import your skip_the_games module at the beginning of your main Flask app file
-        stg_results = skip_the_games.run(keywords)
-        results.extend(stg_results)
+        skip_the_games.run(keywords)
 
     return results
 

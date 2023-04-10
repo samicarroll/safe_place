@@ -59,7 +59,7 @@
  [],
  False,
  False,
- 1681076387,
+ 1681079440,
  [('run',
    '/Users/zackprice/Documents/GitHub/safe_place/venv/lib/python3.9/site-packages/PyInstaller/bootloader/Darwin-64bit/run',
    'EXECUTABLE')])

@@ -5,7 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dadd73c1-0dce-48cc-b7ad-adbb4a57f076" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/login 2.spec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/login/Analysis-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/login/Analysis-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/login/COLLECT-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/login/COLLECT-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/login/EXE-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/login/EXE-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/login/PYZ-00.pyz" beforeDir="false" afterPath="$PROJECT_DIR$/build/login/PYZ-00.pyz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/login/base_library.zip" beforeDir="false" afterPath="$PROJECT_DIR$/build/login/base_library.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/login/login" beforeDir="false" afterPath="$PROJECT_DIR$/build/login/login" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/login/login.pkg" beforeDir="false" afterPath="$PROJECT_DIR$/build/login/login.pkg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/login/base_library.zip" beforeDir="false" afterPath="$PROJECT_DIR$/dist/login/base_library.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/login/login" beforeDir="false" afterPath="$PROJECT_DIR$/dist/login/login" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login.py" beforeDir="false" afterPath="$PROJECT_DIR$/login.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/megapersonals.py" beforeDir="false" afterPath="$PROJECT_DIR$/megapersonals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/skip_the_games.py" beforeDir="false" afterPath="$PROJECT_DIR$/skip_the_games.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +145,7 @@
       <workItem from="1681052278502" duration="319000" />
       <workItem from="1681074547636" duration="295000" />
       <workItem from="1681074851151" duration="280000" />
-      <workItem from="1681075136703" duration="1061000" />
+      <workItem from="1681075136703" duration="3909000" />
     </task>
     <servers />
   </component>

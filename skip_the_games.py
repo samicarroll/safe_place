@@ -58,6 +58,7 @@ def run(selected_keywords):
     counter = 0
 
     for urls in links:
+        print(f"Processing link {counter}: {link}")
         links[:] = (urls for urls in links if not urls.startswith('https://skipthegames.com/reply/meetup/'))
         driver.get(links[counter])
         time.sleep(5)

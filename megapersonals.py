@@ -13,7 +13,6 @@ def run(selected_keywords):
     url = 'https://megapersonals.eu/'
     driver = webdriver.Chrome()
     # CONNECT SELENIUM TO WEB URL
-    driver.get(url)
 
     # SET UP HEADLESS PAGE
     options = webdriver.ChromeOptions()
@@ -21,6 +20,7 @@ def run(selected_keywords):
     chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
     options.add_argument("--headless=new")
     driver = webdriver.Chrome(executable_path=chromedriver_binary, chrome_options=options)
+    driver.get(url)
 
     # DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS
     timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
@@ -28,7 +28,7 @@ def run(selected_keywords):
     # CLICKING AGREEMENTS AND PREFERENCES:
     # CLICK AGE AGREEMENT BUTTON
     time.sleep(5)
-    click = driver.find_element(By.ID, "ageagree")
+    click = driver.find_element(By.CSS_SELECTOR, "#ageagree")
     driver.execute_script("arguments[0].click();", click)
     time.sleep(5)
 
@@ -81,7 +81,7 @@ def run(selected_keywords):
         driver.get(link)
 
         for keyword in selected_keywords:
-            description = driver.find_element(By.CLASS_NAME, 'postbody').text
+            description = driver.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > span').text
             if keyword in description.lower():
                 page_url = driver.current_url
                 time.sleep(2)
