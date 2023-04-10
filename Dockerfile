@@ -22,4 +22,4 @@ ENV FLASK_APP=login.py
 ENV FLASK_RUN_HOST=0.0.0.0
 
 # Run login.py when the container launches
-CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0", "--port=50"]
+CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0", "--port=5000"]
