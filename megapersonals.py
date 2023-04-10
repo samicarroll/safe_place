@@ -77,7 +77,7 @@ def run(selected_keywords):
     link_counter = 0
 
     for link in links:
-        print(f"Processing link {link_counter + 1}: {link}")  # Debugging print statement
+        print(f"Processing link {link_counter}: {link}")  # Debugging print statement
         driver.get(link)
 
         for keyword in selected_keywords:
@@ -110,7 +110,7 @@ def run(selected_keywords):
                 driver.set_window_size(S('Width'), S('Height'))
 
                 # SCREENSHOT LISTING
-                screenshot_name = f"({link_counter + 1})_{timestamps}_megapersonals.png"
+                screenshot_name = f"({link_counter})_{timestamps}_megapersonals.png"
                 driver.save_screenshot(pathlib.Path.home() / f"Desktop/megapersonals/screenshots/{screenshot_name}")
 
                 break
@@ -118,7 +118,7 @@ def run(selected_keywords):
         link_counter += 1
 
     # SET UP COLUMNS FOR EXCEL FILE
-    columns = ('counter', 'url', 'title', 'age', 'description', 'phone number', 'matching keyword')
+    columns = ('screenshot number', 'url', 'title', 'age', 'description', 'phone number', 'matching keyword')
     df = pd.DataFrame(LIST, columns=columns)
 
     # EXPORT TO EXCEL FILE
