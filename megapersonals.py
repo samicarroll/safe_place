@@ -20,7 +20,7 @@ def run(selected_keywords):
     # chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
     options.add_argument("--headless=new")
     # executable_path=chromedriver_binary, inside next line
-    driver = webdriver.Chrome(chrome_options=options)
+    driver = webdriver.Chrome("/Users/samicarroll/Downloads/chromedriver_mac64-2/chromedriver", chrome_options=options)
     driver.get(url)
 
     # DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS
