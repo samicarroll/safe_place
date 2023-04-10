@@ -26,7 +26,7 @@ app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 options = selenium.webdriver.ChromeOptions()
 options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-chromedriver_binary = "/Applications/Google Chrome.app/Contents/MacOS/chromedriver"
+chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
 driver = webdriver.Chrome(executable_path=chromedriver_binary, chrome_options=options)
 
 
