@@ -16,10 +16,11 @@ def run(selected_keywords):
 
     # SET UP HEADLESS PAGE
     options = selenium.webdriver.ChromeOptions()
-    options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-    chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
+    # options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    # chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
     options.add_argument("--headless=new")
-    driver = webdriver.Chrome(executable_path=chromedriver_binary, chrome_options=options)
+    # executable_path=chromedriver_binary, inside next line
+    driver = webdriver.Chrome(chrome_options=options)
     driver.get(url)
 
     # DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS
