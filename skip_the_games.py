@@ -29,13 +29,14 @@ def run(selected_keywords):
 
     # SET UP HEADLESS PAGE
     options = selenium.webdriver.ChromeOptions()
-    service_object = Service(binary_path)
+    chromedriver_path = "/Users/samicarroll/Documents/codingProjects/pythonProjects/safe_place/venv/lib/python3.9" \
+                        "/site-packages/chromedriver_py/chromedriver_mac64"
     # options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     # chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
     options.add_argument("--headless=new")
     options.add_argument("--no-default-browser-check")
     # executable_path=chromedriver_binary, inside next line
-    driver = uc.Chrome(service=service_object, chrome_options=options)
+    driver = uc.Chrome(executable_path=chromedriver_path, chrome_options=options)
     driver.get(url)
     time.sleep(5)
 
