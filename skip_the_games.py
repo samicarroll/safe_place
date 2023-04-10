@@ -6,6 +6,8 @@ import ssl
 import re
 import pathlib
 import selenium
+from selenium.webdriver.chrome.service import Service
+from chromedriver_py import binary_path
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
@@ -27,12 +29,13 @@ def run(selected_keywords):
 
     # SET UP HEADLESS PAGE
     options = selenium.webdriver.ChromeOptions()
+    service_object = Service(binary_path)
     # options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     # chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
     options.add_argument("--headless=new")
     options.add_argument("--no-default-browser-check")
     # executable_path=chromedriver_binary, inside next line
-    driver = uc.Chrome(executable_path="/Applications/Google Chrome.app/Contents/chromedriver", chrome_options=options)
+    driver = uc.Chrome(service=service_object, chrome_options=options)
     driver.get(url)
     time.sleep(5)
 
