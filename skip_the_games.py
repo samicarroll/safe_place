@@ -30,8 +30,9 @@ def run(selected_keywords):
     # options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     # chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
     options.add_argument("--headless=new")
+    options.add_argument("--no-default-browser-check")
     # executable_path=chromedriver_binary, inside next line
-    driver = uc.Chrome(driver_executable_path="/Applications/Google Chrome.app/Contents/chromedriver", chrome_options=options)
+    driver = uc.Chrome(executable_path="/Applications/Google Chrome.app/Contents/chromedriver", chrome_options=options)
     driver.get(url)
     time.sleep(5)
 
