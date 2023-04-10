@@ -26,9 +26,9 @@ def run(selected_keywords):
 
     # SET UP HEADLESS PAGE
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless=new")
     options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
+    options.add_argument("--headless=new")
     driver = uc.Chrome(executable_path=chromedriver_binary, chrome_options=options)
     # driver = uc.Chrome()
     driver.get(url)
@@ -58,7 +58,7 @@ def run(selected_keywords):
     counter = 0
 
     for urls in links:
-        print(f"Processing link {counter}: {link}")
+        print(f"Processing link {counter}: {links}")
         links[:] = (urls for urls in links if not urls.startswith('https://skipthegames.com/reply/meetup/'))
         driver.get(links[counter])
         time.sleep(5)
