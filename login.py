@@ -1,35 +1,19 @@
 import secrets
 import datetime
-
-import selenium
 import megapersonals
 import skip_the_games
-import os
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 from flask import Flask, render_template, request, redirect, session
 from flask import flash
 
-
-def resource_path(relative):
-    return os.path.join(
-        os.environ.get(
-            "_MEIPASS2",
-            os.path.abspath(".")
-        ),
-        relative
-    )
-
-
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
-
-# options = selenium.webdriver.ChromeOptions()
-# options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-# chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
-# driver = webdriver.Chrome(executable_path=chromedriver_binary, chrome_options=options)
-
+options = webdriver.ChromeOptions()
+#TODO webdriver manager issue
+#options.binary_location = "/Program Files/Google/Chrome/Application/chrome.exe"
+#chromedriver_binary = "/Program Files/Google/Chrome/Application/chrome.exe"
 
 @app.route('/')
 def index():
@@ -50,7 +34,7 @@ def login():
 
 
 def get_keywords():
-    with open(resource_path('static/keywords.txt')) as f:
+    with open('static/keywords.txt', 'r') as f:
         keywords = f.read().splitlines()
     return keywords
 
@@ -90,14 +74,18 @@ def search():
 
 def run_scrapers(websites, keywords):
     results = []
+
     if "mega-personals" in websites:
         # Call the function from your megapersonals script
         # Make sure to import your megapersonals module at the beginning of your main Flask app file
-        megapersonals.run(keywords)
+        mega_results = megapersonals.run(keywords)
+        results.extend(mega_results)
+
     if "skip_the_games" in websites:
         # Call the function from your skip_the_games script
         # Make sure to import your skip_the_games module at the beginning of your main Flask app file
-        skip_the_games.run(keywords)
+        stg_results = skip_the_games.run(keywords)
+        results.extend(stg_results)
 
     return results
 
@@ -114,5 +102,6 @@ def search_results():
 
 
 if __name__ == '__main__':
+    app.debug = True  #only for testing TODO dont deploy with it
     from waitress import serve
     app.run()

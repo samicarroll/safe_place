@@ -2,9 +2,6 @@ import datetime
 import time
 import pandas as pd
 import pathlib
-import selenium
-from selenium.webdriver.chrome.service import Service
-from chromedriver_py import binary_path
 from selenium import webdriver
 from selenium.common import StaleElementReferenceException
 from selenium.webdriver.common.by import By
@@ -14,27 +11,23 @@ def run(selected_keywords):
     # SET UP LIST AND MEGAPERSONALS URL
     LIST = []
     url = 'https://megapersonals.eu/'
+    driver = webdriver.Chrome()
+    # CONNECT SELENIUM TO WEB URL
+    driver.get(url)
 
     # SET UP HEADLESS PAGE
-    options = selenium.webdriver.ChromeOptions()
-    # service_object = Service(binary_path)
-    chromedriver_path = "/Users/samicarroll/Documents/codingProjects/pythonProjects/safe_place/venv/lib/python3.9" \
-                        "/site-packages/chromedriver_py/chromedriver_mac64"
-    # options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-    # chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
+    options = webdriver.ChromeOptions()
+    options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
     options.add_argument("--headless=new")
-    options.add_argument("--no-default-browser-check")
-    # executable_path=chromedriver_binary, inside next line
-    driver = webdriver.Chrome(executable_path=chromedriver_path, chrome_options=options)
-    driver.get(url)
+    driver = webdriver.Chrome(executable_path=chromedriver_binary, chrome_options=options)
 
     # DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS
     timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
 
     # CLICKING AGREEMENTS AND PREFERENCES:
     # CLICK AGE AGREEMENT BUTTON
-    time.sleep(5)
-    click = driver.find_element(By.CSS_SELECTOR, "#ageagree")
+    click = driver.find_element("id", 'ageagree')
     driver.execute_script("arguments[0].click();", click)
     time.sleep(5)
 
@@ -83,11 +76,11 @@ def run(selected_keywords):
     link_counter = 0
 
     for link in links:
-        print(f"Processing link {link_counter}: {link}")  # Debugging print statement
+        print(f"Processing link {link_counter + 1}: {link}")  # Debugging print statement
         driver.get(link)
 
         for keyword in selected_keywords:
-            description = driver.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > span').text
+            description = driver.find_element(By.CLASS_NAME, 'postbody').text
             if keyword in description.lower():
                 page_url = driver.current_url
                 time.sleep(2)
@@ -116,19 +109,19 @@ def run(selected_keywords):
                 driver.set_window_size(S('Width'), S('Height'))
 
                 # SCREENSHOT LISTING
-                screenshot_name = f"({link_counter})_{timestamps}_megapersonals.png"
-                driver.save_screenshot(pathlib.Path.home() / f"Desktop/megapersonals/screenshots/{screenshot_name}")
+                screenshot_name = f"({link_counter + 1})_{timestamps}_megapersonals.png"
+                driver.save_screenshot(pathlib.Path.home() / f"Users/Gabriela Alvarez/Desktop/megapersonals/screenshots/{screenshot_name}")
 
                 break
 
         link_counter += 1
 
     # SET UP COLUMNS FOR EXCEL FILE
-    columns = ('screenshot number', 'url', 'title', 'age', 'description', 'phone number', 'matching keyword')
+    columns = ('counter', 'url', 'title', 'age', 'description', 'phone number', 'matching keyword')
     df = pd.DataFrame(LIST, columns=columns)
 
     # EXPORT TO EXCEL FILE
-    df.to_excel(pathlib.Path.home() / f"Desktop/megapersonals/excel_files/megapersonals({timestamps}).xlsx",
+    df.to_excel(pathlib.Path.home() / f"Users/Gabriela Alvarez/Desktop/megapersonals/excel_files/megapersonals({timestamps}).xlsx",
                 index=False)
     print(f'megapersonals({timestamps}).xlsx exported.')
 

@@ -5,9 +5,6 @@ import undetected_chromedriver as uc
 import ssl
 import re
 import pathlib
-import selenium
-from selenium.webdriver.chrome.service import Service
-from chromedriver_py import binary_path
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
@@ -28,15 +25,12 @@ def run(selected_keywords):
     }
 
     # SET UP HEADLESS PAGE
-    options = selenium.webdriver.ChromeOptions()
-    chromedriver_path = "/Users/samicarroll/Documents/codingProjects/pythonProjects/safe_place/venv/lib/python3.9" \
-                        "/site-packages/chromedriver_py/chromedriver_mac64"
-    # options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-    # chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
+    options = webdriver.ChromeOptions()
     options.add_argument("--headless=new")
-    options.add_argument("--no-default-browser-check")
-    # executable_path=chromedriver_binary, inside next line
-    driver = uc.Chrome(executable_path=chromedriver_path, chrome_options=options)
+    options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
+    driver = uc.Chrome(executable_path=chromedriver_binary, chrome_options=options)
+    # driver = uc.Chrome()
     driver.get(url)
     time.sleep(5)
 
@@ -64,7 +58,6 @@ def run(selected_keywords):
     counter = 0
 
     for urls in links:
-        print(f"Processing link {counter}: {links}")
         links[:] = (urls for urls in links if not urls.startswith('https://skipthegames.com/reply/meetup/'))
         driver.get(links[counter])
         time.sleep(5)
@@ -90,7 +83,7 @@ def run(selected_keywords):
 
                 # SCREENSHOT LISTING
                 screenshot_name = f"({counter})_{timestamps}_skipthegames.png"
-                driver.save_screenshot(pathlib.Path.home() / f"Desktop/skipthegames/screenshots/{screenshot_name}")
+                driver.save_screenshot(pathlib.Path.home() / f"Users/Gabriela Alvarez/Desktop/skipthegames/screenshots/{screenshot_name}")
                 break
 
             # SET SCREENSHOT SIZE
@@ -103,7 +96,7 @@ def run(selected_keywords):
     df = pd.DataFrame(LIST, columns=columns)
 
     # EXPORT TO EXCEL FILE
-    df.to_excel(pathlib.Path.home() / f"Desktop/skipthegames/excel_files/skipthegames({timestamps}).xlsx", index=False)
+    df.to_excel(pathlib.Path.home() / f"Users/Gabriela Alvarez/Desktop/skipthegames/excel_files/skipthegames({timestamps}).xlsx", index=False)
     print(f'skipthegames({timestamps}).xlsx exported.')
     # CLOSE WEBDRIVER
     driver.close()
