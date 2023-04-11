@@ -4,6 +4,7 @@ attrs==22.2.0
 beautifulsoup4==4.12.2
 certifi==2022.12.7
 charset-normalizer==3.1.0
+chromedriver_autoinstaller==0.4.0
 chromedriver-binary==112.0.5615.49.0
 chromedriver-py==112.0.5615.49
 click==8.1.3

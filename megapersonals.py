@@ -3,8 +3,8 @@ import time
 import pandas as pd
 import pathlib
 import selenium
+import chromedriver_autoinstaller
 from selenium.webdriver.chrome.service import Service
-from chromedriver_py import binary_path
 from selenium import webdriver
 from selenium.common import StaleElementReferenceException
 from selenium.webdriver.common.by import By
@@ -17,15 +17,14 @@ def run(selected_keywords):
 
     # SET UP HEADLESS PAGE
     options = selenium.webdriver.ChromeOptions()
+    chromedriver_autoinstaller.install()
     # service_object = Service(binary_path)
-    chromedriver_path = "/Users/samicarroll/Documents/codingProjects/pythonProjects/safe_place/venv/lib/python3.9" \
-                        "/site-packages/chromedriver_py/chromedriver_mac64"
     # options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     # chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
     options.add_argument("--headless=new")
     options.add_argument("--no-default-browser-check")
     # executable_path=chromedriver_binary, inside next line
-    driver = webdriver.Chrome(executable_path=chromedriver_path, chrome_options=options)
+    driver = webdriver.Chrome(chrome_options=options)
     driver.get(url)
 
     # DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS

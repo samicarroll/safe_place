@@ -7,6 +7,7 @@ import re
 import pathlib
 import selenium
 from selenium.webdriver.chrome.service import Service
+import chromedriver_autoinstaller
 from chromedriver_py import binary_path
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -29,6 +30,7 @@ def run(selected_keywords):
 
     # SET UP HEADLESS PAGE
     options = selenium.webdriver.ChromeOptions()
+    chromedriver_autoinstaller.install()
     chromedriver_path = "/Users/samicarroll/Documents/codingProjects/pythonProjects/safe_place/venv/lib/python3.9" \
                         "/site-packages/chromedriver_py/chromedriver_mac64"
     # options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
