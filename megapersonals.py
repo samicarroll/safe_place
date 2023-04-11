@@ -84,9 +84,10 @@ def run(selected_keywords):
     for link in links:
         print(f"Processing link {link_counter}: {link}")  # Debugging print statement
         driver.get(link)
-
+        time.sleep(3)
         for keyword in selected_keywords:
             description = driver.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > span').text
+            time.sleep(2)
             if keyword in description.lower():
                 page_url = driver.current_url
                 time.sleep(2)

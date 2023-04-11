@@ -38,7 +38,7 @@ def run(selected_keywords):
     options.add_argument("--headless=new")
     options.add_argument("--no-default-browser-check")
     # executable_path=chromedriver_binary, inside next line
-    driver = uc.Chrome(executable_path=chromedriver_path, chrome_options=options)
+    driver = uc.Chrome(options=options)
     driver.get(url)
     time.sleep(5)
 
@@ -59,14 +59,14 @@ def run(selected_keywords):
     posts = driver.find_elements(By.CSS_SELECTOR, 'html.no-js body div table.two-col-wrap tbody tr '
                                                   'td#gallery_view.listings-with-sidebar.list-search-results.gallery div.full-width '
                                                   'div.small-16.columns div.clsfds-display-mode.gallery '
-                                                       'div.day-gallery ['
+                                                  'div.day-gallery ['
                                                   'href]')
     dupLinks = [post.get_attribute('href') for post in posts]
     links = [*set(dupLinks)]
     counter = 0
 
     for urls in links:
-        print(f"Processing link {counter}: {links}")
+        print(f"Processing link {counter}: {urls}")  # Debugging print statement
         links[:] = (urls for urls in links if not urls.startswith('https://skipthegames.com/reply/meetup/'))
         driver.get(links[counter])
         time.sleep(5)
@@ -76,20 +76,22 @@ def run(selected_keywords):
         for keyword in selected_keywords:
             if keyword in description:
                 ad_url = driver.current_url
+                time.sleep(3)
 
                 title = driver.find_element(By.CLASS_NAME, 'post-title').text
-
+                time.sleep(3)
                 pattern = r'(\(\d{3}\)\s*[-\.\s]\s*\d{3}\s*[-\.\s]??\s*\d{4}|\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{' \
                           r'3}\)\s*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4})'
+
                 des = driver.find_element(By.CSS_SELECTOR, '#post-body > div').text
                 phone_number = re.findall(pattern, des)
-
+                time.sleep(3)
                 # REMOVES DUPLICATES
                 phone_number = [*set(phone_number)]
 
                 # APPEND CONTENTS TO LIST
                 LIST.append([counter, ad_url, title, phone_number, keyword])
-
+                time.sleep(3)
                 # SCREENSHOT LISTING
                 screenshot_name = f"({counter})_{timestamps}_skipthegames.png"
                 driver.save_screenshot(pathlib.Path.home() / f"Desktop/skipthegames/screenshots/{screenshot_name}")

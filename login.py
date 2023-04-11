@@ -1,6 +1,5 @@
 import secrets
 import datetime
-
 import selenium
 import megapersonals
 import skip_the_games
