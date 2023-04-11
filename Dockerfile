@@ -14,8 +14,8 @@ COPY templates /app/templates/
 RUN sudo apt-get update && sudo apt-get install -y python3-pip && \
     pip3 install --no-cache-dir -r requirements.txt
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
+# Make port 5000 available to the world outside this container
+EXPOSE 5000
 
 # Define environment variable
 ENV FLASK_APP=login.py
