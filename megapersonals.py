@@ -17,8 +17,8 @@ def run(selected_keywords):
 
     # SET UP HEADLESS PAGE
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless=new")
-    driver = webdriver.Chrome(options=options)
+    options.add_argument("--headless")
+    #driver = webdriver.Chrome(options=options)
 
     # DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS
     timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
@@ -108,7 +108,7 @@ def run(selected_keywords):
 
                 # SCREENSHOT LISTING
                 screenshot_name = f"({link_counter + 1})_{timestamps}_megapersonals.png"
-                driver.save_screenshot(pathlib.Path.home() / f"Users/Gabriela Alvarez/Desktop/megapersonals/screenshots/{screenshot_name}")
+                driver.save_screenshot(pathlib.Path.home() /'Desktop'/'megapersonals'/'screenshots'/f"{screenshot_name}")
 
                 break
 
@@ -119,9 +119,11 @@ def run(selected_keywords):
     df = pd.DataFrame(LIST, columns=columns)
 
     # EXPORT TO EXCEL FILE
-    df.to_excel(pathlib.Path.home() / f"Users/Gabriela Alvarez/Desktop/megapersonals/excel_files/megapersonals({timestamps}).xlsx",
+    #FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Gabriela Alvarez\\Users\\Gabriela Alvarez\\Desktop\\megapersonals\\excel_files\\megapersonals(04_10_23 20_37_58).xlsx'
+    df.to_excel(pathlib.Path.home() /'Desktop'/'megapersonals'/'excel_files'/f"megapersonals({timestamps}).xlsx",
                 index=False)
     print(f'megapersonals({timestamps}).xlsx exported.')
 
     # CLOSE WEBDRIVER
     driver.close()
+
