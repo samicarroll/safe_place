@@ -7,6 +7,7 @@ import re
 import pathlib
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import chromedriver_autoinstaller
 from selenium.webdriver.support.select import Select
 
 
@@ -26,9 +27,9 @@ def run(selected_keywords):
 
     # SET UP HEADLESS PAGE
     options = webdriver.ChromeOptions()
+    chromedriver_autoinstaller.install()
     options.add_argument("--headless=new")
     driver = uc.Chrome(options=options)
- 
     driver.get(url)
     time.sleep(5)
 
@@ -81,7 +82,7 @@ def run(selected_keywords):
 
                 # SCREENSHOT LISTING
                 screenshot_name = f"({counter})_{timestamps}_skipthegames.png"
-                driver.save_screenshot(pathlib.Path.home() / f"Users/Gabriela Alvarez/Desktop/skipthegames/screenshots/{screenshot_name}")
+                driver.save_screenshot(pathlib.Path.home() /'Desktop'/'skipthegames'/'screenshots'/f"{screenshot_name}")
                 break
 
             # SET SCREENSHOT SIZE
@@ -94,7 +95,7 @@ def run(selected_keywords):
     df = pd.DataFrame(LIST, columns=columns)
 
     # EXPORT TO EXCEL FILE
-    df.to_excel(pathlib.Path.home() / f"Users/Gabriela Alvarez/Desktop/skipthegames/excel_files/skipthegames({timestamps}).xlsx", index=False)
+    df.to_excel(pathlib.Path.home() /'Desktop'/'skipthegames'/'excel_files'/f"skipthegames({timestamps}).xlsx", index=False)
     print(f'skipthegames({timestamps}).xlsx exported.')
     # CLOSE WEBDRIVER
     driver.close()
