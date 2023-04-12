@@ -3,6 +3,7 @@
 Using Selenium, an XML and HTML parser, our software will scrape information from various websites searching for keywords commonly used in human trafficking. 
 
 ## Technology Requirements
+-Firefox browser
 - Google Chrome Browser
 - Required packages 
 
