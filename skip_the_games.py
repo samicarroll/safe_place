@@ -19,6 +19,7 @@ def run(selected_keywords):
     timestamps = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
     LIST = []
     url = 'https://skipthegames.com/posts/fort-myers'
+    chromedriver_autoinstaller.install()
 
     headers = {
         'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -29,15 +30,10 @@ def run(selected_keywords):
     }
 
     # SET UP HEADLESS PAGE
-    options = selenium.webdriver.ChromeOptions()
-    chromedriver_autoinstaller.install()
+    options = webdriver.ChromeOptions()
     chromedriver_path = "/Users/samicarroll/Documents/codingProjects/pythonProjects/safe_place/venv/lib/python3.9" \
                         "/site-packages/chromedriver_py/chromedriver_mac64"
-    # options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-    # chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
     options.add_argument("--headless=new")
-    options.add_argument("--no-default-browser-check")
-    # executable_path=chromedriver_binary, inside next line
     driver = uc.Chrome(options=options)
     driver.get(url)
     time.sleep(5)
