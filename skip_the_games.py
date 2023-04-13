@@ -31,13 +31,7 @@ def run(selected_keywords):
     # SET UP HEADLESS PAGE
     options = selenium.webdriver.ChromeOptions()
     chromedriver_autoinstaller.install()
-    chromedriver_path = "/Users/samicarroll/Documents/codingProjects/pythonProjects/safe_place/venv/lib/python3.9" \
-                        "/site-packages/chromedriver_py/chromedriver_mac64"
-    # options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-    # chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
     options.add_argument("--headless=new")
-    options.add_argument("--no-default-browser-check")
-    # executable_path=chromedriver_binary, inside next line
     driver = uc.Chrome(options=options)
     driver.get(url)
     time.sleep(5)
@@ -72,26 +66,26 @@ def run(selected_keywords):
         time.sleep(5)
 
         description = driver.find_element(By.CSS_SELECTOR, '#post-body > div').text
-        time.sleep(5)
+        time.sleep(3)
         for keyword in selected_keywords:
             if keyword in description:
                 ad_url = driver.current_url
-                time.sleep(3)
+                time.sleep(2)
 
                 title = driver.find_element(By.CLASS_NAME, 'post-title').text
-                time.sleep(3)
+                time.sleep(2)
                 pattern = r'(\(\d{3}\)\s*[-\.\s]\s*\d{3}\s*[-\.\s]??\s*\d{4}|\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{' \
                           r'3}\)\s*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4})'
 
                 des = driver.find_element(By.CSS_SELECTOR, '#post-body > div').text
                 phone_number = re.findall(pattern, des)
-                time.sleep(3)
+                time.sleep(2)
                 # REMOVES DUPLICATES
                 phone_number = [*set(phone_number)]
 
                 # APPEND CONTENTS TO LIST
                 LIST.append([counter, ad_url, title, phone_number, keyword])
-                time.sleep(3)
+                time.sleep(2)
                 # SCREENSHOT LISTING
                 screenshot_name = f"({counter})_{timestamps}_skipthegames.png"
                 driver.save_screenshot(pathlib.Path.home() / f"Desktop/skipthegames/screenshots/{screenshot_name}")
