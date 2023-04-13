@@ -1,18 +1,20 @@
 import secrets
 import datetime
+import time
 import megapersonals
 import skip_the_games
-from webdriver_manager.chrome import ChromeDriverManager
+from waitress import serve
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 from flask import Flask, render_template, request, redirect, session
 from flask import flash
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
-options = webdriver.ChromeOptions()
+#options = webdriver.ChromeOptions()
 #TODO webdriver manager issue
-#options.binary_location = "/Program Files/Google/Chrome/Application/chrome.exe"
+#options.binary_location = "/'Program Files'/'Google'/'Chrome'/'Application'/chrome.exe"
 #chromedriver_binary = "/Program Files/Google/Chrome/Application/chrome.exe"
 
 @app.route('/')
@@ -36,8 +38,10 @@ def login():
 def get_keywords():
     with open('static/keywords.txt', 'r') as f:
         keywords = f.read().splitlines()
+    #time.sleep(5)
     return keywords
 
+    
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
@@ -89,7 +93,7 @@ def run_scrapers(websites, keywords):
 
     return results
 
-
+#todo ERROR in app: Exception on /search-results [POST]
 @app.route('/search-results', methods=['POST'])
 def search_results():
     selected_websites = request.form.getlist('websites[]')
@@ -102,6 +106,6 @@ def search_results():
 
 
 if __name__ == '__main__':
-    app.debug = True  #only for testing TODO dont deploy with it
-    from waitress import serve
+    serve(app, host='0.0.0.0', port=5000)
+    #from waitress import serve
     app.run()
