@@ -1,4 +1,5 @@
 import datetime
+import os
 import time
 import pandas as pd
 import undetected_chromedriver as uc
@@ -16,10 +17,10 @@ from selenium.webdriver.support.select import Select
 
 def run(selected_keywords):
     ssl._create_default_https_context = ssl._create_unverified_context
-    timestamps = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
+    timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
+    timestamp = datetime.datetime.now().strftime('%m_%d_%y')
     LIST = []
     url = 'https://skipthegames.com/posts/fort-myers'
-    chromedriver_autoinstaller.install()
 
     headers = {
         'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -30,9 +31,8 @@ def run(selected_keywords):
     }
 
     # SET UP HEADLESS PAGE
-    options = webdriver.ChromeOptions()
-    chromedriver_path = "/Users/samicarroll/Documents/codingProjects/pythonProjects/safe_place/venv/lib/python3.9" \
-                        "/site-packages/chromedriver_py/chromedriver_mac64"
+    options = selenium.webdriver.ChromeOptions()
+    chromedriver_autoinstaller.install()
     options.add_argument("--headless=new")
     driver = uc.Chrome(options=options)
     driver.get(url)
@@ -68,29 +68,32 @@ def run(selected_keywords):
         time.sleep(5)
 
         description = driver.find_element(By.CSS_SELECTOR, '#post-body > div').text
-        time.sleep(5)
+        time.sleep(3)
         for keyword in selected_keywords:
             if keyword in description:
                 ad_url = driver.current_url
-                time.sleep(3)
+                time.sleep(2)
 
                 title = driver.find_element(By.CLASS_NAME, 'post-title').text
-                time.sleep(3)
+                time.sleep(2)
                 pattern = r'(\(\d{3}\)\s*[-\.\s]\s*\d{3}\s*[-\.\s]??\s*\d{4}|\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{' \
                           r'3}\)\s*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4})'
 
                 des = driver.find_element(By.CSS_SELECTOR, '#post-body > div').text
                 phone_number = re.findall(pattern, des)
-                time.sleep(3)
+                time.sleep(2)
                 # REMOVES DUPLICATES
                 phone_number = [*set(phone_number)]
 
                 # APPEND CONTENTS TO LIST
                 LIST.append([counter, ad_url, title, phone_number, keyword])
-                time.sleep(3)
+                time.sleep(2)
                 # SCREENSHOT LISTING
-                screenshot_name = f"({counter})_{timestamps}_skipthegames.png"
-                driver.save_screenshot(pathlib.Path.home() / f"Desktop/skipthegames/screenshots/{screenshot_name}")
+                screenshot_name = f"({counter})_skipthegames.png"
+                # MAKE DIRECTORY FOR SCREENSHOTS
+                screenshot_dir = pathlib.Path.home() / f"Desktop/skipthegames/screenshots/{timestamp}"
+                os.makedirs(screenshot_dir)
+                driver.save_screenshot(screenshot_dir / f"{screenshot_name}")
                 break
 
             # SET SCREENSHOT SIZE
@@ -103,7 +106,9 @@ def run(selected_keywords):
     df = pd.DataFrame(LIST, columns=columns)
 
     # EXPORT TO EXCEL FILE
-    df.to_excel(pathlib.Path.home() / f"Desktop/skipthegames/excel_files/skipthegames({timestamps}).xlsx", index=False)
+    excel_dir = pathlib.Path.home() / f"Desktop/skipthegames/excel_files/{timestamp}"
+    os.mkdir(excel_dir)
+    df.to_excel(excel_dir/f"skipthegames/{timestamps}.xlsx", index=False)
     print(f'skipthegames({timestamps}).xlsx exported.')
     # CLOSE WEBDRIVER
     driver.close()

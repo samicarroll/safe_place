@@ -3,6 +3,7 @@ import time
 import pandas as pd
 import pathlib
 import selenium
+import os
 import chromedriver_autoinstaller
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
@@ -23,12 +24,12 @@ def run(selected_keywords):
     # chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
     options.add_argument("--headless=new")
     options.add_argument("--no-default-browser-check")
-    # executable_path=chromedriver_binary, inside next line
-    driver = webdriver.Chrome(chrome_options=options)
+    driver = webdriver.Chrome(options=options)
     driver.get(url)
 
     # DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS
     timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
+    timestamp = datetime.datetime.now().strftime('%m_%d_%y')
 
     # CLICKING AGREEMENTS AND PREFERENCES:
     # CLICK AGE AGREEMENT BUTTON
@@ -47,9 +48,9 @@ def run(selected_keywords):
     driver.execute_script("arguments[0].click();", fl)
     time.sleep(5)
 
-    # CLICK FORT MYERS
-    fort_myers = driver.find_element(By.XPATH, '//*[@id="choseCityContainer"]/div[3]/article/div[10]/article/p[3]/a')
-    driver.execute_script("arguments[0].click();", fort_myers)
+    # CLICK SARASOTA
+    sarasota = driver.find_element(By.XPATH, '//*[@id="choseCityContainer"]/div[3]/article/div[10]/article/p[14]/a')
+    driver.execute_script("arguments[0].click();", sarasota)
     time.sleep(5)
 
     # CLICK WOMEN SEARCHING MALE
@@ -109,7 +110,7 @@ def run(selected_keywords):
                 time.sleep(1)
 
                 # APPEND CONTENTS TO LIST
-                LIST.append([link_counter + 1, page_url, title, age, description, phone_number, keyword])
+                LIST.append([link_counter, page_url, title, age, description, phone_number, keyword])
 
                 # SET SCREENSHOT SIZE
                 S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
@@ -117,8 +118,11 @@ def run(selected_keywords):
 
                 # SCREENSHOT LISTING
                 screenshot_name = f"({link_counter})_{timestamps}_megapersonals.png"
-                driver.save_screenshot(pathlib.Path.home() / f"Desktop/megapersonals/screenshots/{screenshot_name}")
-
+                # MAKE DIRECTORY FOR SCREENSHOTS
+                screenshot_dir = pathlib.Path.home() / f"Desktop/megapersonals/sarasota/screenshots/{timestamp}"
+                if not os.path.exists(screenshot_dir):
+                    os.makedirs(screenshot_dir)
+                driver.save_screenshot(screenshot_dir/f"{screenshot_name}")
                 break
 
         link_counter += 1
@@ -128,8 +132,9 @@ def run(selected_keywords):
     df = pd.DataFrame(LIST, columns=columns)
 
     # EXPORT TO EXCEL FILE
-    df.to_excel(pathlib.Path.home() / f"Desktop/megapersonals/excel_files/megapersonals({timestamps}).xlsx",
-                index=False)
+    excel_dir = pathlib.Path.home() / f"Desktop/megapersonals/sarasota/excel_files/{timestamp}"
+    os.mkdir(excel_dir)
+    df.to_excel(excel_dir/f"megapersonals({timestamps}).xlsx", index=False)
     print(f'megapersonals({timestamps}).xlsx exported.')
 
     # CLOSE WEBDRIVER
