@@ -22,8 +22,8 @@ packages needed can be installed in the terminal
 - excel file and screenshots are saved in folders located on the user desktop.
 - desktop folders are created in the following directory:
 ```
-> user/desktop/megapersonals/[location]/screenshots/[timestamp]/[screenshot number]_megapersonals.png
-> user/desktop/megapersonals/[location]/excel_files/[timestamp]/megapersonals_[timestamp].xlsx
+user/desktop/megapersonals/[location]/screenshots/[timestamp]/[screenshot number]_megapersonals.png
+user/desktop/megapersonals/[location]/excel_files/[timestamp]/megapersonals_[timestamp].xlsx
 ```
 
 ## Future Releases
