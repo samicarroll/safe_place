@@ -5,16 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dadd73c1-0dce-48cc-b7ad-adbb4a57f076" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/megapersonals_miami.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tets.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/safe_place.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/safe_place.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login.py" beforeDir="false" afterPath="$PROJECT_DIR$/login.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/megapersonals.py" beforeDir="false" afterPath="$PROJECT_DIR$/megapersonals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/skip_the_games.py" beforeDir="false" afterPath="$PROJECT_DIR$/skip_the_games.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/search.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tets.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +164,7 @@
       <workItem from="1681086909651" duration="3437000" />
       <workItem from="1681096146725" duration="2860000" />
       <workItem from="1681178789720" duration="5620000" />
-      <workItem from="1681868772798" duration="3350000" />
+      <workItem from="1681868772798" duration="4081000" />
     </task>
     <servers />
   </component>

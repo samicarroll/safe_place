@@ -1,8 +1,8 @@
 import secrets
 import datetime
-import selenium
-import megapersonals
+import megapersonals_ftmyers
 import megapersonals_miami
+import megapersonals_sarasota
 import skip_the_games
 import os
 from webdriver_manager.chrome import ChromeDriverManager
@@ -24,12 +24,6 @@ def resource_path(relative):
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
-
-
-# options = selenium.webdriver.ChromeOptions()
-# options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-# chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
-# driver = webdriver.Chrome(executable_path=chromedriver_binary, chrome_options=options)
 
 
 @app.route('/')
@@ -61,6 +55,7 @@ def search():
     websites = {
         "mega-personals": "MegaPersonals",
         "mega-personals-mia": "MegaPersonals Miami",
+        "mega-personals-sota": "MegaPersonals Sarasota",
         "skip_the_games": "Skip The Games",
     }
     keywords = get_keywords()
@@ -76,13 +71,17 @@ def search():
         if selected_websites and selected_keywords:  # Only proceed if both are selected
             for website in selected_websites:
                 if website == "mega-personals":
-                    import megapersonals
-                    results.extend(megapersonals.run(selected_keywords))
+                    import megapersonals_ftmyers
+                    results.extend(megapersonals_ftmyers.run(selected_keywords))
                     excel_files.append(f'megapersonals_ftmyers_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "mega-personals-mia":
-                    import skip_the_games
-                    results.extend(skip_the_games.run(selected_keywords))
+                    import megapersonals_miami
+                    results.extend(megapersonals_miami.run(selected_keywords))
                     excel_files.append(f'megapersonals_mia_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                elif website == "mega-personals-sota":
+                    import megapersonals_sarasota
+                    results.extend(megapersonals_sarasota.run(selected_keywords))
+                    excel_files.append(f'megapersonals_sarasota_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "skip_the_games":
                     import skip_the_games
                     results.extend(skip_the_games.run(selected_keywords))
@@ -97,18 +96,21 @@ def search():
 def run_scrapers(websites, keywords):
     results = []
     if "mega-personals" in websites:
-        # Call the function from your megapersonals script
+        # Call the function from your megapersonals ftmyers script
         # Make sure to import your megapersonals module at the beginning of your main Flask app file
-        megapersonals.run(keywords)
+        megapersonals_ftmyers.run(keywords)
+    if "mega-personals-mia" in websites:
         # Call the function from your megapersonals miami script
         # Make sure to import your megapersonals module at the beginning of your main Flask app file
-    if "mega-personals-mia" in websites:
         megapersonals_miami.run(keywords)
+    if "mega-personals-sota" in websites:
+        # Call the function from your megapersonals sarasota script
+        # Make sure to import your megapersonals module at the beginning of your main Flask app file
+        megapersonals_sarasota.run(keywords)
     if "skip_the_games" in websites:
         # Call the function from your skip_the_games script
         # Make sure to import your skip_the_games module at the beginning of your main Flask app file
         skip_the_games.run(keywords)
-
     return results
 
 
@@ -124,6 +126,4 @@ def search_results():
 
 
 if __name__ == '__main__':
-    from waitress import serve
-
     app.run()
