@@ -1,9 +1,9 @@
 import datetime
+import os
 import time
 import pandas as pd
 import pathlib
 import selenium
-import os
 import chromedriver_autoinstaller
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
@@ -49,9 +49,9 @@ def run(selected_keywords):
     driver.execute_script("arguments[0].click();", fl)
     time.sleep(5)
 
-    # CLICK FORT MYERS
-    fort_myers = driver.find_element(By.XPATH, '//*[@id="choseCityContainer"]/div[3]/article/div[10]/article/p[3]/a')
-    driver.execute_script("arguments[0].click();", fort_myers)
+    # CLICK MIAMI
+    miami = driver.find_element(By.XPATH, '//*[@id="choseCityContainer"]/div[3]/article/div[10]/article/p[7]/a')
+    driver.execute_script("arguments[0].click();", miami)
     time.sleep(5)
 
     # CLICK WOMEN SEARCHING MALE
@@ -118,12 +118,13 @@ def run(selected_keywords):
                 driver.set_window_size(S('Width'), S('Height'))
 
                 # SCREENSHOT LISTING
-                screenshot_name = f"({link_counter})_{timestamps}_megapersonals.png"
+                screenshot_name = f"({link_counter})_megapersonals.png"
                 # MAKE DIRECTORY FOR SCREENSHOTS
-                screenshot_dir = pathlib.Path.home() / f"Desktop/megapersonals/ft_myers/screenshots/{timestamp}"
+                screenshot_dir = pathlib.Path.home() / f"Desktop/megapersonals/miami/screenshots/{timestamp}"
                 if not os.path.exists(screenshot_dir):
                     os.makedirs(screenshot_dir)
-                driver.save_screenshot(screenshot_dir/f"{screenshot_name}")
+                driver.save_screenshot(screenshot_dir / f"{screenshot_name}")
+
                 break
 
         link_counter += 1
@@ -133,9 +134,8 @@ def run(selected_keywords):
     df = pd.DataFrame(LIST, columns=columns)
 
     # EXPORT TO EXCEL FILE
-    excel_dir = pathlib.Path.home() / f"Desktop/megapersonals/ft_myers/excel_files/{timestamp}"
-    os.mkdir(excel_dir)
-    df.to_excel(excel_dir/f"megapersonals({timestamps}).xlsx", index=False)
+    df.to_excel(pathlib.Path.home() / f"Desktop/megapersonals/miami/excel_files/megapersonals({timestamps}).xlsx",
+                index=False)
     print(f'megapersonals({timestamps}).xlsx exported.')
 
     # CLOSE WEBDRIVER

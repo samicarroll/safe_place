@@ -1,4 +1,5 @@
 import datetime
+import os
 import time
 import pandas as pd
 import undetected_chromedriver as uc
@@ -16,7 +17,8 @@ from selenium.webdriver.support.select import Select
 
 def run(selected_keywords):
     ssl._create_default_https_context = ssl._create_unverified_context
-    timestamps = datetime.datetime.now().strftime('%m_%d_%y %H%M%S')
+    timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
+    timestamp = datetime.datetime.now().strftime('%m_%d_%y')
     LIST = []
     url = 'https://skipthegames.com/posts/fort-myers'
 
@@ -87,8 +89,11 @@ def run(selected_keywords):
                 LIST.append([counter, ad_url, title, phone_number, keyword])
                 time.sleep(2)
                 # SCREENSHOT LISTING
-                screenshot_name = f"({counter})_{timestamps}_skipthegames.png"
-                driver.save_screenshot(pathlib.Path.home() / f"Desktop/skipthegames/screenshots/{screenshot_name}")
+                screenshot_name = f"({counter})_skipthegames.png"
+                # MAKE DIRECTORY FOR SCREENSHOTS
+                screenshot_dir = pathlib.Path.home() / f"Desktop/skipthegames/screenshots/{timestamp}"
+                os.makedirs(screenshot_dir)
+                driver.save_screenshot(screenshot_dir / f"{screenshot_name}")
                 break
 
             # SET SCREENSHOT SIZE
@@ -101,7 +106,9 @@ def run(selected_keywords):
     df = pd.DataFrame(LIST, columns=columns)
 
     # EXPORT TO EXCEL FILE
-    df.to_excel(pathlib.Path.home() / f"Desktop/skipthegames/excel_files/skipthegames({timestamps}).xlsx", index=False)
+    excel_dir = pathlib.Path.home() / f"Desktop/skipthegames/excel_files/{timestamp}"
+    os.mkdir(excel_dir)
+    df.to_excel(excel_dir/f"skipthegames/{timestamps}.xlsx", index=False)
     print(f'skipthegames({timestamps}).xlsx exported.')
     # CLOSE WEBDRIVER
     driver.close()
