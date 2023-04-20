@@ -36,7 +36,7 @@ def run(selected_keywords):
     options.add_argument("--headless=new")
     driver = uc.Chrome(options=options)
     driver.get(url)
-    time.sleep(5)
+    driver.implicitly_wait(10)
 
     driver.refresh()
 
@@ -65,29 +65,29 @@ def run(selected_keywords):
         print(f"Processing link {counter}: {urls}")  # Debugging print statement
         links[:] = (urls for urls in links if not urls.startswith('https://skipthegames.com/reply/meetup/'))
         driver.get(links[counter])
-        time.sleep(5)
+        driver.implicitly_wait(10)
 
         description = driver.find_element(By.CSS_SELECTOR, '#post-body > div').text
-        time.sleep(3)
+        driver.implicitly_wait(10)
         for keyword in selected_keywords:
             if keyword in description:
                 ad_url = driver.current_url
-                time.sleep(2)
+                driver.implicitly_wait(10)
 
                 title = driver.find_element(By.CLASS_NAME, 'post-title').text
-                time.sleep(2)
+                driver.implicitly_wait(10)
                 pattern = r'(\(\d{3}\)\s*[-\.\s]\s*\d{3}\s*[-\.\s]??\s*\d{4}|\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{' \
                           r'3}\)\s*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4})'
 
                 des = driver.find_element(By.CSS_SELECTOR, '#post-body > div').text
                 phone_number = re.findall(pattern, des)
-                time.sleep(2)
+                driver.implicitly_wait(10)
                 # REMOVES DUPLICATES
                 phone_number = [*set(phone_number)]
 
                 # APPEND CONTENTS TO LIST
                 LIST.append([counter, ad_url, title, phone_number, keyword])
-                time.sleep(2)
+                driver.implicitly_wait(10)
                 # SCREENSHOT LISTING
                 screenshot_name = f"({counter})_skipthegames.png"
                 # MAKE DIRECTORY FOR SCREENSHOTS

@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dadd73c1-0dce-48cc-b7ad-adbb4a57f076" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tets.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/megapersonals_ftmyers.py" beforeDir="false" afterPath="$PROJECT_DIR$/megapersonals_ftmyers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/megapersonals_miami.py" beforeDir="false" afterPath="$PROJECT_DIR$/megapersonals_miami.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/megapersonals_sarasota.py" beforeDir="false" afterPath="$PROJECT_DIR$/megapersonals_sarasota.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/skip_the_games.py" beforeDir="false" afterPath="$PROJECT_DIR$/skip_the_games.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +57,7 @@
       <recent name="$PROJECT_DIR$/venv" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.login">
     <configuration name="login" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="safe_place" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -165,6 +167,7 @@
       <workItem from="1681096146725" duration="2860000" />
       <workItem from="1681178789720" duration="5620000" />
       <workItem from="1681868772798" duration="4081000" />
+      <workItem from="1681938797133" duration="3500000" />
     </task>
     <servers />
   </component>

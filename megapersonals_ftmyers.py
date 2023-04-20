@@ -1,5 +1,4 @@
 import datetime
-import time
 import pandas as pd
 import pathlib
 import selenium
@@ -34,30 +33,29 @@ def run(selected_keywords):
 
     # CLICKING AGREEMENTS AND PREFERENCES:
     # CLICK AGE AGREEMENT BUTTON
-    time.sleep(5)
     click = driver.find_element(By.CSS_SELECTOR, "#ageagree")
     driver.execute_script("arguments[0].click();", click)
-    time.sleep(5)
+    driver.implicitly_wait(10)
 
     # CLICK UNITED STATES
     us = driver.find_element("id", "ac-United States")
     driver.execute_script("arguments[0].click();", us)
-    time.sleep(5)
+    driver.implicitly_wait(10)
 
     # CLICK FLORIDA
     fl = driver.find_element("id", "ac-Florida")
     driver.execute_script("arguments[0].click();", fl)
-    time.sleep(5)
+    driver.implicitly_wait(10)
 
     # CLICK FORT MYERS
     fort_myers = driver.find_element(By.XPATH, '//*[@id="choseCityContainer"]/div[3]/article/div[10]/article/p[3]/a')
     driver.execute_script("arguments[0].click();", fort_myers)
-    time.sleep(5)
+    driver.implicitly_wait(10)
 
     # CLICK WOMEN SEARCHING MALE
     women_seeking_male = driver.find_element(By.XPATH, '//*[@id="megapCategoriesOrangeButton"]/a')
     driver.execute_script("arguments[0].click();", women_seeking_male)
-    time.sleep(5)
+    driver.implicitly_wait(10)
 
     # PULLS URLS FROM EACH LISTING
     pageCounter = 0
@@ -77,7 +75,7 @@ def run(selected_keywords):
         if pageCounter < 4:
             next_page = driver.find_element("id", "paginationNext")
             driver.execute_script("arguments[0].click();", next_page)
-            time.sleep(2)
+            driver.implicitly_wait(10)
 
         pageCounter += 1
 
@@ -86,29 +84,29 @@ def run(selected_keywords):
     for link in links:
         print(f"Processing link {link_counter}: {link}")  # Debugging print statement
         driver.get(link)
-        time.sleep(3)
+        driver.implicitly_wait(10)
         for keyword in selected_keywords:
             description = driver.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > span').text
-            time.sleep(2)
+            driver.implicitly_wait(10)
             if keyword in description.lower():
                 page_url = driver.current_url
-                time.sleep(2)
+                driver.implicitly_wait(10)
 
                 title = driver.find_element(By.CLASS_NAME, 'post_preview_title').text
-                time.sleep(2)
+                driver.implicitly_wait(10)
 
                 description = driver.find_element(By.CLASS_NAME, 'postbody').text
-                time.sleep(2)
+                driver.implicitly_wait(10)
 
                 age = driver.find_element(By.CLASS_NAME, 'post_preview_age').text
-                time.sleep(2)
+                driver.implicitly_wait(10)
 
                 phone_number = driver.find_element(By.CSS_SELECTOR,
                                                    'body > div > div.post_preview_body > '
                                                    'div.fromLeft.post_preview_phone'
                                                    '> span > a').get_attribute(
                     "innerHTML")
-                time.sleep(1)
+                driver.implicitly_wait(10)
 
                 # APPEND CONTENTS TO LIST
                 LIST.append([link_counter, page_url, title, age, description, phone_number, keyword])
