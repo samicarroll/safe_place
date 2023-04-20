@@ -3,7 +3,9 @@ import datetime
 import megapersonals_ftmyers
 import megapersonals_miami
 import megapersonals_sarasota
-import skipthegames_ftmyers
+import skip_the_games_ftmyers
+import skip_the_games_miami
+import skip_the_games_sarasota
 import os
 from flask import Flask, render_template, request, redirect, session
 from flask import flash
