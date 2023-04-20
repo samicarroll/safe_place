@@ -55,7 +55,9 @@ def search():
         "mega-personals": "MegaPersonals",
         "mega-personals-mia": "MegaPersonals Miami",
         "mega-personals-sota": "MegaPersonals Sarasota",
-        "skip_the_games": "Skip The Games",
+        "skip_the_games_ftmyers": "Skip The Games Fort Myers",
+        "skip_the_games_miami": "Skip the Games Miami",
+        "skip_the_games_sarasota": "Skip the Games Sarasota",
     }
     keywords = get_keywords()
     results = []
