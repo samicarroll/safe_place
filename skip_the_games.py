@@ -91,7 +91,7 @@ def run(selected_keywords):
                 # SCREENSHOT LISTING
                 screenshot_name = f"({counter})_skipthegames.png"
                 # MAKE DIRECTORY FOR SCREENSHOTS
-                screenshot_dir = pathlib.Path.home() / f"Desktop/skipthegames/screenshots/{timestamp}"
+                screenshot_dir = pathlib.Path.home() / f"Desktop/skipthegames/ft_myers/screenshots/{timestamp}"
                 os.makedirs(screenshot_dir)
                 driver.save_screenshot(screenshot_dir / f"{screenshot_name}")
                 break
@@ -106,9 +106,9 @@ def run(selected_keywords):
     df = pd.DataFrame(LIST, columns=columns)
 
     # EXPORT TO EXCEL FILE
-    excel_dir = pathlib.Path.home() / f"Desktop/skipthegames/excel_files/{timestamp}"
-    os.mkdir(excel_dir)
-    df.to_excel(excel_dir/f"skipthegames/{timestamps}.xlsx", index=False)
+    excel_dir = pathlib.Path.home() / f"Desktop/skipthegames/ft_myers/excel_files/{timestamp}"
+    os.makedirs(excel_dir)
+    df.to_excel(excel_dir/f"skipthegames_{timestamps}.xlsx", index=False)
     print(f'skipthegames({timestamps}).xlsx exported.')
     # CLOSE WEBDRIVER
     driver.close()
