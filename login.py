@@ -3,11 +3,32 @@ import datetime
 import megapersonals
 import skip_the_games
 import os
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 from flask import Flask, render_template, request, redirect, session
 from flask import flash
+import psycopg2
+
+db_username = os.environ['DB_USERNAME']
+db_password = os.environ['DB_PASSWORD']
+db_name = os.environ['DB_NAME']
+db_host = os.environ['DB_HOST']
+db_port = os.environ['DB_PORT']
+
+connection = psycopg2.connect(
+    dbname=db_name,
+    user=db_username,
+    password=db_password,
+    host=db_host,
+    port=db_port
+)
+
+# will help run the sql query and fetch the data
+cursor = connection.cursor()
+cursor.execute('SELECT * FROM login;')
+rows = cursor.fetchall()
+print(rows)
+cursor.close()
+connection.close()
 
 
 def resource_path(relative):

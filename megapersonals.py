@@ -3,7 +3,7 @@ import time
 import pandas as pd
 import pathlib
 from selenium import webdriver
-from selenium.common import StaleElementReferenceException
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.by import By
 
 
