@@ -3,7 +3,7 @@ import datetime
 import megapersonals_ftmyers
 import megapersonals_miami
 import megapersonals_sarasota
-import skip_the_games
+import skipthegames_ftmyers
 import os
 from flask import Flask, render_template, request, redirect, session
 from flask import flash
@@ -80,8 +80,8 @@ def search():
                     results.extend(megapersonals_sarasota.run(selected_keywords))
                     excel_files.append(f'megapersonals_sarasota_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "skip_the_games":
-                    import skip_the_games
-                    results.extend(skip_the_games.run(selected_keywords))
+                    import skipthegames_ftmyers
+                    results.extend(skipthegames_ftmyers.run(selected_keywords))
                     excel_files.append(f'skip_the_games_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
 
     if request.method == "POST" and results:
@@ -107,7 +107,7 @@ def run_scrapers(websites, keywords):
     if "skip_the_games" in websites:
         # Call the function from your skip_the_games script
         # Make sure to import your skip_the_games module at the beginning of your main Flask app file
-        skip_the_games.run(keywords)
+        skipthegames_ftmyers.run(keywords)
     return results
 
 

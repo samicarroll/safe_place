@@ -6,10 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="dadd73c1-0dce-48cc-b7ad-adbb4a57f076" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/megapersonals_ftmyers.py" beforeDir="false" afterPath="$PROJECT_DIR$/megapersonals_ftmyers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/megapersonals_miami.py" beforeDir="false" afterPath="$PROJECT_DIR$/megapersonals_miami.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/megapersonals_sarasota.py" beforeDir="false" afterPath="$PROJECT_DIR$/megapersonals_sarasota.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/skip_the_games.py" beforeDir="false" afterPath="$PROJECT_DIR$/skip_the_games.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/login/static copy/images.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/login/static copy/keywords.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/login/static copy/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/login.py" beforeDir="false" afterPath="$PROJECT_DIR$/login.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/skip_the_games.py" beforeDir="false" afterPath="$PROJECT_DIR$/skipthegames_ftmyers.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +104,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="skip_the_games" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="skipthegames_ftmyers" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="safe_place" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -116,7 +117,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/skip_the_games.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/skipthegames_ftmyers.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -128,7 +129,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.login" />
-        <item itemvalue="Python.skip_the_games" />
+        <item itemvalue="Python.skipthegames_ftmyers" />
         <item itemvalue="Python.megapersonals" />
       </list>
     </recent_temporary>
@@ -174,7 +175,8 @@
       <workItem from="1681966382936" duration="16000" />
       <workItem from="1681966401403" duration="4000" />
       <workItem from="1681966436358" duration="146000" />
-      <workItem from="1681966662855" duration="2762000" />
+      <workItem from="1681966662855" duration="2810000" />
+      <workItem from="1682002236975" duration="342000" />
     </task>
     <servers />
   </component>
