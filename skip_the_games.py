@@ -1,18 +1,18 @@
 import datetime
 import os
-import time
 import pandas as pd
 import undetected_chromedriver as uc
 import ssl
 import re
 import pathlib
 import selenium
+from selenium.common import StaleElementReferenceException
 from selenium.webdriver.chrome.service import Service
 import chromedriver_autoinstaller
-from chromedriver_py import binary_path
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 def run(selected_keywords):
@@ -66,8 +66,12 @@ def run(selected_keywords):
         links[:] = (urls for urls in links if not urls.startswith('https://skipthegames.com/reply/meetup/'))
         driver.get(links[counter])
         driver.implicitly_wait(10)
-
-        description = driver.find_element(By.CSS_SELECTOR, '#post-body > div').text
+        try:
+            description = WebDriverWait(driver, 20).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '#post-body > '
+                                                                 'div'))).text
+        except StaleElementReferenceException:
+            continue
         driver.implicitly_wait(20)
         for keyword in selected_keywords:
             if keyword in description:
@@ -92,7 +96,8 @@ def run(selected_keywords):
                 screenshot_name = f"({counter})_skipthegames.png"
                 # MAKE DIRECTORY FOR SCREENSHOTS
                 screenshot_dir = pathlib.Path.home() / f"Desktop/skipthegames/ft_myers/screenshots/{timestamp}"
-                os.makedirs(screenshot_dir)
+                if not os.path.exists(screenshot_dir):
+                    os.makedirs(screenshot_dir)
                 driver.save_screenshot(screenshot_dir / f"{screenshot_name}")
                 break
 
@@ -108,7 +113,7 @@ def run(selected_keywords):
     # EXPORT TO EXCEL FILE
     excel_dir = pathlib.Path.home() / f"Desktop/skipthegames/ft_myers/excel_files/{timestamp}"
     os.makedirs(excel_dir)
-    df.to_excel(excel_dir/f"skipthegames_{timestamps}.xlsx", index=False)
+    df.to_excel(excel_dir/f"skipthegames({timestamps}).xlsx", index=False)
     print(f'skipthegames({timestamps}).xlsx exported.')
     # CLOSE WEBDRIVER
     driver.close()

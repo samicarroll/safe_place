@@ -1,5 +1,4 @@
 import datetime
-import time
 import pandas as pd
 import pathlib
 import selenium
@@ -9,6 +8,8 @@ from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 from selenium.common import StaleElementReferenceException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 def run(selected_keywords):
@@ -87,8 +88,11 @@ def run(selected_keywords):
         driver.get(link)
         driver.implicitly_wait(10)
         for keyword in selected_keywords:
-            description = driver.find_element(By.CLASS_NAME, 'postbody').text
-            driver.implicitly_wait(20)
+            try:
+                description = WebDriverWait(driver, 20).until(EC.presence_of_element_located((
+                    By.CLASS_NAME, 'postbody'))).text
+            except StaleElementReferenceException:
+                continue
             if keyword in description.lower():
                 page_url = driver.current_url
                 driver.implicitly_wait(10)
@@ -135,8 +139,6 @@ def run(selected_keywords):
     excel_dir = pathlib.Path.home() / f"Desktop/megapersonals/sarasota/excel_files/{timestamp}"
     if not os.path.exists(excel_dir):
         os.makedirs(excel_dir)
-    df.to_excel(excel_dir/"megapersonals({timestamps}).xlsx",
-                index=False)
     df.to_excel(excel_dir/f"megapersonals({timestamps}).xlsx", index=False)
     print(f'megapersonals({timestamps}).xlsx exported.')
 
