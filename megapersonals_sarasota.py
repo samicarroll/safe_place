@@ -1,41 +1,34 @@
 import datetime
+import os
+import time
 import pandas as pd
 import pathlib
-import selenium
-import os
-import chromedriver_autoinstaller
-from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 from selenium.common import StaleElementReferenceException
+import chromedriver_autoinstaller
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 
 def run(selected_keywords):
     # SET UP LIST AND MEGAPERSONALS URL
     LIST = []
     url = 'https://megapersonals.eu/'
+    driver = webdriver.Chrome()
+    # CONNECT SELENIUM TO WEB URL
+
 
     # SET UP HEADLESS PAGE
-    options = selenium.webdriver.ChromeOptions()
+    options = webdriver.ChromeOptions()
     chromedriver_autoinstaller.install()
-    # service_object = Service(binary_path)
-    # options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-    # chromedriver_binary = "/Users/samicarroll/Documents/drivers/chromedriver_mac64-2/chromedriver"
-    options.add_argument("--headless=new")
-    options.add_argument("--no-default-browser-check")
+    options.add_argument("--headless")
     driver = webdriver.Chrome(options=options)
     driver.get(url)
-
     # DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS
     timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
-    timestamp = datetime.datetime.now().strftime('%m_%d_%y')
-
+    timestamp = datetime.datetime.now().strftime('%m%d%y')
     # CLICKING AGREEMENTS AND PREFERENCES:
     # CLICK AGE AGREEMENT BUTTON
-    driver.implicitly_wait(10)
-    click = driver.find_element(By.CSS_SELECTOR, "#ageagree")
+    click = driver.find_element("id", 'ageagree')
     driver.execute_script("arguments[0].click();", click)
     driver.implicitly_wait(10)
 
@@ -77,7 +70,7 @@ def run(selected_keywords):
         if pageCounter < 4:
             next_page = driver.find_element("id", "paginationNext")
             driver.execute_script("arguments[0].click();", next_page)
-            driver.implicitly_wait(10)
+            driver.implicitly_wait(5)
 
         pageCounter += 1
 
@@ -86,32 +79,28 @@ def run(selected_keywords):
     for link in links:
         print(f"Processing link {link_counter}: {link}")  # Debugging print statement
         driver.get(link)
-        driver.implicitly_wait(10)
+
         for keyword in selected_keywords:
-            try:
-                description = WebDriverWait(driver, 20).until(EC.presence_of_element_located((
-                    By.CLASS_NAME, 'postbody'))).text
-            except StaleElementReferenceException:
-                continue
+            description = driver.find_element(By.CLASS_NAME, 'postbody').text
             if keyword in description.lower():
                 page_url = driver.current_url
-                driver.implicitly_wait(10)
+                driver.implicitly_wait(5)
 
                 title = driver.find_element(By.CLASS_NAME, 'post_preview_title').text
-                driver.implicitly_wait(10)
+                driver.implicitly_wait(5)
 
                 description = driver.find_element(By.CLASS_NAME, 'postbody').text
-                driver.implicitly_wait(10)
+                driver.implicitly_wait(5)
 
                 age = driver.find_element(By.CLASS_NAME, 'post_preview_age').text
-                driver.implicitly_wait(10)
+                driver.implicitly_wait(5)
 
                 phone_number = driver.find_element(By.CSS_SELECTOR,
                                                    'body > div > div.post_preview_body > '
                                                    'div.fromLeft.post_preview_phone'
                                                    '> span > a').get_attribute(
                     "innerHTML")
-                driver.implicitly_wait(10)
+                driver.implicitly_wait(2)
 
                 # APPEND CONTENTS TO LIST
                 LIST.append([link_counter, page_url, title, age, description, phone_number, keyword])
@@ -126,20 +115,21 @@ def run(selected_keywords):
                 screenshot_dir = pathlib.Path.home() / f"Desktop/megapersonals/sarasota/screenshots/{timestamp}"
                 if not os.path.exists(screenshot_dir):
                     os.makedirs(screenshot_dir)
-                driver.save_screenshot(screenshot_dir/f"{screenshot_name}")
+                driver.save_screenshot(screenshot_dir / f"{screenshot_name}")
+
                 break
 
         link_counter += 1
 
     # SET UP COLUMNS FOR EXCEL FILE
-    columns = ('screenshot number', 'url', 'title', 'age', 'description', 'phone number', 'matching keyword')
+    columns = ('counter', 'url', 'title', 'age', 'description', 'phone number', 'matching keyword')
     df = pd.DataFrame(LIST, columns=columns)
 
     # EXPORT TO EXCEL FILE
     excel_dir = pathlib.Path.home() / f"Desktop/megapersonals/sarasota/excel_files/{timestamp}"
     if not os.path.exists(excel_dir):
         os.makedirs(excel_dir)
-    df.to_excel(excel_dir/f"megapersonals({timestamps}).xlsx", index=False)
+    df.to_excel(excel_dir / f"megapersonals({timestamps}).xlsx", index=False)
     print(f'megapersonals({timestamps}).xlsx exported.')
 
     # CLOSE WEBDRIVER
