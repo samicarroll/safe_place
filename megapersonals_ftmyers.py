@@ -86,8 +86,8 @@ def run(selected_keywords):
         driver.get(link)
         driver.implicitly_wait(10)
         for keyword in selected_keywords:
-            description = driver.find_element(By.CSS_SELECTOR, 'body > div > div.post_preview_body > span').text
-            driver.implicitly_wait(10)
+            description = driver.find_element(By.CLASS_NAME, 'postbody').text
+            driver.implicitly_wait(20)
             if keyword in description.lower():
                 page_url = driver.current_url
                 driver.implicitly_wait(10)
@@ -116,7 +116,7 @@ def run(selected_keywords):
                 driver.set_window_size(S('Width'), S('Height'))
 
                 # SCREENSHOT LISTING
-                screenshot_name = f"({link_counter})_{timestamps}_megapersonals.png"
+                screenshot_name = f"({link_counter})_megapersonals.png"
                 # MAKE DIRECTORY FOR SCREENSHOTS
                 screenshot_dir = pathlib.Path.home() / f"Desktop/megapersonals/ft_myers/screenshots/{timestamp}"
                 if not os.path.exists(screenshot_dir):
@@ -132,7 +132,8 @@ def run(selected_keywords):
 
     # EXPORT TO EXCEL FILE
     excel_dir = pathlib.Path.home() / f"Desktop/megapersonals/ft_myers/excel_files/{timestamp}"
-    os.mkdir(excel_dir)
+    if not os.path.exists(excel_dir):
+        os.makedirs(excel_dir)
     df.to_excel(excel_dir/f"megapersonals({timestamps}).xlsx", index=False)
     print(f'megapersonals({timestamps}).xlsx exported.')
 

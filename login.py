@@ -5,9 +5,6 @@ import megapersonals_miami
 import megapersonals_sarasota
 import skip_the_games
 import os
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
-from selenium import webdriver
 from flask import Flask, render_template, request, redirect, session
 from flask import flash
 

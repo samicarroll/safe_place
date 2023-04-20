@@ -68,7 +68,7 @@ def run(selected_keywords):
         driver.implicitly_wait(10)
 
         description = driver.find_element(By.CSS_SELECTOR, '#post-body > div').text
-        driver.implicitly_wait(10)
+        driver.implicitly_wait(20)
         for keyword in selected_keywords:
             if keyword in description:
                 ad_url = driver.current_url
