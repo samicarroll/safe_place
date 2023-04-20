@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <title>Login Page</title>
     <link rel="stylesheet" type="text/css" href="/static/styles.css">
+    <style>
+      .button {
+        display: block;
+        width: 150px;
+        margin: 10px auto;
+        padding: 10px;
+        border-radius: 50px;
+        text-align: center;
+      }
+
+      .form-container {
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
     <div class="form-container">
@@ -11,17 +25,10 @@
         <h2 style="font-size: 36px;">Login</h2>
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>
-        <button type="submit" class="submit-button">Submit</button>
-        <style>
-          .submit-button {
-          background-color: green;
-          border-radius: 50px;
-          padding: 10px;
-          color: white;
-          }
-        </style>
-        <input type="reset" value="Cancel" style="background-color: red; border-radius: 70px; padding: 10px">
+        <button type="submit" class="button submit-button">Submit</button>
+        <button type="reset" class="button cancel-button">Cancel</button>
       </form>
+      <a href="{{ url_for('register') }}" class="button create-account-button">Create Account</a>
     </div>
   </body>
 </html>
