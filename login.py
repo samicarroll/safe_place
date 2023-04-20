@@ -7,28 +7,25 @@ from selenium import webdriver
 from flask import Flask, render_template, request, redirect, session
 from flask import flash
 import psycopg2
+from urllib.parse import urlparse
 
-db_username = os.environ['DB_USERNAME']
-db_password = os.environ['DB_PASSWORD']
-db_name = os.environ['DB_NAME']
-db_host = os.environ['DB_HOST']
-db_port = os.environ['DB_PORT']
+elephant_sql_url = "postgres://mblijolb:kK7X41hUBnVsUNS4NTj6Fl9xdCfmkHeb@baasu.db.elephantsql.com/mblijolb"
+url = urlparse(elephant_sql_url)
 
-connection = psycopg2.connect(
+db_name = url.path[1:]
+db_user = url.username
+db_password = url.password
+db_host = url.hostname
+db_port = url.port
+
+conn = psycopg2.connect(
     dbname=db_name,
-    user=db_username,
+    user=db_user,
     password=db_password,
     host=db_host,
     port=db_port
 )
-
-# will help run the sql query and fetch the data
-cursor = connection.cursor()
-cursor.execute('SELECT * FROM login;')
-rows = cursor.fetchall()
-print(rows)
-cursor.close()
-connection.close()
+print("Connected to the database.")
 
 
 def resource_path(relative):
