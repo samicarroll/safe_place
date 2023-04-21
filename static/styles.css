@@ -6,10 +6,34 @@ body {
 }
 
 .form-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  text-align: center;
+}
+.button {
+  display: block;
+  width: 150px;
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.submit-button {
+  background-color: green;
+  color: black;
+}
+
+.cancel-button {
+  background-color: red;
+  color: black;
+}
+
+.create-account-button {
+  background-color: yellow;
+  color: black;
+}
+
+.form-container {
+  text-align: center;
 }
 
 form {
@@ -20,33 +44,12 @@ form {
   height: 100vh;
 }
 
-input[type="text"], input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  box-sizing: border-box;
-}
-
-button[type="submit"] {
-  width: 70%;
-  padding: 10px;
-  background-color: green;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button[type="cancel"] {
-  width: 100%;
-  padding: 10px;
-  background-color: red;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  font-weight: bold;
-  cursor: pointer;
+input[type="text"],
+input[type="password"] {
+  width: 200px;
+  height: 40px;
+  margin-bottom: 15px;
+  padding: 0 10px;
 }
 
 .centered {
