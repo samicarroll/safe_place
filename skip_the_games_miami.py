@@ -60,6 +60,7 @@ def run(selected_keywords):
 
     for urls in links:
         links[:] = (urls for urls in links if not urls.startswith('https://skipthegames.com/reply/meetup/'))
+        print(f"Processing link {counter}: {urls}")  # Debugging print statement
         driver.get(links[counter])
         driver.implicitly_wait(10)
 
