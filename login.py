@@ -131,6 +131,7 @@ def get_keywords():
 def search():
     websites = {
         "mega-personals": "MegaPersonals",
+        "mega-personals-ftlaudy": "MegaPersonals Ft. Lauderdale",
         "mega-personals-mia": "MegaPersonals Miami",
         "mega-personals-sota": "MegaPersonals Sarasota",
         "mega-personals-tpa": "MegaPersonals Tampa",
