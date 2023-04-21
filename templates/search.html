@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>Search Page</title>
@@ -8,6 +9,20 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+        }
+        .content-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .keywords-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-right: 5px;
         }
 
         form {
@@ -21,6 +36,7 @@
             box-shadow: 0 0 5px #888;
             width: 85%;
             height: auto;
+            position: relative;
         }
 
         label {
@@ -53,7 +69,10 @@
         }
 
         input[type=submit] {
-            margin-top: 10px;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
             background-color: #4CAF50;
             color: white;
             font-size: 18px;
@@ -82,6 +101,47 @@
         .column-half {
             width: 50%;
         }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            min-width: 204px;
+        }
+
+        .checkbox-container input[type=checkbox] {
+            margin-right: 5px;
+        }
+        .checkbox-container label {
+            font-size: 15px;
+            padding-right: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .all-checkbox {
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+        .all-checkbox label {
+            font-size: 15px;
+        }
+        /*.search-button-container {*/
+        /*    display: flex;*/
+        /*    justify-content: center;*/
+        /*    width: 100%;*/
+        /*    height: 100%;*/
+        /*    position: absolute;*/
+        /*    right: 0;*/
+        /*    top: 0;*/
+        /*    margin-top: 0;*/
+        /*}*/
+        .search-button-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100%;
+            margin-left: 40px; /* Increased space between keywords and search button */
+        }
     </style>
 </head>
 <body>
@@ -97,44 +157,68 @@
     {% endwith %}
 
     <form action="{{ url_for('search_results') }}" method="POST">
-        <div className="column">
-            <label>Select website(s) to search:</label>
-            <br>
-            <input type="checkbox" name="websites[]" value="mega-personals"> MegaPersonals Fort Myers<br>
-            <input type="checkbox" name="websites[]" value="mega-personals-mia"> MegaPersonals Miami<br>
-            <input type="checkbox" name="websites[]" value="mega-personals-sota"> MegaPersonals Sarasota<br>
-            <input type="checkbox" name="websites[]" value="skip_the_games_ftmyers"> Skip The Games Fort Myers<br>
-            <input type="checkbox" name="websites[]" value="skip_the_games_miami"> Skip The Games Miami<br>
-            <input type="checkbox" name="websites[]" value="skip_the_games_sarasota"> Skip The Games Sarasota<br>
-            <div className="all-checkbox">
-                <input type="checkbox" id="websites-all" value="all"> All
-            </div>
-        </div>
-        <div class="column">
-            <label>Select keyword(s) to search:</label>
-            <br>
-            <div class="column-container">
-                <div class="column-half">
-                    {% for keyword in keywords[:10] %}
-                        <div>
-                            <input type="checkbox" name="keywords[]" value="{{ keyword }}"> {{ keyword }}
-                        </div>
-                    {% endfor %}
+        <div class="content-container">
+            <div class="column">
+                <label>Select website(s) to search:</label>
+                <div class="checkbox-container">
+                    <input type="checkbox" name="websites[]" value="mega-personals">
+                    <label>MegaPersonals Fort Myers</label>
                 </div>
-                <div class="column-half">
-                    {% for keyword in keywords[10:] %}
-                        <div>
-                            <input type="checkbox" name="keywords[]" value="{{ keyword }}"> {{ keyword }}
-                        </div>
-                    {% endfor %}
+                <div class="checkbox-container">
+                    <input type="checkbox" name="websites[]" value="mega-personals-mia">
+                    <label>MegaPersonals Miami</label>
+                </div>
+                <div class="checkbox-container">
+                    <input type="checkbox" name="websites[]" value="mega-personals-sota">
+                    <label>MegaPersonals Sarasota</label>
+                </div>
+                <div class="checkbox-container">
+                    <input type="checkbox" name="websites[]" value="skip_the_games_ftmyers">
+                    <label>Skip The Games Fort Myers</label>
+                </div>
+                <div class="checkbox-container">
+                    <input type="checkbox" name="websites[]" value="skip_the_games_miami">
+                    <label>Skip The Games Miami</label>
+                </div>
+                <div class="checkbox-container">
+                    <input type="checkbox" name="websites[]" value="skip_the_games_sarasota">
+                    <label>Skip The Games Sarasota</label>
+                </div>
+                <div class="all-checkbox">
+                    <input type="checkbox" id="websites-all" value="all">
+                    <label>All</label>
                 </div>
             </div>
-            <div class="all-checkbox">
-                <input type="checkbox" id="keywords-all" value="all"> all
+            <div class="keywords-container">
+                <div class="column">
+                    <label>Select keyword(s) to search:</label>
+                    <div class="column-container">
+                        <div class="column-half">
+                            {% for keyword in keywords[:10] %}
+                                <div class="checkbox-container">
+                                    <input type="checkbox" name="keywords[]" value="{{ keyword }}">
+                                    <label>{{ keyword }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="column-half">
+                            {% for keyword in keywords[10:] %}
+                                <div class="checkbox-container">
+                                    <input type="checkbox" name="keywords[]" value="{{ keyword }}">
+                                    <label>{{ keyword }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="all-checkbox">
+                        <input type="checkbox" id="keywords-all" value="all">
+                        <label>All</label>
+                    </div>
+                </div>
             </div>
-        </div>
-         <div style="margin-top: 20px;">
-            <input type="submit" value="Search">
+            <div class="search-button-container">
+                <input type="submit" value="Search">
+            </div>
         </div>
     </form>
 </body>
