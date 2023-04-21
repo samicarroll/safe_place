@@ -25,7 +25,7 @@ def run(selected_keywords):
     driver.get(url)
     # DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS
     timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
-    timestamp = datetime.datetime.now().strftime('%m%d%y')
+    timestamp = datetime.datetime.now().strftime('%m_%d_%y')
     # CLICKING AGREEMENTS AND PREFERENCES:
     # CLICK AGE AGREEMENT BUTTON
     click = driver.find_element("id", 'ageagree')

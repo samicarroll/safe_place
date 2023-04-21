@@ -85,7 +85,7 @@ def run(selected_keywords):
 
                 # SCREENSHOT LISTING
                 screenshot_name = f"({counter})_skipthegames.png"
-                screenshot_dir = pathlib.Path.home() / f"Desktop/skipthegames/fort myers/screenshots/{timestamp}"
+                screenshot_dir = pathlib.Path.home() / f"Desktop/skipthegames/ft_myers/screenshots/{timestamp}"
                 if not os.path.exists(screenshot_dir):
                     os.makedirs(screenshot_dir)
                 driver.save_screenshot(screenshot_dir/f"{screenshot_name}")
@@ -102,7 +102,7 @@ def run(selected_keywords):
     df = pd.DataFrame(LIST, columns=columns)
 
     # EXPORT TO EXCEL FILE
-    excel_dir = pathlib.Path.home() / f"Desktop/skipthegames/fort myers/excel_files/{timestamp}"
+    excel_dir = pathlib.Path.home() / f"Desktop/skipthegames/ft_myers/excel_files/{timestamp}"
     if not os.path.exists(excel_dir):
         os.makedirs(excel_dir)
     df.to_excel(excel_dir/f"skipthegames({timestamps}).xlsx", index=False)

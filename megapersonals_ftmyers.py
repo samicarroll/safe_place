@@ -25,7 +25,7 @@ def run(selected_keywords):
     driver.get(url)
     # DATE FORMAT: MONTH_DAY_YEAR - HOUR_MINUTES_SECONDS
     timestamps = datetime.datetime.now().strftime('%m_%d_%y %H_%M_%S')
-    timestamp = datetime.datetime.now().strftime('%m%d%y')
+    timestamp = datetime.datetime.now().strftime('%m_%d_%y')
 
     # CLICKING AGREEMENTS AND PREFERENCES:
     # CLICK AGE AGREEMENT BUTTON
@@ -113,7 +113,7 @@ def run(selected_keywords):
                 # SCREENSHOT LISTING
                 screenshot_name = f"({link_counter})_megapersonals.png"
                 # MAKE DIRECTORY FOR SCREENSHOTS
-                screenshot_dir = pathlib.Path.home() / f"Desktop/megapersonals/fort myers/screenshots/{timestamp}"
+                screenshot_dir = pathlib.Path.home() / f"Desktop/megapersonals/ft_myers/screenshots/{timestamp}"
                 if not os.path.exists(screenshot_dir):
                     os.makedirs(screenshot_dir)
                 driver.save_screenshot(screenshot_dir / f"{screenshot_name}")
@@ -128,7 +128,7 @@ def run(selected_keywords):
 
 
     # EXPORT TO EXCEL FILE
-    excel_dir = pathlib.Path.home() / f"Desktop/megapersonals/fort myers/excel_files/{timestamp}"
+    excel_dir = pathlib.Path.home() / f"Desktop/megapersonals/ft_myers/excel_files/{timestamp}"
     if not os.path.exists(excel_dir):
         os.makedirs(excel_dir)
     df.to_excel(excel_dir / f"megapersonals({timestamps}).xlsx", index=False)
