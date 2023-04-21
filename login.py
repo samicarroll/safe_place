@@ -34,6 +34,7 @@ def create_db_connection():
     )
     return conn
 
+
 def resource_path(relative):
     return os.path.join(
         os.environ.get(
@@ -46,6 +47,7 @@ def resource_path(relative):
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
+
 
 def generate_password_hash(password):
     salt = bcrypt.gensalt()
@@ -114,6 +116,8 @@ def register():
         # Redirect the user to the login page
         return redirect(url_for('login'))
     return render_template('register.html')
+
+
 def get_keywords():
     with open(resource_path('static/keywords.txt')) as f:
         keywords = f.read().splitlines()
