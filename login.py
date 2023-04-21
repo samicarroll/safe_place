@@ -169,7 +169,7 @@ def search():
                     excel_files.append(
                         f'megapersonals_sarasota_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "mega-personals-tpa":
-                    import megapersonals_sarasota
+                    import megapersonals_tampa
                     results.extend(megapersonals_tampa.run(selected_keywords))
                     excel_files.append(
                         f'megapersonals_tampa_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
