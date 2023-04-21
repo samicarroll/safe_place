@@ -156,25 +156,17 @@ def search():
                 elif website == "mega-personals-mia":
                     import megapersonals_miami
                     results.extend(megapersonals_miami.run(selected_keywords))
-                    excel_files.append(
-<<<<<<< Updated upstream
-                        f'megapersonals_mia_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
-=======
-                        f'megapersonals_miami_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
->>>>>>> Stashed changes
+                    excel_files.append(f'megapersonals_miami_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "mega-personals-sota":
                     import megapersonals_sarasota
                     results.extend(megapersonals_sarasota.run(selected_keywords))
                     excel_files.append(
                         f'megapersonals_sarasota_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
-<<<<<<< Updated upstream
-=======
                 elif website == "mega-personals-tpa":
                     import megapersonals_sarasota
                     results.extend(megapersonals_tampa.run(selected_keywords))
                     excel_files.append(
                         f'megapersonals_tampa_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
->>>>>>> Stashed changes
                 elif website == "skip_the_games_ftmyers":
                     import skip_the_games_ftmyers
                     results.extend(skip_the_games_ftmyers.run(selected_keywords))
