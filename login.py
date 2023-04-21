@@ -3,6 +3,7 @@ import datetime
 import megapersonals_ftmyers
 import megapersonals_miami
 import megapersonals_sarasota
+import megapersonals_tampa
 import skip_the_games_ftmyers
 import skip_the_games_miami
 import skip_the_games_sarasota
@@ -130,6 +131,7 @@ def search():
         "mega-personals": "MegaPersonals",
         "mega-personals-mia": "MegaPersonals Miami",
         "mega-personals-sota": "MegaPersonals Sarasota",
+        "mega-personals-tpa": "MegaPersonals Tampa",
         "skip_the_games_ftmyers": "Skip The Games Fort Myers",
         "skip_the_games_miami": "Skip the Games Miami",
         "skip_the_games_sarasota": "Skip the Games Sarasota",
@@ -155,12 +157,24 @@ def search():
                     import megapersonals_miami
                     results.extend(megapersonals_miami.run(selected_keywords))
                     excel_files.append(
+<<<<<<< Updated upstream
                         f'megapersonals_mia_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+=======
+                        f'megapersonals_miami_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+>>>>>>> Stashed changes
                 elif website == "mega-personals-sota":
                     import megapersonals_sarasota
                     results.extend(megapersonals_sarasota.run(selected_keywords))
                     excel_files.append(
                         f'megapersonals_sarasota_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+<<<<<<< Updated upstream
+=======
+                elif website == "mega-personals-tpa":
+                    import megapersonals_sarasota
+                    results.extend(megapersonals_tampa.run(selected_keywords))
+                    excel_files.append(
+                        f'megapersonals_tampa_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+>>>>>>> Stashed changes
                 elif website == "skip_the_games_ftmyers":
                     import skip_the_games_ftmyers
                     results.extend(skip_the_games_ftmyers.run(selected_keywords))
@@ -197,6 +211,10 @@ def run_scrapers(websites, keywords):
         # Call the function from your megapersonals sarasota script
         # Make sure to import your megapersonals module at the beginning of your main Flask app file
         megapersonals_sarasota.run(keywords)
+    if "mega-personals-tpa" in websites:
+        # Call the function from your megapersonals sarasota script
+        # Make sure to import your megapersonals module at the beginning of your main Flask app file
+        megapersonals_tampa.run(keywords)
     if "skip_the_games_ftmyers" in websites:
         # Call the function from your skip_the_games_ftmyers script
         # Make sure to import your skip_the_games module at the beginning of your main Flask app file
