@@ -1,8 +1,10 @@
 import secrets
 import datetime
+import megapersonals_ftlaudy
 import megapersonals_ftmyers
 import megapersonals_miami
 import megapersonals_sarasota
+import megapersonals_tampa
 import skip_the_games_ftmyers
 import skip_the_games_miami
 import skip_the_games_sarasota
@@ -126,6 +128,7 @@ def search():
         "mega-personals": "MegaPersonals",
         "mega-personals-mia": "MegaPersonals Miami",
         "mega-personals-sota": "MegaPersonals Sarasota",
+        "mega-personals-tpa": "MegaPersonals Tampa",
         "skip_the_games_ftmyers": "Skip The Games Fort Myers",
         "skip_the_games_miami": "Skip the Games Miami",
         "skip_the_games_sarasota": "Skip the Games Sarasota",
@@ -144,6 +147,10 @@ def search():
                     import megapersonals_ftmyers
                     results.extend(megapersonals_ftmyers.run(selected_keywords))
                     excel_files.append(f'megapersonals_ftmyers_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                elif website == "mega-personals-ftlaudy":
+                    import megapersonals_ftlaudy
+                    results.extend(megapersonals_ftlaudy.run(selected_keywords))
+                    excel_files.append(f'megapersonals_ftlaudy_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "mega-personals-mia":
                     import megapersonals_miami
                     results.extend(megapersonals_miami.run(selected_keywords))
@@ -156,6 +163,11 @@ def search():
                     import skip_the_games_ftmyers
                     results.extend(skip_the_games_ftmyers.run(selected_keywords))
                     excel_files.append(f'skip_the_games_ftmyers{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                elif website == "mega-personals-tpa":
+                    import megapersonals_ftlaudy
+                    results.extend(megapersonals_ftlaudy.run(selected_keywords))
+                    excel_files.append(
+                        f'megapersonals_ftlaudy_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "skip_the_games_miami":
                     import skip_the_games_miami
                     results.extend(skip_the_games_miami.run(selected_keywords))
