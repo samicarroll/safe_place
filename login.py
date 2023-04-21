@@ -1,5 +1,7 @@
 import secrets
 import datetime
+
+import megapersonals_ftlaudy
 import megapersonals_ftmyers
 import megapersonals_miami
 import megapersonals_sarasota
@@ -153,6 +155,10 @@ def search():
                     results.extend(megapersonals_ftmyers.run(selected_keywords))
                     excel_files.append(
                         f'megapersonals_ftmyers_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                elif website == "mega-personals-ftlaudy":
+                    import megapersonals_ftlaudy
+                    results.extend(megapersonals_ftlaudy.run(selected_keywords))
+                    excel_files.append(f'megapersonals_miami_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "mega-personals-mia":
                     import megapersonals_miami
                     results.extend(megapersonals_miami.run(selected_keywords))
@@ -195,6 +201,10 @@ def run_scrapers(websites, keywords):
         # Call the function from your megapersonals ftmyers script
         # Make sure to import your megapersonals module at the beginning of your main Flask app file
         megapersonals_ftmyers.run(keywords)
+    if "mega-personals-ftlaudy" in websites:
+        # Call the function from your megapersonals ftmyers script
+        # Make sure to import your megapersonals module at the beginning of your main Flask app file
+        megapersonals_ftlaudy.run(keywords)
     if "mega-personals-mia" in websites:
         # Call the function from your megapersonals miami script
         # Make sure to import your megapersonals module at the beginning of your main Flask app file
