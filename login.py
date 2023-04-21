@@ -36,6 +36,7 @@ def create_db_connection():
     )
     return conn
 
+
 def resource_path(relative):
     return os.path.join(
         os.environ.get(
@@ -48,6 +49,7 @@ def resource_path(relative):
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
+
 
 def generate_password_hash(password):
     salt = bcrypt.gensalt()
@@ -116,6 +118,8 @@ def register():
         # Redirect the user to the login page
         return redirect(url_for('login'))
     return render_template('register.html')
+
+
 def get_keywords():
     with open(resource_path('static/keywords.txt')) as f:
         keywords = f.read().splitlines()
@@ -151,14 +155,26 @@ def search():
                     import megapersonals_ftlaudy
                     results.extend(megapersonals_ftlaudy.run(selected_keywords))
                     excel_files.append(f'megapersonals_ftlaudy_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                    excel_files.append(
+                        f'megapersonals_ftmyers_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                elif website == "mega-personals-ftlaudy":
+                    import megapersonals_ftlaudy
+                    results.extend(megapersonals_ftlaudy.run(selected_keywords))
+                    excel_files.append(f'megapersonals_miami_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "mega-personals-mia":
                     import megapersonals_miami
                     results.extend(megapersonals_miami.run(selected_keywords))
-                    excel_files.append(f'megapersonals_mia_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                    excel_files.append(f'megapersonals_miami_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "mega-personals-sota":
                     import megapersonals_sarasota
                     results.extend(megapersonals_sarasota.run(selected_keywords))
-                    excel_files.append(f'megapersonals_sarasota_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                    excel_files.append(
+                        f'megapersonals_sarasota_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                elif website == "mega-personals-tpa":
+                    import megapersonals_tampa
+                    results.extend(megapersonals_tampa.run(selected_keywords))
+                    excel_files.append(
+                        f'megapersonals_tampa_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "skip_the_games_ftmyers":
                     import skip_the_games_ftmyers
                     results.extend(skip_the_games_ftmyers.run(selected_keywords))
@@ -168,18 +184,23 @@ def search():
                     results.extend(megapersonals_ftlaudy.run(selected_keywords))
                     excel_files.append(
                         f'megapersonals_ftlaudy_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                    excel_files.append(
+                        f'skip_the_games_ftmyers{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "skip_the_games_miami":
                     import skip_the_games_miami
                     results.extend(skip_the_games_miami.run(selected_keywords))
-                    excel_files.append(f'skip_the_games_miami{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                    excel_files.append(
+                        f'skip_the_games_miami{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "skip_the_games_sarasota":
                     import skip_the_games_sarasota
                     results.extend(skip_the_games_sarasota.run(selected_keywords))
-                    excel_files.append(f'skip_the_games_sarasota{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                    excel_files.append(
+                        f'skip_the_games_sarasota{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
 
     if request.method == "POST" and results:
         flash("Web scraping complete")
-    return render_template("search.html", websites=websites, keywords=keywords, results=results,excel_files=excel_files)
+    return render_template("search.html", websites=websites, keywords=keywords, results=results,
+                           excel_files=excel_files)
 
 
 def run_scrapers(websites, keywords):
@@ -188,6 +209,10 @@ def run_scrapers(websites, keywords):
         # Call the function from your megapersonals ftmyers script
         # Make sure to import your megapersonals module at the beginning of your main Flask app file
         megapersonals_ftmyers.run(keywords)
+    if "mega-personals-ftlaudy" in websites:
+        # Call the function from your megapersonals ftmyers script
+        # Make sure to import your megapersonals module at the beginning of your main Flask app file
+        megapersonals_ftlaudy.run(keywords)
     if "mega-personals-mia" in websites:
         # Call the function from your megapersonals miami script
         # Make sure to import your megapersonals module at the beginning of your main Flask app file
@@ -196,6 +221,10 @@ def run_scrapers(websites, keywords):
         # Call the function from your megapersonals sarasota script
         # Make sure to import your megapersonals module at the beginning of your main Flask app file
         megapersonals_sarasota.run(keywords)
+    if "mega-personals-tpa" in websites:
+        # Call the function from your megapersonals sarasota script
+        # Make sure to import your megapersonals module at the beginning of your main Flask app file
+        megapersonals_tampa.run(keywords)
     if "skip_the_games_ftmyers" in websites:
         # Call the function from your skip_the_games_ftmyers script
         # Make sure to import your skip_the_games module at the beginning of your main Flask app file
@@ -224,5 +253,4 @@ def search_results():
 
 
 if __name__ == '__main__':
-
     app.run()
