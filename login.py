@@ -34,7 +34,6 @@ def create_db_connection():
     )
     return conn
 
-
 def resource_path(relative):
     return os.path.join(
         os.environ.get(
@@ -47,7 +46,6 @@ def resource_path(relative):
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
-
 
 def generate_password_hash(password):
     salt = bcrypt.gensalt()
@@ -116,8 +114,6 @@ def register():
         # Redirect the user to the login page
         return redirect(url_for('login'))
     return render_template('register.html')
-
-
 def get_keywords():
     with open(resource_path('static/keywords.txt')) as f:
         keywords = f.read().splitlines()
@@ -142,8 +138,6 @@ def search():
         print("POST request received")  # Debugging print statement
         selected_websites = request.form.getlist("websites")
         selected_keywords = request.form.getlist("keywords")
-        print(f"Selected websites: {selected_websites}")  # Debugging print statement
-        print(f"Selected keywords: {selected_keywords}")  # Debugging print statement
         if selected_websites and selected_keywords:  # Only proceed if both are selected
             for website in selected_websites:
                 if website == "mega-personals":
