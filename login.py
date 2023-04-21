@@ -7,7 +7,6 @@ import skip_the_games_ftmyers
 import skip_the_games_miami
 import skip_the_games_sarasota
 import os
-from selenium import webdriver
 from flask import Flask, render_template, request, redirect, session
 from flask import flash
 from flask import url_for
@@ -35,7 +34,6 @@ def create_db_connection():
     )
     return conn
 
-
 def resource_path(relative):
     return os.path.join(
         os.environ.get(
@@ -48,10 +46,6 @@ def resource_path(relative):
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
-options = webdriver.ChromeOptions()
-options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-chromedriver_binary = "/Applications/Google Chrome.app/Contents/MacOS/chromedriver"
-
 
 def generate_password_hash(password):
     salt = bcrypt.gensalt()
@@ -120,8 +114,6 @@ def register():
         # Redirect the user to the login page
         return redirect(url_for('login'))
     return render_template('register.html')
-
-
 def get_keywords():
     with open(resource_path('static/keywords.txt')) as f:
         keywords = f.read().splitlines()
@@ -130,7 +122,7 @@ def get_keywords():
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
-   websites = {
+    websites = {
         "mega-personals": "MegaPersonals",
         "mega-personals-mia": "MegaPersonals Miami",
         "mega-personals-sota": "MegaPersonals Sarasota",
@@ -150,7 +142,7 @@ def search():
         print(f"Selected keywords: {selected_keywords}")  # Debugging print statement
         if selected_websites and selected_keywords:  # Only proceed if both are selected
             for website in selected_websites:
-                                if website == "mega-personals":
+                if website == "mega-personals":
                     import megapersonals_ftmyers
                     results.extend(megapersonals_ftmyers.run(selected_keywords))
                     excel_files.append(f'megapersonals_ftmyers_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
@@ -177,13 +169,12 @@ def search():
 
     if request.method == "POST" and results:
         flash("Web scraping complete")
-    return render_template("search.html", websites=websites, keywords=keywords, results=results,
-                           excel_files=excel_files)
+    return render_template("search.html", websites=websites, keywords=keywords, results=results,excel_files=excel_files)
 
 
 def run_scrapers(websites, keywords):
     results = []
-        if "mega-personals" in websites:
+    if "mega-personals" in websites:
         # Call the function from your megapersonals ftmyers script
         # Make sure to import your megapersonals module at the beginning of your main Flask app file
         megapersonals_ftmyers.run(keywords)
@@ -207,6 +198,7 @@ def run_scrapers(websites, keywords):
         # Call the function from your skip_the_games_sarasota script
         # Make sure to import your skip_the_games module at the beginning of your main Flask app file
         skip_the_games_sarasota.run(keywords)
+
     return results
 
 
@@ -222,6 +214,5 @@ def search_results():
 
 
 if __name__ == '__main__':
-    from waitress import serve
 
     app.run()

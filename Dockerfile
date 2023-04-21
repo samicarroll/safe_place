@@ -14,12 +14,12 @@ COPY templates /app/templates/
 RUN sudo apt-get update && sudo apt-get install -y python3-pip && \
     pip3 install --no-cache-dir -r requirements.txt
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
+# Make port 5000 available to the world outside this container
+EXPOSE 5000
 
 # Define environment variable
 ENV FLASK_APP=login.py
 ENV FLASK_RUN_HOST=0.0.0.0
 
 # Run login.py when the container launches
-CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0", "--port=80"]
+CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0", "--port=5000"]
