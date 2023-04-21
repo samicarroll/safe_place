@@ -7,12 +7,18 @@ body {
 
 .form-container {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
-.button {
+.button, a.button {
+  font-size: 0.8em;
   display: block;
-  width: 150px;
+  width: 130px;
   margin: 10px auto;
-  padding: 10px;
+  padding: 5px 10px;
   border-radius: 5px;
   text-align: center;
 }
@@ -30,18 +36,6 @@ body {
 .create-account-button {
   background-color: yellow;
   color: black;
-}
-
-.form-container {
-  text-align: center;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
 }
 
 input[type="text"],
