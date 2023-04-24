@@ -34,3 +34,5 @@ user/desktop/megapersonals/[location]/excel_files/[timestamp]/megapersonals_[tim
 - Escorte: Escort
 - Policia: police 
 - LLamarme: Call me
+
+
