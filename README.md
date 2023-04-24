@@ -31,6 +31,6 @@ user/desktop/megapersonals/[location]/excel_files/[timestamp]/megapersonals_[tim
 - implement more locations for SkipTheGames
 
 ##Translation to keywords in Spanish 
--Escorte: Escort
+- Escorte: Escort
 - Policia: police 
 - LLamarme: Call me
