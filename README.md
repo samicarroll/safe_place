@@ -29,3 +29,8 @@ user/desktop/megapersonals/[location]/excel_files/[timestamp]/megapersonals_[tim
 ## Future Releases
 - implement DB for various usernames and passwords
 - implement more locations for SkipTheGames
+
+##Translation to keywords in Spanish 
+-Escorte: Escort
+- Policia: police 
+- LLamarme: Call me
