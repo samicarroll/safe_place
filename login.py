@@ -1,11 +1,12 @@
 import secrets
 import datetime
-
 import megapersonals_ftlaudy
 import megapersonals_ftmyers
 import megapersonals_miami
 import megapersonals_sarasota
 import megapersonals_tampa
+import skip_the_games_ftlaudy
+import skip_the_games_tampa
 import skip_the_games_ftmyers
 import skip_the_games_miami
 import skip_the_games_sarasota
@@ -138,6 +139,8 @@ def search():
         "skip_the_games_ftmyers": "Skip The Games Fort Myers",
         "skip_the_games_miami": "Skip the Games Miami",
         "skip_the_games_sarasota": "Skip the Games Sarasota",
+        "skip_the_games_ftlaudy":"Skip the Games Fort Lauderdale",
+        "skip_the_games_tampa":"Skip the Games Tampa",
     }
     keywords = get_keywords()
     results = []
@@ -147,8 +150,8 @@ def search():
         print("POST request received")  # Debugging print statement
         selected_websites = request.form.getlist("websites")
         selected_keywords = request.form.getlist("keywords")
-        print(f"Selected websites: {selected_websites}")  # Debugging print statement
-        print(f"Selected keywords: {selected_keywords}")  # Debugging print statement
+        #print(f"Selected websites: {selected_websites}")  # Debugging print statement
+        #print(f"Selected keywords: {selected_keywords}")  # Debugging print statement
         if selected_websites and selected_keywords:  # Only proceed if both are selected
             for website in selected_websites:
                 if website == "mega-personals":
@@ -167,28 +170,31 @@ def search():
                 elif website == "mega-personals-sota":
                     import megapersonals_sarasota
                     results.extend(megapersonals_sarasota.run(selected_keywords))
-                    excel_files.append(
-                        f'megapersonals_sarasota_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                    excel_files.append(f'megapersonals_sarasota_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "mega-personals-tpa":
                     import megapersonals_tampa
                     results.extend(megapersonals_tampa.run(selected_keywords))
-                    excel_files.append(
-                        f'megapersonals_tampa_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                    excel_files.append(f'megapersonals_tampa_{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                elif website == "skip_the_games_ftlaudy":
+                    import skip_the_games_ftlaudy
+                    results.extend(skip_the_games_ftlaudy.run(selected_keywords))
+                    excel_files.append(f'skip_the_games_ftlaudy{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "skip_the_games_ftmyers":
                     import skip_the_games_ftmyers
                     results.extend(skip_the_games_ftmyers.run(selected_keywords))
-                    excel_files.append(
-                        f'skip_the_games_ftmyers{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                    excel_files.append(f'skip_the_games_ftmyers{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "skip_the_games_miami":
                     import skip_the_games_miami
                     results.extend(skip_the_games_miami.run(selected_keywords))
-                    excel_files.append(
-                        f'skip_the_games_miami{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                    excel_files.append(f'skip_the_games_miami{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
                 elif website == "skip_the_games_sarasota":
                     import skip_the_games_sarasota
                     results.extend(skip_the_games_sarasota.run(selected_keywords))
-                    excel_files.append(
-                        f'skip_the_games_sarasota{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                    excel_files.append(f'skip_the_games_sarasota{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
+                elif website == "skip_the_games_tampa":
+                    import skip_the_games_tampa
+                    results.extend(skip_the_games_tampa.run(selected_keywords))
+                    excel_files.append(f'skip_the_games_tampa{datetime.datetime.now().strftime("%m_%d_%y_%H_%M_%S")}.xlsx')
 
     if request.method == "POST" and results:
         flash("Web scraping complete")
@@ -218,6 +224,10 @@ def run_scrapers(websites, keywords):
         # Call the function from your megapersonals sarasota script
         # Make sure to import your megapersonals module at the beginning of your main Flask app file
         megapersonals_tampa.run(keywords)
+    if "skip_the_games_ftlaudy" in websites:
+        # Call the function from your skip_the_games_sarasota script
+        # Make sure to import your skip_the_games module at the beginning of your main Flask app file
+        skip_the_games_ftlaudy.run(keywords)
     if "skip_the_games_ftmyers" in websites:
         # Call the function from your skip_the_games_ftmyers script
         # Make sure to import your skip_the_games module at the beginning of your main Flask app file
@@ -230,6 +240,10 @@ def run_scrapers(websites, keywords):
         # Call the function from your skip_the_games_sarasota script
         # Make sure to import your skip_the_games module at the beginning of your main Flask app file
         skip_the_games_sarasota.run(keywords)
+    if "skip_the_games_tampa" in websites:
+        # Call the function from your skip_the_games_sarasota script
+        # Make sure to import your skip_the_games module at the beginning of your main Flask app file
+        skip_the_games_tampa.run(keywords)
 
     return results
 
