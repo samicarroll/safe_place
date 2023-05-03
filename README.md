@@ -32,4 +32,5 @@ packages needed can be installed in the terminal
 user/desktop/megapersonals/[location]/screenshots/[timestamp]/[screenshot number]_megapersonals.png
 user/desktop/megapersonals/[location]/excel_files/[timestamp]/megapersonals_[timestamp].xlsx
 ```
+<img width="1428" alt="Screenshot 2023-05-03 at 11 52 16 AM" src="https://user-images.githubusercontent.com/62121500/235970210-e312ea58-e6be-4628-b062-5f120ca27d84.png">
 
