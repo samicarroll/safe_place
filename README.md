@@ -1,4 +1,4 @@
-# Safe Place 
+# A Safe Place: Web Scraping Application
 ## Description:
 Using Selenium, an XML and HTML parser, our software will scrape information from various websites searching for keywords commonly used in human trafficking. 
 
